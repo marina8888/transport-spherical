@@ -1,7 +1,7 @@
 from src.settings.filepaths import project_dir
 import pandas as pd
-from src.flames.stagnation_flame import StagnationFlame, FreelyPropFlame
-from
+from src.flames.stagnation_flame import StagnationFlame
+from src.flames.freely_prop_flame import FreelyPropFlame
 import os
 from src.settings.logger import LogConfig
 from tqdm import tqdm
