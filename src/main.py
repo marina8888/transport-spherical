@@ -1,7 +1,7 @@
-from src.settings.settings import mech_path, input_dir, output_dir
+from src.settings.filepaths import mech_path, input_dir, output_dir
+from core.call_flame import stagnation_main, freely_prop_main
 def main():
-    print("hello world")
-    print(mech_path)
+    stagnation_main()
 
 if __name__ == "__main__":
     main()

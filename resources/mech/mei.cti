@@ -1,0 +1,1882 @@
+units(length='cm', time='s', quantity='mol', act_energy='cal/mol')
+
+ideal_gas(name='gas',
+          elements="O H N C Ar He",
+          species="""AR     N2     H      H2     HE     FN2    O      OH
+                     H2O    HO2    H2O2   O2     OH*    N      NH     NH2
+                     NH3    NNH    N2H2   N2H3   N2H4   H2NN   NO     N2O
+                     NO2    HNO    HON    HONO   H2NO   HNOH   HNO2   HONO2
+                     NO3    HNO3   NH2OH  CO     CO2    HCO    CH4    C2H6""",
+          reactions='all',
+          transport='Mix',
+          initial_state=state(temperature=300.0, pressure=OneAtm))
+
+#-------------------------------------------------------------------------------
+# Species data
+#-------------------------------------------------------------------------------
+
+species(name='AR',
+        atoms='Ar:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.49988611E+00,  2.13037960E-07,  8.97320772E-10,
+                      -2.31395752E-12,  1.30201393E-15, -7.45354481E+02,
+                       4.38024367E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 2.49989176E+00,  1.56134837E-07, -7.76108557E-11,
+                       1.52928085E-14, -1.05304493E-18, -7.45328403E+02,
+                       4.38029835E+00])),
+        transport=gas_transport(geom='atom',
+                                diam=3.33,
+                                well_depth=136.5),
+        note='ATcT3E')
+
+species(name='N2',
+        atoms='N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.53603521E+00, -1.58270944E-04, -4.26984251E-07,
+                       2.37542590E-09, -1.39708206E-12, -1.04749645E+03,
+                       2.94603724E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 2.93802970E+00,  1.41838030E-03, -5.03281045E-07,
+                       8.07555464E-11, -4.76064275E-15, -9.17180990E+02,
+                       5.95521985E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.621,
+                                well_depth=97.53,
+                                polar=1.76,
+                                rot_relax=4.0),
+        note='ATcT3E')
+
+species(name='H',
+        atoms='H:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.49975925E+00,  6.73824499E-07,  1.11807261E-09,
+                      -3.70192126E-12,  2.14233822E-15,  2.54737665E+04,
+                      -4.45574009E-01]),
+                NASA([1000.00, 6000.00],
+                     [ 2.49985211E+00,  2.34582548E-07, -1.16171641E-10,
+                       2.25708298E-14, -1.52992005E-18,  2.54738024E+04,
+                      -4.45864645E-01])),
+        transport=gas_transport(geom='atom',
+                                diam=2.05,
+                                well_depth=145.0),
+        note='ATcT3E')
+
+species(name='H2',
+        atoms='H:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.37694204E+00,  7.73916922E-03, -1.88735073E-05,
+                       1.95517114E-08, -7.17095663E-12, -9.21173081E+02,
+                       5.47184736E-01]),
+                NASA([1000.00, 6000.00],
+                     [ 2.90207649E+00,  8.68992581E-04, -1.65864430E-07,
+                       1.90851899E-11, -9.31121789E-16, -7.97948726E+02,
+                      -8.45591320E-01])),
+        transport=gas_transport(geom='linear',
+                                diam=2.92,
+                                well_depth=38.0,
+                                polar=0.79,
+                                rot_relax=280.0),
+        note='ATcT3E')
+
+species(name='HE',
+        atoms='He:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.49976293E+00,  1.01013432E-06, -8.24578465E-10,
+                      -6.85983306E-13,  7.24751856E-16, -7.45340917E+02,
+                       9.29800315E-01]),
+                NASA([1000.00, 6000.00],
+                     [ 2.49985609E+00,  2.19365392E-07, -1.07525085E-10,
+                       2.07198041E-14, -1.39358612E-18, -7.45309155E+02,
+                       9.29535014E-01])),
+        transport=gas_transport(geom='atom',
+                                diam=2.576,
+                                well_depth=10.2),
+        note='ATcT3E')
+
+species(name='FN2',
+        atoms='He:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [-1.06425561E+01,  1.98516582E-01, -1.58382866E-04,
+                       6.47916942E-08, -1.07944491E-11,  3.45791921E+04,
+                       6.54214369E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 4.86101982E+01,  5.28772157E-02, -1.89008922E-05,
+                       3.00178616E-09, -1.76469956E-13,  1.46941263E+04,
+                      -2.50296625E+02])),
+        transport=gas_transport(geom='linear',
+                                diam=3.621,
+                                well_depth=97.53,
+                                polar=1.76,
+                                rot_relax=4.0),
+        note='G5/97')
+
+species(name='O',
+        atoms='O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.15906526E+00, -3.21509999E-03,  6.49255543E-06,
+                      -5.98755115E-09,  2.06876117E-12,  2.91298453E+04,
+                       2.09078344E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 2.55160087E+00, -3.83085457E-05,  8.43197478E-10,
+                       4.01267136E-12, -4.17476574E-16,  2.92287628E+04,
+                       4.87617014E+00])),
+        transport=gas_transport(geom='atom',
+                                diam=2.75,
+                                well_depth=80.0),
+        note='ATcT3E')
+
+species(name='OH',
+        atoms='H:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.97585165E+00, -2.28555291E-03,  4.33442882E-06,
+                      -3.59926640E-09,  1.26706930E-12,  3.39341137E+03,
+                      -3.55397262E-02]),
+                NASA([1000.00, 6000.00],
+                     [ 2.84581721E+00,  1.09723818E-03, -2.89121101E-07,
+                       4.09099910E-11, -2.31382258E-15,  3.71706610E+03,
+                       5.80339915E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=2.75,
+                                well_depth=80.0),
+        note='ATcT3E')
+
+species(name='H2O',
+        atoms='H:2 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.20147551E+00, -2.05583546E-03,  6.56547207E-06,
+                      -5.52906960E-09,  1.78282605E-12, -3.02950066E+04,
+                      -8.60610906E-01]),
+                NASA([1000.00, 6000.00],
+                     [ 2.73117512E+00,  2.95136995E-03, -8.35359785E-07,
+                       1.26088593E-10, -8.40531676E-15, -2.99169082E+04,
+                       6.55183000E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=2.605,
+                                well_depth=572.4,
+                                dipole=1.844,
+                                rot_relax=4.0),
+        note='ATcT3E')
+
+species(name='HO2',
+        atoms='H:1 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.26251250E+00, -4.45642032E-03,  2.05164934E-05,
+                      -2.35794011E-08,  9.05614257E-12,  2.62442356E+02,
+                       3.88223684E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.10564010E+00,  2.04046836E-03, -3.65877562E-07,
+                       1.85973044E-11,  4.98818315E-16,  4.32898769E+01,
+                       3.30808126E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.458,
+                                well_depth=107.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='H2O2',
+        atoms='H:2 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.23854160E+00, -2.49610911E-04,  1.59857901E-05,
+                      -2.06919945E-08,  8.29766320E-12, -1.76486003E+04,
+                       3.58850097E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.54017480E+00,  4.15970971E-03, -1.30876777E-06,
+                       2.00823615E-10, -1.15509243E-14, -1.79514029E+04,
+                       8.55881745E-01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.458,
+                                well_depth=107.4,
+                                rot_relax=3.8),
+        note='ATcT3E')
+
+species(name='O2',
+        atoms='O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.78498258E+00, -3.02002233E-03,  9.92029171E-06,
+                      -9.77840434E-09,  3.28877702E-12, -1.06413589E+03,
+                       3.64780709E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.65980488E+00,  6.59877372E-04, -1.44158172E-07,
+                       2.14656037E-11, -1.36503784E-15, -1.21603048E+03,
+                       3.42074148E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.458,
+                                well_depth=107.4,
+                                polar=1.6,
+                                rot_relax=3.8),
+        note='ATcT3E')
+
+species(name='OH*',
+        atoms='H:1 O:1',
+        thermo=(NASA([300.00, 1000.00],
+                     [ 3.46084428E+00,  5.01872172E-04, -2.00254474E-06,
+                       3.18901984E-09, -1.35451838E-12,  5.07349466E+04,
+                       1.73976415E+00]),
+                NASA([1000.00, 3000.00],
+                     [ 2.75582920E+00,  1.39848756E-03, -4.19428493E-07,
+                       6.33453282E-11, -3.56042218E-15,  5.09751756E+04,
+                       5.62581429E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=2.75,
+                                well_depth=80.0))
+
+species(name='N',
+        atoms='N:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.49976643E+00,  5.02149594E-07,  1.93091211E-09,
+                      -4.94632629E-12,  2.74089506E-15,  5.60760710E+04,
+                       4.19499326E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 2.41604245E+00,  1.74663766E-04, -1.18864562E-07,
+                       3.01850054E-11, -2.03260159E-15,  5.61051512E+04,
+                       4.64905706E+00])),
+        transport=gas_transport(geom='atom',
+                                diam=3.298,
+                                well_depth=71.4),
+        note='ATcT3E')
+
+species(name='NH',
+        atoms='H:1 N:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.45887003E+00,  4.93904408E-04, -1.87862560E-06,
+                       2.85542239E-09, -1.16864671E-12,  4.21088372E+04,
+                       2.00373292E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 2.79498941E+00,  1.29259567E-03, -3.85559094E-07,
+                       6.26027608E-11, -3.70421913E-15,  4.23408998E+04,
+                       5.68413752E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=2.65,
+                                well_depth=80.0,
+                                rot_relax=4.0),
+        note='ATcT3E')
+
+species(name='NH2',
+        atoms='H:2 N:1',
+        thermo=(NASA([300.00, 1000.00],
+                     [ 3.73330309E+00,  1.17860872E-03, -1.28677694E-06,
+                       2.55942013E-09, -1.16930757E-12,  2.12471824E+04,
+                       1.81379824E+00]),
+                NASA([1000.00, 5000.00],
+                     [ 2.65496763E+00,  3.25348451E-03, -1.04139157E-06,
+                       1.57363844E-10, -9.17698913E-15,  2.15747728E+04,
+                       7.57576000E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=2.65,
+                                well_depth=80.0,
+                                polar=2.26,
+                                rot_relax=4.0))
+
+species(name='NH3',
+        atoms='H:3 N:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.14027871E+00, -3.58489142E-03,  1.89475904E-05,
+                      -1.98833970E-08,  7.15267961E-12, -6.68545158E+03,
+                      -1.66754883E-02]),
+                NASA([1000.00, 4000.00],
+                     [ 2.36074311E+00,  6.31850146E-03, -2.28966806E-06,
+                       4.11767411E-10, -2.90836787E-14, -6.41596473E+03,
+                       8.02154329E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=2.92,
+                                well_depth=481.0,
+                                dipole=1.47,
+                                rot_relax=10.0),
+        note='ATcT3E')
+
+species(name='NNH',
+        atoms='H:1 N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.25474632E+00, -3.45098298E-03,  1.37788699E-05,
+                      -1.33263744E-08,  4.41023397E-12,  2.88323793E+04,
+                       3.28551762E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.42744423E+00,  3.23295234E-03, -1.17296299E-06,
+                       1.90508356E-10, -1.14491506E-14,  2.88067740E+04,
+                       6.39209233E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.798,
+                                well_depth=71.4,
+                                rot_relax=1.0),
+        note='T1/06')
+
+species(name='N2H2',
+        atoms='H:2 N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.91066031E+00, -1.07791880E-02,  3.86516489E-05,
+                      -3.86501698E-08,  1.34852134E-11,  2.28241901E+04,
+                       9.10273396E-02]),
+                NASA([1000.00, 6000.00],
+                     [ 1.31115117E+00,  9.00187208E-03, -3.14911824E-06,
+                       4.81449581E-10, -2.71897891E-14,  2.33863341E+04,
+                       1.64091067E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.798,
+                                well_depth=71.4,
+                                rot_relax=1.0),
+        note='equil&transT9/11')
+
+species(name='N2H3',
+        atoms='H:3 N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.42125505E+00,  1.34901590E-03,  2.23459071E-05,
+                      -2.99727732E-08,  1.20978970E-11,  2.58198956E+04,
+                       7.83176309E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.04483566E+00,  7.31130186E-03, -2.47625799E-06,
+                       3.83733021E-10, -2.23107573E-14,  2.53241420E+04,
+                       2.88423392E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.9,
+                                well_depth=200.0,
+                                rot_relax=1.0),
+        note='Rad.T7/11')
+
+species(name='N2H4',
+        atoms='H:4 N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.83472149E+00, -6.49129555E-04,  3.76848463E-05,
+                      -5.00709182E-08,  2.03362064E-11,  1.00893925E+04,
+                       5.75272030E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.93957357E+00,  8.75017187E-03, -2.99399058E-06,
+                       4.67278418E-10, -2.73068599E-14,  9.28265548E+03,
+                      -2.69439772E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=4.23,
+                                well_depth=205.0,
+                                polar=4.26,
+                                rot_relax=1.5),
+        note='HYDRAZINEL5/90')
+
+species(name='H2NN',
+        atoms='H:2 N:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.53204001E+00, -7.32418578E-03,  3.00803713E-05,
+                      -3.04000551E-08,  1.04700639E-11,  3.49580003E+04,
+                       1.51074195E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.05903670E+00,  6.18382347E-03, -2.22171165E-06,
+                       3.58539206E-10, -2.14532905E-14,  3.48530149E+04,
+                       6.69893515E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.798,
+                                well_depth=71.4,
+                                rot_relax=1.0),
+        note='IsodiazeneT9/11')
+
+species(name='NO',
+        atoms='N:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.08517990E+00, -3.64693188E-03,  8.49607612E-06,
+                      -6.62405734E-09,  1.77647373E-12,  9.84061267E+03,
+                       2.83578236E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.25487317E+00,  1.19869941E-03, -4.33028500E-07,
+                       7.02943336E-11, -4.09788575E-15,  9.90699836E+03,
+                       6.40395140E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.621,
+                                well_depth=97.53,
+                                polar=1.76,
+                                rot_relax=4.0),
+        note='ATcT3E')
+
+species(name='N2O',
+        atoms='N:2 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.13942290E+00,  1.21800874E-02, -1.59189415E-05,
+                       1.20920039E-08, -3.85125915E-12,  8.87008622E+03,
+                       1.12477534E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 4.80641382E+00,  2.65307443E-03, -9.70797397E-07,
+                       1.62590150E-10, -9.96738154E-15,  8.19798219E+03,
+                      -2.10607801E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.828,
+                                well_depth=232.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='NO2',
+        atoms='N:1 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.78712696E+00, -4.29576834E-04,  1.37383818E-05,
+                      -1.74264140E-08,  6.71249644E-12,  2.89500124E+03,
+                       6.96592162E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.90482285E+00,  2.14474498E-03, -8.12654059E-07,
+                       1.55511957E-10, -1.04113963E-14,  2.28958979E+03,
+                      -2.33567018E-01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.5,
+                                well_depth=200.0,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='HNO',
+        atoms='H:1 N:1 O:1',
+        thermo=(NASA([300.00, 1000.00],
+                     [ 4.60060874E+00, -5.95623802E-03,  1.84510591E-05,
+                      -1.65922559E-08,  5.08829226E-12,  1.20512316E+04,
+                       1.43731524E+00]),
+                NASA([1000.00, 5000.00],
+                     [ 3.05466914E+00,  3.78876054E-03, -1.50829892E-06,
+                       2.75222925E-10, -1.88874986E-14,  1.21823575E+04,
+                       8.00527014E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.492,
+                                well_depth=116.7,
+                                rot_relax=1.0))
+
+species(name='HON',
+        atoms='H:1 N:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.15272450E+00, -3.87826402E-03,  2.05476031E-05,
+                      -2.49049483E-08,  9.87365462E-12,  2.46037098E+04,
+                       4.56636321E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.12044656E+00,  2.28738122E-03, -7.14685362E-07,
+                       1.03332384E-10, -5.70484100E-15,  2.43643963E+04,
+                       3.38857665E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.492,
+                                well_depth=116.7,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='HONO',
+        atoms='H:1 N:1 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.16416438E+00,  8.50517773E-03,  5.48561573E-07,
+                      -8.27656474E-09,  4.39957151E-12, -1.07744086E+04,
+                       1.00231941E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 5.79144641E+00,  3.64630732E-03, -1.29112765E-06,
+                       2.06498233E-10, -1.22138679E-14, -1.15974343E+04,
+                      -4.07145349E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.828,
+                                well_depth=232.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='H2NO',
+        atoms='H:2 N:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.93201139E+00, -1.64028165E-04,  1.39161409E-05,
+                      -1.62747853E-08,  6.00352834E-12,  6.71178975E+03,
+                       4.58837038E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.75555914E+00,  5.16219354E-03, -1.76387387E-06,
+                       2.75052692E-10, -1.60643143E-14,  6.51826177E+03,
+                       4.30933053E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.492,
+                                well_depth=116.7,
+                                rot_relax=1.0),
+        note='RADICALT09/09')
+
+species(name='HNOH',
+        atoms='H:2 N:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.95608248E+00, -3.02611020E-03,  2.56874396E-05,
+                      -3.15645120E-08,  1.24084574E-11,  1.09199790E+04,
+                       5.55950983E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.98321933E+00,  4.88846374E-03, -1.65086637E-06,
+                       2.55371446E-10, -1.48308561E-14,  1.05780106E+04,
+                       3.62582838E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.492,
+                                well_depth=116.7,
+                                rot_relax=1.0),
+        note='trans&EquT11/11')
+
+species(name='HNO2',
+        atoms='H:1 N:1 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.03779347E+00, -4.46123109E-03,  3.19440815E-05,
+                      -3.79359490E-08,  1.44570885E-11, -6.53088236E+03,
+                       5.90620097E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 4.66358504E+00,  4.89854351E-03, -1.79694193E-06,
+                       2.94420361E-10, -1.78235577E-14, -7.25216334E+03,
+                      -3.06053640E-02])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.828,
+                                well_depth=232.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='HONO2',
+        atoms='H:1 N:1 O:3',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 1.55975056E+00,  2.01502169E-02, -1.15217296E-05,
+                      -2.31891230E-09,  3.17580552E-12, -1.73955871E+04,
+                       1.77294677E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 8.03061257E+00,  4.46368336E-03, -1.72272779E-06,
+                       2.91611606E-10, -1.80487362E-14, -1.93033764E+04,
+                      -1.62543421E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.828,
+                                well_depth=232.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='NO3',
+        atoms='N:1 O:3',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.35586850E+00,  1.06545436E-02, -2.86690494E-06,
+                      -5.14711611E-09,  3.08532286E-12,  7.47534931E+03,
+                       8.94786516E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 7.37569146E+00,  2.21733003E-03, -5.75695789E-07,
+                       6.69775424E-11, -2.58934700E-15,  6.22445577E+03,
+                      -1.24945323E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=4.175,
+                                well_depth=378.4,
+                                rot_relax=1.0),
+        note='ATcT3E')
+
+species(name='HNO3',
+        atoms='H:1 N:1 O:3',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 1.69329154E+00,  1.90167702E-02, -8.25176697E-06,
+                      -6.06113827E-09,  4.65236978E-12, -1.74198909E+04,
+                       1.71839838E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 8.03098942E+00,  4.46958589E-03, -1.72459491E-06,
+                       2.91556153E-10, -1.80102702E-14, -1.93138183E+04,
+                      -1.62616537E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=4.175,
+                                well_depth=378.4,
+                                rot_relax=1.0),
+        note='T8/03')
+
+species(name='NH2OH',
+        atoms='H:3 N:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.21016092E+00,  6.19671676E-03,  1.10594948E-05,
+                      -1.96668262E-08,  8.82516590E-12, -6.58148481E+03,
+                       7.93293571E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.88112502E+00,  8.15708448E-03, -2.82615576E-06,
+                       4.37930933E-10, -2.52724604E-14, -6.86018419E+03,
+                       3.79156136E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.492,
+                                well_depth=116.7,
+                                rot_relax=1.0),
+        note='ATcT/A')
+
+species(name='CO',
+        atoms='C:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.59508377E+00, -7.21196937E-04,  1.28238234E-06,
+                       6.52429293E-10, -8.21714806E-13, -1.43448968E+04,
+                       3.44355598E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.03397274E+00,  1.37328118E-03, -4.96445087E-07,
+                       8.10281447E-11, -4.85331749E-15, -1.42586044E+04,
+                       6.10076092E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.65,
+                                well_depth=98.1,
+                                polar=1.95,
+                                rot_relax=1.8),
+        note='ATcT3E')
+
+species(name='CO2',
+        atoms='C:1 O:2',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 2.20664321E+00,  1.00970086E-02, -9.96338809E-06,
+                       5.47155623E-09, -1.27733965E-12, -4.83529864E+04,
+                       1.05261943E+01]),
+                NASA([1000.00, 6000.00],
+                     [ 4.63537470E+00,  2.74559459E-03, -9.98282389E-07,
+                       1.61013606E-10, -9.22018642E-15, -4.90203677E+04,
+                      -1.92887630E+00])),
+        transport=gas_transport(geom='linear',
+                                diam=3.763,
+                                well_depth=244.0,
+                                polar=2.65,
+                                rot_relax=2.1),
+        note='ATcT3E')
+
+species(name='HCO',
+        atoms='C:1 H:1 O:1',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 3.97074749E+00, -1.49121608E-03,  9.54041776E-06,
+                      -8.82720349E-09,  2.67645129E-12,  3.84203291E+03,
+                       4.44660361E+00]),
+                NASA([1000.00, 6000.00],
+                     [ 3.85781113E+00,  2.64113950E-03, -7.44177294E-07,
+                       1.23313230E-10, -8.88958718E-15,  3.61642883E+03,
+                       3.92451197E+00])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.59,
+                                well_depth=498.0),
+        note='ATcT3E')
+
+species(name='CH4',
+        atoms='C:1 H:4',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 5.14987613E+00, -1.36709788E-02,  4.91800599E-05,
+                      -4.84743026E-08,  1.66693956E-11, -1.02466476E+04,
+                      -4.64130376E+00]),
+                NASA([1000.00, 3500.00],
+                     [ 7.48514950E-02,  1.33909467E-02, -5.73285809E-06,
+                       1.22292535E-09, -1.01815230E-13, -9.46834459E+03,
+                       1.84373180E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=3.746,
+                                well_depth=141.4,
+                                polar=2.6,
+                                rot_relax=13.0))
+
+species(name='C2H6',
+        atoms='C:2 H:6',
+        thermo=(NASA([200.00, 1000.00],
+                     [ 4.29142492E+00, -5.50154270E-03,  5.99438288E-05,
+                      -7.08466285E-08,  2.68685771E-11, -1.15222055E+04,
+                       2.66682316E+00]),
+                NASA([1000.00, 3500.00],
+                     [ 1.07188150E+00,  2.16852677E-02, -1.00256067E-05,
+                       2.21412001E-09, -1.90002890E-13, -1.14263932E+04,
+                       1.51156107E+01])),
+        transport=gas_transport(geom='nonlinear',
+                                diam=4.302,
+                                well_depth=252.3,
+                                rot_relax=1.5))
+
+#-------------------------------------------------------------------------------
+# Reaction data
+#-------------------------------------------------------------------------------
+# ************************ H2/CO mechanism**************************************
+# ======================
+# H2-O2 Chain Reactions
+# ======================
+#  Varga et al. Int. J. Chem. Kinet. (2016)
+
+# Reaction 1
+reaction('H + O2 <=> O + OH', [1.370000e+13, 0.2434, 14440.0])
+#  Varga et al. Int. J. Chem. Kinet. (2016)
+
+# Reaction 2
+reaction('O + H2 <=> H + OH', [1.255400e+06, 2.27039, 6956.9])
+#  Michael and Sutherland, J. Phys. Chem. 92:3853 (1988)
+
+# Reaction 3
+reaction('H2 + OH <=> H2O + H', [2.160000e+08, 1.51, 3430.0])
+#  M. Sangwan, L. N. Krasnoperov, The Journal of Physical Chemistry A 116 (2012) 11817?1822.
+
+# Reaction 4
+reaction('OH + OH <=> O + H2O', [1.350000e+07, 1.689, -1166.8],
+         options='duplicate')
+
+# Reaction 5
+reaction('OH + OH <=> O + H2O', [-2.697000e+10, 0.567, 0.0],
+         options=['negative_A', 'duplicate'])
+# ============================
+# H2-O2 Dissociation Reactions
+# ============================
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 6
+three_body_reaction('H2 + M <=> H + H + M', [4.577000e+19, -1.4, 104380.0],
+                    efficiencies='AR:0.0 CO:1.9 CO2:3.8 H2:2.5 H2O:12.0 HE:0.0')
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 7
+reaction('H2 + AR <=> H + H + AR', [5.840000e+18, -1.1, 104380.0])
+
+# Reaction 8
+reaction('H2 + HE <=> H + H + HE', [5.840000e+18, -1.1, 104380.0])
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 9
+three_body_reaction('O + O + M <=> O2 + M', [6.165000e+15, -0.5, 0.0],
+                    efficiencies='AR:0.0 CO:1.9 CO2:3.8 H2:2.5 H2O:12.0 HE:0.0')
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 10
+reaction('O + O + AR <=> O2 + AR', [1.886000e+13, 0.0, -1788.0])
+
+# Reaction 11
+reaction('O + O + HE <=> O2 + HE', [1.886000e+13, 0.0, -1788.0])
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 12
+three_body_reaction('O + H + M <=> OH + M', [4.714000e+18, -1.0, 0.0],
+                    efficiencies='AR:0.75 CO:1.9 CO2:3.8 H2:2.5 H2O:12.0 HE:0.75')
+#  Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+#  Rate constant is for Ar with efficiencies from Michael et al., J. Phys. Chem. A, 106 (2002)
+
+# Reaction 13
+three_body_reaction('H2O + M <=> H + OH + M', [6.064000e+27, -3.322, 120790.0],
+                    efficiencies='CO:1.9 CO2:3.8 FN2:2.0 H2:3.0 H2O:0.0 HE:1.1 N2:2.0 O2:1.5')
+#  Efficiencies for CO and CO2 taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+#  Srinivasan and Michael, Int. J. Chem. Kinetic. 38 (2006)
+
+# Reaction 14
+reaction('H2O + H2O <=> H + OH + H2O', [1.006000e+26, -2.44, 120180.0])
+# =================================
+#  Formation and consumption of HO2
+# =================================
+#  High-pressure limit from Troe, Proc. Comb. Inst. 28:1463-1469 (2000)
+#  Low-pressure  limit from Michael et al., J. Phys. Chem. A 106:5297-5313
+#  Centering factors from Fernandes et al., Phys. Chem. Chem. Phys. 10:4313-4321 (2008)
+# =================================================================================
+#  MAIN BATH GAS IS N2 (comment this reaction otherwise)
+
+# Reaction 15
+falloff_reaction('H + O2 (+ M) <=> HO2 (+ M)',
+                 kf=[4.650840e+12, 0.44, 0.0],
+                 kf0=[6.366000e+20, -1.72, 524.8],
+                 efficiencies='AR:0.67 CO:1.9 CO2:3.8 H2:2.0 H2O:14.0 HE:0.8 O2:0.78',
+                 falloff=Troe(A=0.5, T3=1e-30, T1=1e+30))
+# =================================================================================
+#  Michael et al., Proc. Comb. Inst. 28:1471 (2000)
+# HO2+H = H2+O2                                 	3.659E+06  2.09 -1.451E+03
+# Scaled by 0.75
+
+# Reaction 16
+reaction('HO2 + H <=> H2 + O2', [2.750000e+06, 2.09, -1451.0])
+#  Mueller et al., Int. J. Chem. Kinetic. 31:113 (1999)
+
+# Reaction 17
+reaction('HO2 + H <=> OH + OH', [7.079000e+13, 0.0, 295.0])
+#  Fernandez-Ramos and Varandas, J. Phys. Chem. A 106:4077-4083 (2002)
+# HO2+O = O2+OH                               	4.750E+10  1.00 -7.2393E+02
+# Scaled by 0.60
+
+# Reaction 18
+reaction('HO2 + O <=> O2 + OH', [2.850000e+10, 1.0, -723.93])
+#  M. P. Burke, S. J. Klippenstein, L. B. Harding, Proceedings of the Combustion Institute 34 (2013) 547?55.
+
+# Reaction 19
+reaction('HO2 + OH <=> H2O + O2', [1.930000e+20, -2.49, 584.0],
+         options='duplicate')
+
+# Reaction 20
+reaction('HO2 + OH <=> H2O + O2', [1.210000e+09, 1.24, -1310.0],
+         options='duplicate')
+# M. Burke, S. Klippenstein, Nature Chemistry, 9, 1078 C1082 (2017)
+
+# Reaction 21
+reaction('H + O2 + H <=> H2 + O2', [8.800000e+22, -1.835, 800.0])
+
+# Reaction 22
+reaction('H + O2 + H <=> OH + OH', [4.000000e+22, -1.835, 800.0])
+
+# Reaction 23
+reaction('H + O2 + O <=> OH + O2', [7.350000e+22, -1.835, 800.0])
+
+# Reaction 24
+reaction('H + O2 + OH <=> H2O + O2', [2.560000e+22, -1.835, 800.0])
+# =====================================
+# Formation and Consumption of H2O2
+# =====================================
+#  D. D. Y. Zhou, K. Han, P. Zhang, L. B. Harding, M. J. Davis, R. T. Skodje, The Journal of Physical Chemistry A 116 (2012) 2089?100.
+
+# Reaction 25
+reaction('HO2 + HO2 <=> H2O2 + O2', [1.179000e+09, 0.7712, -1825.0],
+         options='duplicate')
+
+# Reaction 26
+reaction('HO2 + HO2 <=> H2O2 + O2', [1.251000e+12, 0.295, 7397.0],
+         options='duplicate')
+#  Troe, Combust. Flame,  158:594-601 (2011)
+#  Rate constant is for Ar
+
+# Reaction 27
+falloff_reaction('H2O2 (+ M) <=> OH + OH (+ M)',
+                 kf=[2.000000e+12, 0.9, 48749.0],
+                 kf0=[2.490000e+24, -2.3, 48749.0],
+                 efficiencies='CO:2.8 CO2:1.6 FN2:1.5 H2:3.7 H2O:7.5 H2O2:7.7 HE:0.65 N2:1.5 O2:1.2',
+                 falloff=Troe(A=0.43, T3=1e-30, T1=1e+30))
+#  Efficiencies for H2 and CO taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)
+#  Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)
+
+# Reaction 28
+reaction('H2O2 + H <=> H2O + OH', [2.410000e+13, 0.0, 3970.0])
+
+# Reaction 29
+reaction('H2O2 + H <=> HO2 + H2', [4.820000e+13, 0.0, 7950.0])
+
+# Reaction 30
+reaction('H2O2 + O <=> OH + HO2', [9.550000e+06, 2.0, 3970.0])
+#  Hong et al., J. Phys. Chem. A  114 (2010) 5718?727
+
+# Reaction 31
+reaction('H2O2 + OH <=> HO2 + H2O', [1.740000e+12, 0.0, 318.0],
+         options='duplicate')
+
+# Reaction 32
+reaction('H2O2 + OH <=> HO2 + H2O', [7.590000e+13, 0.0, 7270.0],
+         options='duplicate')
+# ------------------------------------------------------------------------------
+# ---------------------------CO REACTIONS (Varga 2016)--------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 33
+falloff_reaction('CO + O (+ M) <=> CO2 (+ M)',
+                 kf=[1.362000e+10, 0.0, 2384.0],
+                 kf0=[1.173000e+24, -2.79, 4191.0],
+                 efficiencies='AR:0.7 CO:1.75 CO2:3.6 H2:2.0 H2O:12.0 HE:0.7')
+
+# Reaction 34
+reaction('CO + O2 <=> CO2 + O', [2.886500e+12, 0.0, 47697.0])
+
+# Reaction 35
+reaction('CO + OH <=> CO2 + H', [1.659600e+04, 2.22171, -1380.4])
+
+# Reaction 36
+reaction('CO + HO2 <=> CO2 + OH', [1.514400e+07, 1.67957, 18159.0])
+
+# Reaction 37
+falloff_reaction('HCO (+ M) <=> H + CO (+ M)',
+                 kf=[4.930000e+16, -0.93, 19725.0],
+                 kf0=[4.942600e+10, 0.95965, 14640.0],
+                 efficiencies='AR:0.55 CO:1.5 CO2:2.0 H2:2.0 H2O:12.0 HE:0.786 O2:1.0',
+                 falloff=Troe(A=0.852, T3=51.4, T1=3570.0, T2=3420.0))
+# Added O2, AR and HE as a potential thirdbody
+
+# Reaction 38
+reaction('HCO + O2 <=> CO + HO2', [7.580000e+12, 0.0, 410.0])
+
+# Reaction 39
+reaction('HCO + H <=> CO + H2', [6.412600e+13, 0.0, 0.0])
+
+# Reaction 40
+reaction('HCO + O <=> CO + OH', [3.020000e+13, 0.0, 0.0])
+
+# Reaction 41
+reaction('HCO + O <=> CO2 + H', [3.000000e+13, 0.0, 0.0])
+
+# Reaction 42
+reaction('HCO + OH <=> CO + H2O', [1.020000e+14, 0.0, 0.0])
+
+# Reaction 43
+reaction('HCO + HO2 <=> CO2 + H + OH', [3.000000e+13, 0.0, 0.0])
+
+# Reaction 44
+reaction('2 HCO <=> H2 + 2 CO', [3.000000e+12, 0.0, 0.0])
+# !***********************************THE REACTIONS OF NH3***********************************
+# -----------------------N/N2 REACTIONS-----------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 45
+three_body_reaction('N2 + M <=> N + N + M', [1.890000e+18, -0.85, 225000.0],
+                    efficiencies='C2H6:16.25 CH4:16.25 CO:1.875 CO2:3.75 H2O:16.25')
+#  Lamoureux 2016
+
+# Reaction 46
+three_body_reaction('N + O + M <=> NO + M', [7.600000e+14, -0.1, -1770.0],
+                    efficiencies='C2H6:16.25 CH4:16.25 CO:1.875 CO2:3.75 H2O:16.25')
+#  Lamoureux 2016
+
+# Reaction 47
+reaction('N + NO2 <=> N2O + O', [1.800000e+12, 0.0, 0.0])
+#  Lamoureux 2016
+
+# Reaction 48
+reaction('N + O2 <=> NO + O', [5.841000e+09, 1.01, 6202.0])
+#  Baulch 2005 A/6.400E+09 error (+/-0.2-0.5) 280-1500 K also used by Lamoureux 2016/Vandooren 1994
+
+# Reaction 49
+reaction('N + OH <=> NO + H', [1.084000e+14, -0.2, 0.0])
+#  Baulch 2005 A/1.084E+14 error (+/-0.1-0.4) 100-2500 K
+
+# Reaction 50
+reaction('N + NO <=> N2 + O', [2.100000e+13, 0.0, 0.0])
+#  Baulch 2005
+# ------------------------------------------------------------------------------
+# ---------------NH REACTIONS---------------------------------------------------!
+# ------------------------------------------------------------------------------
+
+# Reaction 51
+reaction('NH + H <=> N + H2', [3.010000e+13, 0.0, 0.0])
+#  Morley 1981/Baulch 2005
+
+# Reaction 52
+reaction('NO + H <=> NH + O', [9.900000e+14, -0.1, 69900.0])
+#  Cohen 1991
+
+# Reaction 53
+reaction('NH + O <=> N + OH', [3.000000e+12, 0.0, 0.0])
+#  Duynslaegher 2012 A/7.000E+12)
+
+# Reaction 54
+reaction('NH + OH <=> HNO + H', [3.200000e+14, -0.376, -46.0])
+#  Klippenstein 2009
+
+# Reaction 55
+reaction('NH + OH <=> N + H2O', [2.000000e+09, 1.2, 5.978])
+#  Klaus 1997 also used by Duynslaegher 2012
+
+# Reaction 56
+reaction('NH + O2 <=> HNO + O', [2.400000e+13, 0.0, 13850.0])
+#  Baulch 2005
+
+# Reaction 57
+reaction('NH + O2 <=> NO + OH', [2.014000e+16, -1.38, 5672.0])
+#  Talipov 2009
+
+# Reaction 58
+reaction('NH + NH <=> N2 + H + H', [2.500000e+13, 0.0, 0.0])
+#  Allen 1997 cited Mertens et al.; Int. J. Chem. Kinet. 21:1049 (1989); A/5.100E+13
+
+# Reaction 59
+reaction('NH + N <=> N2 + H', [9.000000e+11, 0.5, 0.0])
+#  Konnov 2009
+
+# Reaction 60
+reaction('NH + NO <=> N2O + H', [2.900000e+14, -0.4, 0.0],
+         options='duplicate')
+#  SKR/GLA04 MIL/MEL92/Tian Mech
+
+# Reaction 61
+reaction('NH + NO <=> N2O + H', [-2.200000e+13, -0.23, 0.0],
+         options=['negative_A', 'duplicate'])
+#  SKR/GLA04 MIL/MEL92/Tian Mech
+
+# Reaction 62
+reaction('NH + NO <=> N2 + OH', [2.690000e+12, -0.072, -513.0])
+#  KLIMIC2011 also used by  Lamoureux 2016
+
+# Reaction 63
+reaction('NH + NO2 <=> HNO + NO', [5.900000e+12, 0.0, 0.0])
+#  KLIMIC2011
+
+# Reaction 64
+reaction('NH + HONO <=> NH2 + NO2', [1.000000e+13, 0.0, 0.0])
+#  KLIMIC2011
+
+# Reaction 65
+reaction('NH + N2O <=> N2 + HNO', [2.000000e+12, 0.0, 6000.0])
+#  Duynslaegher 2012
+# ------------------------------------------------------------------------------
+# ----------------------NH2 REACTIONS-------------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 66
+reaction('NH2 + H <=> NH + H2', [2.130000e+21, -2.25, 8250.0])
+# V. Samu, T. Varga, I. Rahinov, S. Cheskis, T. Turanyi, Fuel 212 (2018) 679-683.
+
+# Reaction 67
+reaction('NH2 + O <=> HNO + H', [1.500000e+15, -0.547, 836.7],
+         options='duplicate')
+#  Sumathi, R., et al. J Phys Chem A, 102(18), 3175-3183. (1998) !\COMMENT: Fit from chart (Figure 5)
+
+# Reaction 68
+reaction('NH2 + O <=> HNO + H', [7.730000e+13, -0.277, 646.4],
+         options='duplicate')
+#  Sumathi, R., et al. J Phys Chem A, 102(18), 3175-3183. (1998) !\COMMENT: Fit from chart (Figure 5)
+
+# Reaction 69
+reaction('NH2 + O <=> NH + OH', [7.000000e+12, 0.0, 0.0],
+         options='duplicate')
+#  Klaus 1997 error (+/-0.3)also used by KLIMIC2011/Zhang 2011/Lamoureux 2016
+
+# Reaction 70
+reaction('NH2 + O <=> NH + OH', [8.600000e-01, 4.0, 1673.0],
+         options='duplicate')
+
+# Reaction 71
+reaction('NH2 + O <=> NO + H2', [5.000000e+12, 0.0, 0.0])
+#  Klaus 1997 error (+/-1.0)
+
+# Reaction 72
+reaction('NH2 + OH <=> NH + H2O', [9.600000e+06, 1.97, 669.0])
+#  Mousavipour 2009
+
+# Reaction 73
+reaction('NH2 + HO2 <=> H2NO + OH', [2.500000e+17, -1.28, 1166.0])
+#  Sumathi 1996
+
+# Reaction 74
+reaction('NH2 + HO2 <=> NH3 + O2', [4.500000e+13, 0.0, 0.0])
+#  Sarkisov 1984
+
+# Reaction 75
+reaction('NH2 + O2 <=> H2NO + O', [2.600000e+11, 0.4872, 29050.0])
+#  Klippenstein 2011
+
+# Reaction 76
+reaction('NH2 + O2 <=> HNO + OH', [2.900000e-02, 3.764, 18185.0])
+#  Klippenstein 2011
+
+# Reaction 77
+reaction('NH2 + NH <=> NH3 + N', [9.574000e+03, 2.46, 107.3])
+#  KLIMIC2009 200-2500 K
+
+# Reaction 78
+reaction('NH2 + NH <=> N2H3', [7.000000e+13, 0.0, 0.0])
+#  Pagsberg 1979
+
+# Reaction 79
+reaction('NH2 + N <=> N2 + H + H', [7.200000e+13, 0.0, 0.0])
+#  Glarborg 1998
+
+# Reaction 80
+reaction('NH2 + NO <=> N2 + H2O', [1.300000e+16, -1.25, 0.0],
+         options='duplicate')
+#  Klippenstein 2011
+
+# Reaction 81
+reaction('NH2 + NO <=> N2 + H2O', [-3.100000e+13, -0.48, 1180.0],
+         options=['negative_A', 'duplicate'])
+
+# Reaction 82
+reaction('NH2 + NO <=> NNH + OH', [3.100000e+13, -0.48, 1180.0])
+
+# Reaction 83
+reaction('NH2 + NO <=> N2O + H2', [1.000000e+13, 0.0, 33700.0])
+#  Duynslaegher 2012
+
+# Reaction 84
+reaction('NH2 + NO2 <=> N2O + H2O', [1.600000e+16, -1.4, 268.0])
+#  Park and Lin 1997; J. Phys. Chem. A 1997, 101, 2643-2647
+
+# Reaction 85
+reaction('NH2 + NO2 <=> H2NO + NO', [6.500000e+16, -1.4, 268.0])
+#  Park and Lin 1997; J. Phys. Chem. A 1997, 101, 2643-2647
+
+# Reaction 86
+reaction('NH2 + HONO <=> NH3 + NO2', [7.110000e+01, 3.0, -4941.0])
+#  Mebel 1996; J. Phys. Chem. 1996, 100, 7517-7525 751
+
+# Reaction 87
+reaction('NH + NH <=> NH2 + N', [5.700000e-01, 3.88, 342.0])
+#  KLIMIC2009, 300-2500 K
+# ------------------------------------------------------------------------------
+# ---------------------N2H2 REACTIONS-------------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 88
+pdep_arrhenius('N2H2 <=> NNH + H',
+               [(0.1, 'atm'), 5.600000e+36, -7.75, 70340.0],
+               [(1.0, 'atm'), 1.800000e+40, -8.41, 73320.0],
+               [(10.0, 'atm'), 3.100000e+41, -8.42, 76102.0])
+#  Otomo 2018
+# *
+# *
+# *
+
+# Reaction 89
+reaction('N2H2 + H <=> NNH + H2', [1.100000e+14, 0.0, 3128.0])
+# Zheng 2012
+
+# Reaction 90
+reaction('N2H2 + O <=> NH2 + NO', [1.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 JAM est   KLIMIC2011
+
+# Reaction 91
+reaction('N2H2 + O <=> NNH + OH', [3.300000e+08, 1.5, 497.0])
+#  SKR/GLA04 DEA/BOZ00 KLIMIC2011
+
+# Reaction 92
+reaction('N2H2 + OH <=> NNH + H2O', [5.900000e+01, 3.4, -1363.0])
+#  Linder 1996
+
+# Reaction 93
+reaction('N2H2 + NO <=> N2O + NH2', [4.000000e+12, 0.0, 11920.0])
+#  SKR/GLA04 DEA/BOZ00 KLIMIC2011
+
+# Reaction 94
+reaction('N2H2 + NH <=> NNH + NH2', [2.400000e+06, 2.0, -1192.0])
+#  SKR/GLA04 DEA/BOZ00 KLIMIC2011
+
+# Reaction 95
+reaction('N2H2 + NH2 <=> NNH + NH3', [8.800000e-02, 4.05, -1610.0])
+#  SKR/GLA04 LIN/PAG96 KLIMIC2011
+
+# Reaction 96
+reaction('NH2 + NH <=> N2H2 + H', [4.300000e+14, -0.272, -77.0])
+#  KLIMIC09 200-2500 K
+
+# Reaction 97
+reaction('NH2 + NH2 <=> N2H2 + H2', [4.000000e+13, 0.0, 11840.0])
+#  Klaus 1997 cited Miller 1989
+
+# Reaction 98
+reaction('N2H2 + HO2 <=> NNH + H2O2', [1.000000e+13, 0.0, 1987.0])
+#  Allen 1997 cited Hanson 1984
+
+# Reaction 99
+three_body_reaction('N2H2 + M <=> NH + NH + M', [3.160000e+16, 0.0, 99350.0])
+#  Allen 1997 cited Hanson 1984
+# ------------------------------------------------------------------------------
+# --------------------------N2H4 REACTIONS--------------------------------------!
+# ------------------------------------------------------------------------------
+
+# Reaction 100
+falloff_reaction('NH2 + NH2 (+ M) <=> N2H4 (+ M)',
+                 kf=[5.600000e+14, -0.414, 66.0],
+                 kf0=[1.600000e+34, -5.49, 1987.0],
+                 falloff=Troe(A=0.31, T3=1e-30, T1=1e+30, T2=1e+30))
+#  KLIMIC09
+
+# Reaction 101
+three_body_reaction('N2H4 + M <=> N2H3 + H + M', [1.000000e+15, 0.0, 63600.0],
+                    efficiencies='FN2:2.4 N2:2.4 N2H4:4.0 NH3:3.0')
+#  Allen 1997 also used by Coppens 2007
+
+# Reaction 102
+reaction('N2H4 + H <=> N2H3 + H2', [4.500000e+07, 1.8, 2613.0])
+#  Hwang 2003
+
+# Reaction 103
+reaction('N2H4 + O <=> N2H2 + H2O', [4.400000e+11, 0.0, -1270.0])
+#  SKR/GLA04 VAG96 KLIMIC2011
+
+# Reaction 104
+reaction('N2H4 + O <=> N2H3 + OH', [6.700000e+08, 1.5, 2851.0])
+#  SKR/GLA04 DEA/BOZ00 KLIMIC2011
+
+# Reaction 105
+reaction('N2H4 + OH <=> N2H3 + H2O', [4.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 HAR/ATK79 KLIMIC2011
+
+# Reaction 106
+reaction('N2H4 + NH2 <=> N2H3 + NH3', [3.900000e+12, 0.0, 1500.0])
+#  SKR/GLA04 GEH/WAG71 KLIMIC2011
+
+# Reaction 107
+reaction('N2H4 + H <=> NH2 + NH3', [4.460000e+09, 0.0, 3100.0])
+#  Allen 1997
+
+# Reaction 108
+reaction('N2H4 + N2H2 <=> N2H3 + N2H3', [2.500000e+10, 0.5, 29800.0])
+#  Allen 1997
+
+# Reaction 109
+reaction('N2H4 + HO2 <=> N2H3 + H2O2', [3.980000e+13, 0.0, 1990.0])
+#  Allen 1997
+
+# Reaction 110
+reaction('N2H4 + NH <=> N2H3 + NH2', [1.000000e+12, 0.0, 1990.0])
+#  Allen 1997
+# ---------------------------N2H3 REACTIONS-------------------------------------!
+
+# Reaction 111
+reaction('N2H3 <=> N2H2 + H', [3.600000e+47, -10.38, 69000.0])
+#  SKR/GLA04 DEA/BOZ2000 1ATM M=N2 600-2500K
+
+# Reaction 112
+reaction('NH2 + NH2 <=> N2H3 + H', [1.200000e+12, -0.03, 10084.0])
+#  Dean 2000
+
+# Reaction 113
+reaction('N2H3 + H <=> N2H2 + H2', [2.400000e+08, 1.5, -10.0])
+#  SKR/GLA04 DEA/BOZ2000
+
+# Reaction 114
+reaction('N2H3 + H <=> NH3 + NH', [1.000000e+11, 0.0, 0.0])
+#  Allen 1997 also used by Coppens 2007
+
+# Reaction 115
+reaction('N2H3 + O <=> N2H2 + OH', [1.700000e+08, 1.5, -646.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 116
+reaction('N2H3 + O <=> NH2 + HNO', [3.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 117
+reaction('N2H3 + O => NH2 + NO + H', [3.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 118
+reaction('N2H3 + OH <=> N2H2 + H2O', [1.200000e+06, 2.0, -1192.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 119
+reaction('N2H3 + OH <=> H2NN + H2O', [3.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 120
+reaction('N2H3 + OH <=> NH3 + HNO', [1.000000e+12, 0.0, 15000.0])
+#  SKR/GLA04 cited JAM est
+
+# Reaction 121
+reaction('N2H3 + HO2 <=> N2H2 + H2O2', [1.400000e+04, 2.69, -1600.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 122
+reaction('N2H3 + HO2 <=> N2H4 + O2', [9.200000e+05, 1.94, 2126.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 123
+reaction('N2H3 + NH2 <=> N2H2 + NH3', [9.200000e+05, 1.94, -1152.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 124
+reaction('N2H3 + NH2 <=> H2NN + NH3', [3.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 cited DEA/BOZ2000
+
+# Reaction 125
+reaction('N2H3 + NH <=> N2H2 + NH2', [2.000000e+13, 0.0, 0.0])
+#  SKR/GLA04 JAM est
+
+# Reaction 126
+three_body_reaction('N2H3 + M <=> NH2 + NH + M', [5.000000e+16, 0.0, 60000.0])
+#  Coppens 2007
+
+# Reaction 127
+reaction('N2H3 + N2H2 <=> N2H4 + NNH', [1.000000e+13, 0.0, 9940.0])
+#  Allen 1997
+
+# Reaction 128
+reaction('N2H3 + N2H3 <=> NH3 + NH3 + N2', [3.000000e+12, 0.0, 0.0])
+#  Coppens 2007
+
+# Reaction 129
+reaction('N2H2 + N2H2 <=> N2H3 + NNH', [1.000000e+13, 0.0, 9935.0])
+#  Allen 1997 cited Hanson 1984
+# -----------------------------H2NN REACTIONS-----------------------------------!
+
+# Reaction 130
+reaction('NH2 + NH2 <=> H2NN + H2', [7.200000e+04, 1.88, 8802.0])
+#  KLIMIC09
+
+# Reaction 131
+reaction('H2NN <=> NNH + H', [3.400000e+26, -4.83, 46220.0])
+#  SKR/GLA2004 cited DEA/BOZ2000 1 ATM also used by KLIMIC2011
+
+# Reaction 132
+reaction('H2NN + H <=> NNH + H2', [4.800000e+08, 1.5, -894.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 133
+reaction('H2NN + H <=> N2H2 + H', [7.000000e+13, 0.0, 0.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 134
+reaction('H2NN + O <=> NNH + OH', [3.300000e+08, 1.5, -894.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 135
+reaction('H2NN + O <=> NH2 + NO', [7.000000e+13, 0.0, 0.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 136
+reaction('H2NN + OH <=> NNH + H2O', [2.400000e+06, 2.0, -1192.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 137
+reaction('H2NN + OH => NH2 + NO + H', [2.000000e+12, 0.0, 0.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 138
+reaction('H2NN + HO2 => NH2 + NO + OH', [9.000000e+12, 0.0, 0.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 139
+reaction('H2NN + HO2 <=> NNH + H2O2', [2.900000e+04, 2.69, -1600.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 140
+reaction('H2NN + O2 <=> NH2 + NO2', [1.500000e+12, 0.0, 5961.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+
+# Reaction 141
+reaction('H2NN + NH2 <=> NNH + NH3', [1.800000e+06, 1.94, -1152.0])
+#  SKR/GLA2004 cited DEA/BOZ2000  also used by KLIMIC2011
+# ------------------------------------------------------------------------------
+# -------------------------HNOH REACTIONS---------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 142
+three_body_reaction('H2NO + M <=> HNOH + M', [1.100000e+29, -4.0, 44000.0],
+                    efficiencies='H2O:10.0')
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by KLIMIC2011 also used by Tian 2009/Zhang 2011
+
+# Reaction 143
+three_body_reaction('HNOH + M <=> HNO + H + M', [2.000000e+24, -2.8, 58930.0],
+                    efficiencies='H2O:10.0')
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 144
+reaction('HNOH + H <=> NH2 + OH', [4.000000e+13, 0.0, 0.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 145
+reaction('HNOH + H <=> HNO + H2', [4.800000e+08, 1.5, 378.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 146
+reaction('HNOH + O <=> HNO + OH', [7.000000e+13, 0.0, 0.0],
+         options='duplicate')
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 147
+reaction('HNOH + O <=> HNO + OH', [3.300000e+08, 1.5, -358.0],
+         options='duplicate')
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 148
+reaction('HNOH + OH <=> HNO + H2O', [2.400000e+06, 2.0, -1192.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 149
+reaction('HNOH + HO2 <=> HNO + H2O2', [2.900000e+04, 2.7, -1600.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 150
+reaction('HNOH + O2 <=> HNO + HO2', [3.000000e+12, 0.0, 25000.0])
+#  Skreiberg 2004 cited cited Miller 1999 also used by Tian 2009/Zhang 2011
+
+# Reaction 151
+reaction('HNOH + NH2 <=> N2H3 + OH', [1.000000e+01, 3.5, -467.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 152
+reaction('HNOH + NH2 <=> H2NN + H2O', [8.800000e+16, -1.1, 1113.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 153
+reaction('HNOH + NH2 <=> NH3 + HNO', [1.800000e+06, 1.9, -1152.0])
+#  Skreiberg 2004 cited DEN/BOZ2000 also used by Tian 2009/Zhang 2011
+
+# Reaction 154
+reaction('HNOH + NO2 <=> HONO + HNO', [6.000000e+11, 0.0, 2000.0])
+#  Skreiberg 2004 cited Miller 1999 also used by Tian 2009/Zhang 2011
+# -------------------------------------------------------------------------------
+# -----------------------NH3 REACTIONS-------------------------------------------!
+# -------------------------------------------------------------------------------
+
+# Reaction 155
+falloff_reaction('NH3 (+ M) <=> NH + H2 (+ M)',
+                 kf=[7.000000e+15, -0.39, 110300.0],
+                 kf0=[4.665000e+14, 0.0, 93150.0],
+                 efficiencies='AR:0.35 C2H6:3.0 CH4:3.0 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45',
+                 falloff=Troe(A=0.42, T3=4581.0, T1=102.0, T2=100000000000000.0))
+#  Baulch 2005 error(+/-0.5) 2000-3000 K
+#  Baulch 2005 error(+/-0.3) 2000-3000 K  M=AR
+#  Griffith & Barnard
+
+# Reaction 156
+reaction('NH3 + H <=> NH2 + H2', [6.360000e+05, 2.39, 10170.0])
+#  Klaus 1997 also used by KLIMIC2011/Lamoureux 2016
+
+# Reaction 157
+reaction('NH3 + O <=> NH2 + OH', [1.626000e+07, 1.85, 6460.0])
+#  Baulch 2005 error(+/-0.2-0.3) 300-2000 K
+
+# Reaction 158
+reaction('NH3 + OH <=> NH2 + H2O', [3.250000e+12, 0.0, 2120.0])
+#  Nakamura 2017
+
+# Reaction 159
+reaction('NH3 + HO2 <=> NH2 + H2O2', [3.000000e+11, 0.0, 22000.0])
+#  Skreiberg 2004 also used by Zhang 2011/Lamoureux 2016
+
+# Reaction 160
+reaction('NH3 + NH2 <=> N2H3 + H2', [1.000000e+11, 0.5, 21600.0])
+#  Coppens 2007
+
+# Reaction 161
+three_body_reaction('NH3 + NH + M <=> N2H4 + M', [1.090000e+15, 0.0, 0.0])
+#  Zetzsch 1981
+#  NH3+M=NH2+H+M                                   2.200E+16   0.0     93470.0   ! Konnov2009
+
+# Reaction 162
+pdep_arrhenius('NH3 <=> NH2 + H',
+               [(0.1, 'atm'), 7.230000e+29, -5.316, 110862.4],
+               [(1.0, 'atm'), 3.497000e+30, -5.224, 111163.3],
+               [(10.0, 'atm'), 1.975000e+31, -5.155, 111887.8],
+               [(100.0, 'atm'), 2.689000e+31, -4.92, 112778.7])
+# \AUTHOR: AS !\REF: Stagni, A. et al. React. Chem. Eng. (submitted) (2020). !\COMMENT: T = 800-2500 K fitted
+# ------------------------------------------------------------------------------
+# --------------------NNH REACTIONS---------------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 163
+reaction('NNH <=> N2 + H', [1.000000e+09, 0.0, 0.0])
+#  Klippenstein 2011
+
+# Reaction 164
+reaction('NNH + H <=> N2 + H2', [1.000000e+14, 0.0, 0.0])
+#  KLIMIC2011 also used by Tian 2009/Zhang 2011/Lamoureux 2016
+
+# Reaction 165
+reaction('NNH + O <=> N2O + H', [1.000000e+14, 0.0, 0.0])
+#  Glarborg 1998
+
+# Reaction 166
+reaction('NNH + O <=> NH + NO', [3.300000e+14, -0.23, -1013.0])
+#  Bozzelli1995
+
+# Reaction 167
+reaction('NNH + O <=> N2 + OH', [1.200000e+13, 0.145, -217.0])
+#  KLIMIC2011 also used by Lamoureux 2016
+
+# Reaction 168
+reaction('NNH + OH <=> N2 + H2O', [5.000000e+13, 0.0, 0.0])
+#  KLIMIC2011 also used by Lamoureux 2016
+
+# Reaction 169
+reaction('NNH + O2 <=> N2 + HO2', [5.600000e+14, -0.385, -13.0])
+#  Klippenstein 2011
+
+# Reaction 170
+reaction('NNH + O2 <=> N2 + H + O2', [5.000000e+13, 0.0, 0.0])
+#  Glarborg; CF 115:1 C27 (1998) also used by Lamoureux 2016/Tian 2009/Zhang 2011
+
+# Reaction 171
+reaction('NNH + NO <=> N2 + HNO', [5.000000e+13, 0.0, 0.0])
+#  KLIMIC2011 also used by Lamoureux 2016
+
+# Reaction 172
+reaction('NNH + NH <=> N2 + NH2', [5.000000e+13, 0.0, 0.0])
+#  KLIMIC2011 also used by Lamoureux 2016
+
+# Reaction 173
+reaction('NNH + NH2 <=> N2 + NH3', [5.000000e+13, 0.0, 0.0])
+#  KLIMIC2011 also used by Lamoureux 2016
+
+# Reaction 174
+reaction('NNH + NNH <=> N2H2 + N2', [1.000000e+13, 0.0, 9935.0])
+#  Allen 1997 cited Hanson 1984
+# -----------------------------------------------------------------------------
+# -------------------------HNO REACTIONS --------------------------------------
+# -----------------------------------------------------------------------------
+
+# Reaction 175
+pdep_arrhenius('HNO <=> H + NO',
+               [(0.1, 'atm'), 2.012100e+19, -3.021, 47792.0],
+               [(1.0, 'atm'), 1.825900e+20, -3.008, 47880.0],
+               [(10.0, 'atm'), 1.276200e+21, -2.959, 48100.0],
+               [(100.0, 'atm'), 5.644500e+21, -2.855, 48459.0],
+               [(1000.0, 'atm'), 9.711100e+21, -2.642, 48940.0])
+# \AUTHOR: AS !\REF: Stagni, A. et al. React. Chem. Eng. (submitted) (2020). !\COMMENT: T = 500-2500 K fitted
+
+# Reaction 176
+reaction('HNO + O <=> NO + OH', [3.610000e+13, 0.0, 0.0])
+#  Tsang 1991
+
+# Reaction 177
+reaction('HNO + H <=> NO + H2', [9.000000e+11, 0.72, 660.0])
+
+# Reaction 178
+reaction('HNO + OH <=> NO + H2O', [7.200000e+13, 0.0, 0.0])
+#  Miller 1981
+
+# Reaction 179
+reaction('HNO + O2 <=> NO + HO2', [2.000000e+13, 0.0, 16000.0])
+#  Skreiberg 2004 also used by KLIMIC2011/Lamoureux 2016/Tian 2009/Zhang 2011
+
+# Reaction 180
+reaction('HNO + N <=> NO + NH', [1.000000e+13, 0.0, 1990.0])
+#  Klaus 1997 also used by Lamoureux 2016/Mathieu 2015
+
+# Reaction 181
+reaction('HNO + N <=> N2O + H', [5.000000e+10, 0.5, 3000.0])
+#  Coppens 2007/Konnov 2009
+
+# Reaction 182
+reaction('HNO + NO <=> N2O + OH', [2.000000e+12, 0.0, 26000.0])
+#  Klaus 1997 also used by Dayma&Daguat 2006/Mueller 1999/Lamoureux 2016
+
+# Reaction 183
+reaction('HNO + NO2 <=> HONO + NO', [4.400000e+04, 2.6, 4040.0])
+#  Rasmussen 2008;IJCK 40:454-480 also used by KLIMIC2009/Tian 2009//Dayma&Daguat 2006/Mathieu 2015sssssssss
+
+# Reaction 184
+reaction('NH3 + NO <=> NH2 + HNO', [3.260000e+07, 1.73, 56600.0])
+#  Mebel 1996
+
+# Reaction 185
+reaction('HNO + HNO <=> N2O + H2O', [9.000000e+08, 0.0, 3100.0])
+#  Glarborg 1998; CF 115,1-27 also used by Mueller 1999/KLIMIC2009/Tian 2009/Zhang 2011
+
+# Reaction 186
+reaction('HNO + NH <=> NH2 + NO', [5.000000e+11, 0.5, 0.0])
+#  Coppens 2007 also used by Konnov 2009
+# ----------------------------------------------------------------------------
+# -------------------------HON REACTIONS--------------------------------------
+# ----------------------------------------------------------------------------
+# NCO+OH=HON+CO                                   5.300E+12  -0.07  5.126E+03 ! Mathieu 2015 cited Dean and Bozzelli 2000
+
+# Reaction 187
+three_body_reaction('HON + M <=> NO + H + M', [5.100000e+19, -1.73, 16040.0],
+                    efficiencies='AR:0.7 CO2:2.0 H2O:7.0')
+#  Mathieu 2015 cited Dean and Bozzelli 2000 M=N2
+
+# Reaction 188
+reaction('HON + H <=> HNO + H', [2.400000e+13, 0.0, 0.0])
+#  Mathieu 2015 cited Dean and Bozzelli 2000
+
+# Reaction 189
+reaction('HON + H <=> OH + NH', [1.000000e+13, 0.0, 0.0])
+#  Mathieu 2015 cited Dean and Bozzelli 2000
+
+# Reaction 190
+reaction('HON + O <=> OH + NO', [7.000000e+13, 0.0, 0.0])
+#  Mathieu 2015 cited Dean and Bozzelli 2000
+
+# Reaction 191
+reaction('HON + OH <=> HONO + H', [4.000000e+13, 0.0, 0.0])
+#  Mathieu 2015 cited Dean and Bozzelli 2000
+
+# Reaction 192
+reaction('HON + O2 <=> NO2 + OH', [1.000000e+12, 0.0, 4968.0])
+#  Mathieu 2015 cited Dean and Bozzelli 2000
+# -----------------------------------------------------------------------------
+# -------------------------NO REACTIONS----------------------------------------
+# -----------------------------------------------------------------------------
+
+# Reaction 193
+falloff_reaction('NO + OH (+ M) <=> HONO (+ M)',
+                 kf=[1.100000e+14, -0.3, 0.0],
+                 kf0=[3.392000e+23, -2.51, 0.0],
+                 falloff=Troe(A=0.75, T3=1e-30, T1=1e+30, T2=1e+30))
+#  Rasmussen ;IJCK 40: 454 C480,2008 cited FUL/TRO98 also used by KLIMIC2011/Mendiara 2009
+#  FUL/TRO98
+#  FUL/TRO98 [M=He,T=400K]
+# NO+OH(+M)=HONO(+M)                            1.99E+12   -0.1     -721.0      !
+# Low / 0.50800E+24 -0.25100E+01 -0.68000E+02              /                    !
+# TROE / 0.38000E+00  0.90000E+04  0.10000E-14  0.10000E+16/                    !
+
+# Reaction 194
+reaction('NO + HO2 <=> NO2 + OH', [2.100000e+12, 0.0, -480.0])
+#  Baulch 2005 A/2.100E+12s error (+/-0.15) 200-2000K also used by Mueller 1999/Dayma 2007/Mendiara 2009
+# ------------------------------------------------------------------------------
+# ------------------------NO2 REACTIONS-----------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 195
+reaction('NO2 + H2 <=> HONO + H', [1.300000e+04, 2.76, 29770.0])
+#  Rasmussen ;IJCK 40: 454 C480,2008 cited PAR/LIN98 also used by KLIMIC2011/Mendiara 2009
+
+# Reaction 196
+reaction('NO2 + H2 <=> HNO2 + H', [2.400000e+00, 3.73, 32400.0])
+#  Rasmussen ;IJCK 40: 454 C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Mendiara 2009
+
+# Reaction 197
+reaction('NO2 + H <=> NO + OH', [1.507000e+14, 0.0, 362.0])
+#  Zhang 2017 ! Thesis update
+
+# Reaction 198
+reaction('NO2 + O <=> NO + O2', [5.860000e+12, 0.0, -238.0])
+#  Zhang 2017
+
+# Reaction 199
+falloff_reaction('NO + O (+ M) <=> NO2 (+ M)',
+                 kf=[1.300000e+15, -0.75, 0.0],
+                 kf0=[9.440000e+24, -2.87, 1551.0],
+                 efficiencies='AR:0.6 CO2:6.0 H2O:10.0 N2O:4.4 NO:1.8 NO2:6.2 O2:0.8',
+                 falloff=Troe(A=0.962, T3=10.0, T1=7962.0))
+#  Zhang 2017
+
+# Reaction 200
+falloff_reaction('NO2 + OH (+ M) <=> HONO2 (+ M)',
+                 kf=[3.000000e+13, 0.0, 0.0],
+                 kf0=[2.938000e+25, -3.0, 0.0],
+                 falloff=Troe(A=0.4, T3=1e-30, T1=1e+30, T2=1e+30))
+#  Rasmussen;IJCK 40: 454 C480,2008 also used by Mendiara 2009/KLIMIC2011
+
+# Reaction 201
+reaction('NO2 + NO2 <=> NO + NO + O2', [4.500000e+12, 0.0, 27600.0])
+#  Rasmussen;IJCK 40: 454 C480,2008 cited PAR/LIN98 also used by Lamoureux 2016
+
+# Reaction 202
+reaction('NO2 + HO2 <=> HONO + O2', [1.910000e+00, 3.32, 3044.0])
+#  Rasmussen;IJCK 40: 454 C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Tian 2009/Zhang2011/Mendiara 2009
+
+# Reaction 203
+reaction('NO2 + HO2 <=> HNO2 + O2', [1.850000e+01, 3.26, 4983.0])
+#  Rasmussen;IJCK 40: 454 C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011
+# -------------------------------------------------------------------------------
+# -----------------------N2O REACTIONS-------------------------------------------
+# -------------------------------------------------------------------------------
+
+# Reaction 204
+falloff_reaction('N2O (+ M) <=> N2 + O (+ M)',
+                 kf=[1.690000e+11, 0.0, 57653.0],
+                 kf0=[7.200000e+14, 0.0, 57410.0],
+                 efficiencies='H2O:12.0 N2:1.7 N2O:3.5 NO:3.0 O2:1.4')
+# \AUTHOR: YJZ !\REF: Zuev and Starikovskii, Khim. Fiz, 1991, 10: 52-63 !\OMMENT:
+# \AUTHOR: YJZ !\REF:Javoy et al., IJCK, 2009, 41(5): 357-375 !\OMMENT:
+
+# Reaction 205
+reaction('N2O + H <=> N2 + OH', [3.310000e+10, 0.0, 5090.0],
+         options='duplicate')
+#  64 BaulcH
+
+# Reaction 206
+reaction('N2O + H <=> N2 + OH', [7.830000e+14, 0.0, 19390.0],
+         options='duplicate')
+#  65 BaulcH
+
+# Reaction 207
+reaction('N2O + O <=> NO + NO', [9.200000e+13, 0.0, 27670.0])
+#  Baulch 2005 A/9.200E+13 error(+/-0.2-0.4) 1000-4000K
+
+# Reaction 208
+reaction('N2O + O <=> N2 + O2', [3.700000e+12, 0.0, 15930.0])
+#  Baulch 2005 A/3.700E+12 error(+/-0.2-0.5) 1000-2500K
+
+# Reaction 209
+reaction('N2O + OH <=> N2 + HO2', [1.300000e-02, 4.7, 36560.0])
+#  Mebel et al.;IJCK 1996, 28, 693 C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+
+# Reaction 210
+reaction('N2O + NO <=> NO2 + N2', [5.300000e+05, 2.2, 46280.0])
+#  Mebel et al.;IJCK 1996, 28, 693 C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+
+# Reaction 211
+reaction('N2O + N <=> N2 + NO', [1.000000e+13, 0.0, 19870.0])
+#  Mathieu 2015
+#  N2O+H=N2+OH*                                    1.600E+14   0.00    5.030E+04 ! Hidaka 1985 error (1.6+/-1) ! The Journal of Physical Chemistry, Vol. 89, No. 23, 1985
+# ------------------------------------------------------------------------------
+# ----------------------H2NO REACTIONS------------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 212
+three_body_reaction('H2NO + M <=> HNO + H + M', [2.800000e+24, -2.8, 64910.0],
+                    efficiencies='H2O:10.0')
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016 /KLIMIC2011/Tian 2009/Zhang 2011
+
+# Reaction 213
+reaction('H2NO + H <=> HNO + H2', [3.000000e+07, 2.0, 2000.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+
+# Reaction 214
+reaction('H2NO + H <=> NH2 + OH', [5.000000e+13, 0.0, 0.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+
+# Reaction 215
+reaction('H2NO + O <=> HNO + OH', [3.000000e+07, 2.0, 2000.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+
+# Reaction 216
+reaction('H2NO + OH <=> HNO + H2O', [1.000000e+14, 0.0, 0.0])
+#  Glarborg 2000 also used by Lamoureux 2016/Tian 2009
+
+# Reaction 217
+reaction('H2NO + NO <=> HNO + HNO', [2.000000e+04, 2.0, 13000.0])
+#  Glarborg 2000 also used by Lamoureux 2016/Zhang 2011/Tian 2009/KLIMIC2011
+
+# Reaction 218
+reaction('H2NO + NH2 <=> HNO + NH3', [3.000000e+12, 0.0, 1000.0])
+#  Glarborg 2000 also used by Lamoureux 2016
+
+# Reaction 219
+reaction('H2NO + HO2 <=> HNO + H2O2', [2.900000e+04, 2.7, -1600.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+
+# Reaction 220
+reaction('H2NO + O2 <=> HNO + HO2', [3.000000e+12, 0.0, 25000.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+
+# Reaction 221
+reaction('H2NO + NO2 <=> HONO + HNO', [6.000000e+11, 0.0, 2000.0])
+#  Glarborg 2000 also used by Skreiberg 2004/Lamoureux 2016
+# -----------------------------------------------------------------------------
+# -------------------------HONO REACTIONS--------------------------------------!
+# -----------------------------------------------------------------------------
+
+# Reaction 222
+reaction('HONO + O <=> NO2 + OH', [1.200000e+13, 0.0, 6000.0])
+#  Rasmussen; IJCK 40, 454 C480 cited GLA/MIL98also used by Lamoureux 2016
+
+# Reaction 223
+reaction('HONO + H <=> HNO + OH', [5.600000e+10, 0.9, 5000.0])
+#  Skreiberg 2004 cited Hsu 1997 also used by KLIMIC2011/Lamoureux 2016
+
+# Reaction 224
+reaction('HONO + H <=> NO + H2O', [8.100000e+06, 1.9, 3850.0])
+#  Skreiberg 2004 cited Hsu 1997 also used by KLIMIC2011/Lamoureux 2016
+
+# Reaction 225
+reaction('HONO + OH <=> NO2 + H2O', [1.700000e+12, 0.0, -520.0])
+#  Rasmussen; IJCK 40, 454 C480 cited BUR/RAV92 also used by KLIMIC2011 Lamoureux 2016
+
+# Reaction 226
+reaction('HONO + NO2 <=> HONO2 + NO', [2.000000e+11, 0.0, 32700.0])
+#  Rasmussen; IJCK 40, 454 C480 cited PAR/LIN98
+
+# Reaction 227
+reaction('HONO + HONO <=> NO + NO2 + H2O', [3.500000e-01, 3.64, 12140.0])
+#  Rasmussen; IJCK 40, 454 C480 cited MEB/MEL98
+# ------------------------------------------------------------------------------
+# ------------------------HNO2 REACTIONS----------------------------------------!
+# ------------------------------------------------------------------------------
+
+# Reaction 228
+falloff_reaction('HNO2 (+ M) <=> HONO (+ M)',
+                 kf=[2.500000e+14, 0.0, 32300.0],
+                 kf0=[3.100000e+18, 0.0, 31500.0],
+                 falloff=Troe(A=1.149, T3=1e-30, T1=3125.0, T2=1e+30))
+#  Rasmussen; IJCK 40, 454 C480 (ab initio CBS-QB3) calculation
+
+# Reaction 229
+reaction('HNO2 + O <=> NO2 + OH', [1.700000e+08, 1.5, 2000.0])
+#  Rasmussen; IJCK 40, 454 C480 cited DEA/BOZ00 also used by KLIMIC2011
+
+# Reaction 230
+reaction('HNO2 + OH <=> NO2 + H2O', [4.000000e+13, 0.0, 0.0])
+#  Rasmussen; IJCK 40, 454 C480 (ab initio CBS-QB3) calculation also used by Mendiara 2009/Klippenstein 2011
+# ------------------------------------------------------------------------------
+# --------------------------HONO2 REACTIONS-------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 231
+reaction('HONO2 + H <=> H2 + NO3', [5.600000e+08, 1.5, 16400.0])
+#  Rasmussen; IJCK 40, 454 C480 cited BOU/LIN97 also used by KLIMIC2011
+
+# Reaction 232
+reaction('HONO2 + H <=> H2O + NO2', [6.100000e+01, 3.3, 6285.0])
+#  Rasmussen; IJCK 40, 454 C480 cited BOU/LIN97 also used by KLIMIC2011
+
+# Reaction 233
+reaction('HONO2 + H <=> OH + HONO', [3.800000e+05, 2.3, 6976.0])
+#  Rasmussen; IJCK 40, 454 C480 cited BOU/LIN97 also used by KLIMIC2011
+
+# Reaction 234
+reaction('HONO2 + OH <=> H2O + NO3', [1.000000e+10, 0.0, -1240.0])
+#  Rasmussen; IJCK 40, 454 C480 cited LAM/BEN84 also used by KLIMIC2011
+# ------------------------------------------------------------------------------
+# ---------------------------NO3 REACTIONS--------------------------------------
+# ------------------------------------------------------------------------------
+
+# Reaction 235
+falloff_reaction('NO2 + O (+ M) <=> NO3 (+ M)',
+                 kf=[3.500000e+12, 0.2, 0.0],
+                 kf0=[2.500000e+20, -1.5, 0.0],
+                 falloff=Troe(A=0.71, T3=1e-30, T1=1700.0, T2=1e+30))
+#  Mendiara 2009
+#  M=N2
+#  Fc=0.71*exp(-T/1700)
+
+# Reaction 236
+reaction('NO2 + NO2 <=> NO3 + NO', [9.600000e+09, 0.7, 20900.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 237
+reaction('NO3 + H <=> NO2 + OH', [6.000000e+13, 0.0, 0.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 238
+reaction('NO3 + O <=> NO2 + O2', [1.000000e+13, 0.0, 0.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 239
+reaction('NO3 + OH <=> NO2 + HO2', [1.400000e+13, 0.0, 0.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 240
+reaction('NO3 + HO2 <=> NO2 + O2 + OH', [1.500000e+12, 0.0, 0.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 241
+reaction('NO3 + NO2 <=> NO + NO2 + O2', [5.000000e+10, 0.0, 2940.0])
+#  Mendiara and Glarborg 2009
+
+# Reaction 242
+reaction('NO3 + NO3 <=> NO2 + NO2 + O2', [5.120000e+11, 0.0, 4870.0])
+#  Coppens 2007
+# ----------- Chemiluminescence OH* MECHANISM ----------------------------------
+
+# Reaction 243
+three_body_reaction('H + O + M <=> OH* + M', [1.500000e+13, 0.0, 5975.0],
+                    efficiencies='AR:0.35 CH4:3.0 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45')
+#  T. Kathrotia  2010
+#  Griffith & Barnard
+
+# Reaction 244
+reaction('OH* <=> OH', [1.450000e+06, 0.0, 0.0])
+#  T.Kathrotia 2011
+
+# Reaction 245
+reaction('OH* + O2 <=> OH + O2', [2.100000e+12, 0.5, -482.4])
+#  T.Kathrotia 2011
+
+# Reaction 246
+reaction('OH* + H2 <=> OH + H2', [2.950000e+12, 0.5, -454.3])
+#  T.Kathrotia 2011
+
+# Reaction 247
+reaction('OH* + N2 <=> OH + N2', [1.080000e+11, 0.5, -124.3])
+#  T.Kathrotia 2011
+
+# Reaction 248
+reaction('OH* + AR <=> OH + AR', [1.690000e+12, 0.0, 4137.0])
+#  T.Kathrotia 2011
+
+# Reaction 249
+reaction('OH* + H2O <=> OH + H2O', [5.930000e+12, 0.5, -860.8])
+#  T.Kathrotia 2011
+
+# Reaction 250
+reaction('OH* + OH <=> OH + OH', [6.010000e+12, 0.5, -765.2])
+#  T.Kathrotia 2011
+
+# Reaction 251
+reaction('OH* + H <=> OH + H', [1.310000e+12, 0.5, -167.4])
+#  T.Kathrotia 2011
+# !*********************Interactive reactions OF NH3 and syngas mechanism (Lamoureux 2016)****************************
+
+# Reaction 252
+reaction('NO + HCO <=> HNO + CO', [7.200000e+13, 0.0, 0.0])
+
+# Reaction 253
+reaction('NO2 + HCO <=> CO + NO + OH', [9.450000e+12, 0.0, -430.0])
+
+# Reaction 254
+reaction('NO2 + HCO <=> H + CO2 + NO', [5.550000e+12, 0.0, -430.0])
+
+# Reaction 255
+reaction('NO2 + CO <=> NO + CO2', [2.190000e+13, 0.0, 29200.0])
+
+# Reaction 256
+reaction('N2O + CO <=> N2 + CO2', [2.700000e+11, 0.0, 20237.0])
+
+# Reaction 257
+reaction('CO2 + N <=> CO + NO', [1.900000e+11, 0.0, 3400.0])
+# *********Following reactions are deleted to reduce the model stiffness for LBV simulation***********
+# !-------------------------HNO3 REACTIONS---------------------------------------
+#  NO3+HO2=HNO3+O2                                 5.55E+11    0.00    0.000E+00 ! Coppens 2007
+#  NO2+OH(+M)=HNO3(+M)                             2.410E+13   0.00    0.000E+00 ! Coppens 2007
+#  LOW / 6.42E+32 -5.49 2350.0 /                                                 !
+#  TROE /1.0 10.0 1168.0 /                                                       !
+#  H2O/10.0/ O2/2.0/ AR/0.75/ H2/2.0/ CO2/0.0/                                   !
+#  NO2+OH(+CO2)=HNO3(+CO2)                         2.410E+13   0.00    0.000E+00 ! Coppens 2007
+#  LOW / 5.80E+32 -5.4 2186.0 /                                                  !
+#  TROE /1.0 10.0 1168.0 /                                                       !
+#  NO+HO2+M=HNO3+M                                 1.500E+24  -3.50    2.200E+03 ! Coppens 2007 also used by Konnov 2009
+#  HNO3+H=H2+NO3                                   5.560E+08   1.53    1.640E+04 ! Coppens 2007 also used by Konnov 2009
+#  HNO3+H=H2O+NO2                                  6.080E+01   3.29    6.290E+03 ! Coppens 2007 also used by Konnov 2009
+#  HNO3+H=OH+HONO                                  3.820E+05   2.30    6.980E+03 ! Coppens 2007 also used by Konnov 2009
+#  HNO3+OH=NO3+H2O                                 1.030E+10   0.00   -1.240E+03 ! Coppens 2007 also used by Konnov 2009
+#  HNO3+NH2=NH3+NO3                                1.030E+21  -3.85    1.910E+02 ! Coppens 2007 also used by Konnov 2009
+#  DUPLICATE                                                                     !
+#  HNO3+NH2=NH3+NO3                                3.080E+01   3.22   -1.390E+02 !
+#  DUPLICATE
+# !------------------------------------------------------------------------------
+# !---------------------------NH2OH REACTIONS------------------------------------
+# !------------------------------------------------------------------------------
+#  NH2OH(+M)=NH2+OH(+M)                            1.400E+20  -1.310   6.408E+04 ! KLIMIC09 ! 300-2500 K
+#  LOW /5.40E+37 -5.96 6.678E+04/                                                !          ! 450-2500 K
+#  TROE/0.35 1E-30 1E+30 1E+30/                                                  !
+#  NH2OH+H=HNOH+H2                                 4.800E+08   1.50    6.249E+03 ! KLIMIC09 DB HTRANS
+#  NH2OH+H=H2NO+H2                                 2.400E+08   1.50    5.067E+03 ! KLIMIC09 DB HTRANS
+#  NH2OH+O=HNOH+OH                                 3.300E+08   1.50    3.865E+03 ! KLIMIC09 DB HTRANS
+#  NH2OH+O=H2NO+OH                                 1.700E+08   1.50    3.010E+03 ! KLIMIC09 DB HTRANS
+#  NH2OH+OH=HNOH+H2O                               1.500E+04   2.61   -3.537E+03 ! KLIMIC09
+#  NH2OH+OH=H2NO+H2O                               1.500E+05   2.28   -1.296E+03 ! KLIMIC09
+#  NH2OH+NH2=HNOH+NH3                              1.100E-01   4.00   -9.700E+01 ! KLIMIC09
+#  NH2OH+NH2=H2NO+NH3                              9.500E+00   3.42   -1.013E+03 ! KLIMIC09
+#  NH2OH+NH=HNOH+NH2                               2.900E-03   4.40    1.564E+03 ! KLIMIC09
+#  NH2OH+NH=H2NO+NH2                               1.500E-03   4.60    2.424E+03 ! KLIMIC09
+#  NH2OH+HO2=HNOH+H2O2                             2.900E+04   2.69    9.557E+03 ! KLIMIC09 DB HTRANS
+#  NH2OH+HO2=H2NO+H2O2                             1.400E+04   2.69    6.418E+03 ! KLIMIC09 DB HTRANS
+#  HNOH+HNO=NH2OH+NO                               1.000E+12   0.00    3.000E+03 ! Coppens 2007 also used by Mevel 2009/Konnov 2009
