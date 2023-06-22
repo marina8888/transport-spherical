@@ -37,7 +37,7 @@ class StagnationFlame:
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028 , prune=0)
+        self.f.set_refine_criteria(ratio=3, slope=0.3, curve=0.7 , prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
