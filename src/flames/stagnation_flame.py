@@ -1,5 +1,5 @@
 import cantera as ct
-from src.settings.filepaths import mech_path, output_dir
+from src.settings.filepaths import mech_path, output_dir, output_dir_numerical
 import pandas as pd
 from src.settings.logger import LogConfig
 import os
@@ -37,7 +37,7 @@ class StagnationFlame:
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        self.f.set_refine_criteria(ratio=3, slope=0.3, curve=0.7 , prune=0)
+        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.024 , prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -56,14 +56,14 @@ class StagnationFlame:
                     "T": self.T,
                     "P": self.P,
                     "vel": self.vel,
-                    "blend": self.blend_H2,
+                    "blend": self.blend,
                     "fuel": self.fuel,
                     "oxidizer": self.oxidizer,
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
                 data = {**data_x, **data_y}
                 df = pd.json_normalize(data)
-                filename = f"{output_dir}/{self.blend_H2}_{self.mech_name}.csv"
+                filename = f"{output_dir_numerical}/{self.blend}_{self.mech_name}.csv"
 
                 self.check_solution_file_exists(filename, df.columns)
                 df.to_csv(f"{filename}", mode="a", header=False)
