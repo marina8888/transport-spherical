@@ -14,13 +14,14 @@ def stagnation_main(mech, exp_results):
     logger.info(f"Using experiment results file: {exp_results}")
 
     exp_df = pd.read_csv(exp_results)
-
+    print(exp_df.columns.values)
     # to get the filename of the mechanism
     mech_name = os.path.basename(mech)
     mech_name = mech_name.split(".")[0]
 
     # make a new dataframe of class objects
     classes = pd.DataFrame()
+    print(classes.columns.values)
 
     # for each record in the dataframe we want to run it through a single condition
     # within the class ExperimentFlame, there are different functions that use Cantera core
@@ -28,6 +29,7 @@ def stagnation_main(mech, exp_results):
         lambda row: StagnationFlame(
             {"O2": 0.21, "N2": 0.79},
             row["blend"],
+            row["fuel"],
             row["phi"],
             row["T_in"],
             row["P"],

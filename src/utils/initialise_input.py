@@ -27,11 +27,16 @@ def test_input_files(path_to_mechanism:str, path_to_input:str, flame_type:str):
             return False
 
         # Test the column headers
-        expected_headers = ['column1', 'column2', 'column3']
+        expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
         actual_headers = next(csv_reader)
 
-        if actual_headers != expected_headers:
-            print("Column header test failed. Expected:", expected_headers, "Actual:", actual_headers)
+        for i, expected_row in enumerate(expected_headers):
+            if i >= len(actual_headers):
+                print("# CSV file doesn't have enough rows")
+                return False
+            if rows[i] != expected_row:
+                print("Rows don't match the expected values")
+                return False
             return False
 
     if not path_to_mechanism.endswith('.cti'):

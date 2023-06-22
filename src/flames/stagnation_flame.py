@@ -7,11 +7,10 @@ import os
 # this file runs a stagnation stabilised flame
 
 class StagnationFlame:
-    def __init__(self, oxidizer, blend, phi, T_in, P, T, vel, flash_point, mech_name):
+    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, T, vel, flash_point, mech_name):
         self.oxidizer = oxidizer
-        self.blend_H2 = float(blend)
-        self.blend_NH3 = float(1 - blend)
-        self.fuel = {"NH3": self.blend_NH3, "H2": self.blend_H2}
+        self.blend = blend
+        self.fuel = str(fuel)
         self.phi = phi
         self.T_in = T_in
         self.P = P
