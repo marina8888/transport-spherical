@@ -3,12 +3,13 @@ import csv
 def test_input_files(path_to_mechanism:str, path_to_input:str, flame_type:str):
     with open(path_to_input, 'r') as file:
         csv_reader = csv.reader(file)
+        expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
+        actual_headers = next(csv_reader)
 
-        # Test the format
         try:
             rows = list(csv_reader)  # Convert CSV reader to a list of rows
-
             cleaned_rows = []
+
             for row in rows:
                 if all(cell.strip() == '' for cell in row):
                     continue  # Skip row if all cells are empty
@@ -25,10 +26,6 @@ def test_input_files(path_to_mechanism:str, path_to_input:str, flame_type:str):
         except Exception as e:
             print("CSV format test failed:", str(e))
             return False
-
-        # Test the column headers
-        expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
-        actual_headers = next(csv_reader)
 
         for i, expected_row in enumerate(expected_headers):
             if i >= len(actual_headers):

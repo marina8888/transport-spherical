@@ -1,3 +1,10 @@
+import cantera as ct
+from src.settings.filepaths import mech_path, output_dir, output_dir_numerical
+import pandas as pd
+from src.settings.logger import LogConfig
+import os
+
+# this file runs a freely propagating flame model in Cantera
 class FreelyPropFlame:
     def __init__(self, oxidizer, blend, phi, T_in, P, T, vel, flash_point, mech_name):
         self.oxidizer = oxidizer

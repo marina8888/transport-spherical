@@ -4,7 +4,7 @@ import pandas as pd
 from src.settings.logger import LogConfig
 import os
 
-# this file runs a stagnation stabilised flame
+# this file runs a stagnation stabilised flame in Cantera
 
 class StagnationFlame:
     def __init__(self, oxidizer, blend, fuel, phi, T_in, P, T, vel, flash_point, mech_name):
@@ -37,7 +37,7 @@ class StagnationFlame:
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.024 , prune=0)
+        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028 , prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
