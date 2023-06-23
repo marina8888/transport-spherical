@@ -3,7 +3,13 @@ import csv
 def test_input_files(path_to_mechanism:str, path_to_input:str, flame_type:str):
     with open(path_to_input, 'r') as file:
         csv_reader = csv.reader(file)
-        expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
+
+        if flame_type == 'stagnation':
+            expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
+        elif flame_type == 'freely_prop_flame':
+            expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'P', 'LBV', 'LBV Er']
+        else:
+            raise Exception('flame type not recognised')
         actual_headers = next(csv_reader)
 
         try:
@@ -41,3 +47,4 @@ def test_input_files(path_to_mechanism:str, path_to_input:str, flame_type:str):
         return False
 
     return True
+

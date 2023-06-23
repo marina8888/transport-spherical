@@ -5,6 +5,7 @@ from src.flames.freely_prop_flame import FreelyPropFlame
 import os
 from src.settings.logger import LogConfig
 from tqdm import tqdm
+from
 
 logger = LogConfig.configure_logger(__name__)
 
@@ -20,6 +21,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
     logger.info(f"Using mechanism file: {mech}")
     logger.info(f"Using experiment results file: {exp_results}")
     logger.info(f"Using flame type: {flame_type}")
+
 
     exp_df = pd.read_csv(exp_results)
     # to get the filename of the mechanism
