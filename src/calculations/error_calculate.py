@@ -42,7 +42,17 @@ class ErrorCalculator:
             species = [x.replace(" Er", "") for x in species]
             self.exp_df.columns = ['exp_' + col if col in species else col for col in df.columns]
             merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T', 'phi', 'blend'], how = 'inner')
-            merged_df['error_val'] = ((merged_df['flame_speed'] - merged_df['flame_speed_exp'])/merged_df['flame_speed Er'])**2
+
+            # Perform the calculations and store in 'error_val' columns
+            for i, sp in enumerate(species):
+                exp_col = sp + '_exp'
+                er_col = sp + ' Er'
+                error_val_col = 'error_val' + str(i + 1)
+                merged_df[error_val_col] = ((merged_df[sp] - merged_df[exp_col]) / merged_df[er_col]) ** 2
+
+            # Sum the 'error_val' columns to get 'error_val' column
+            merged_df['error_val'] = merged_df[[col for col in merged_df.columns if col.startswith('error_val')]].sum(
+                axis=1)
             N = len(merged_df)
             N_fsd = len(species)
             return (1 / N) * (1 / N_fsd) * merged_df['error_val'].sum()
