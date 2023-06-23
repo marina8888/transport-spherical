@@ -31,26 +31,25 @@ class ErrorCalculator:
 
                 logger.info(f"Error for mechanism file: {mech_name}")
                 logger.info(f"Error for numerical file: {file_path}")
-
                 self.error[mech_name] = self.calculate_error(numerical_df)
 
     def calculate_error(self, numerical_df: pd.DataFrame):
-
-        # get equation constants based on numerical file:
-        N = len(numerical_df)
 
         if self.flame_type == "stagnation":
             print(self.exp_df)
             print(numerical_df)
             # lookup to the same condition (T_in, P, U, T_in, phi, blend):
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T_in', 'phi', 'blend'], how='inner')
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T_in', 'phi', 'blend'], how = 'inner')
             print(merged_df)
 
         elif self.flame_type == "freely_prop":
-            # lookup to the same condition (T_in, P, phi, blend):
-            print(self.exp_df)
-            print(numerical_df)
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how='inner')
-            print(merged_df)
+            self.exp_df.rename(columns={'flame_speed': 'flame_speed_exp'}, inplace=True)
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how = 'inner')
+            merged_df['error_val'] = ((merged_df['flame_speed'] - merged_df['flame_speed_exp'])/merged_df['flame_speed Er'])**2
+            N = len(merged_df)
+            print((1 / N) * merged_df['error_val'].sum())
+            return (1 / N) * merged_df['error_val'].sum()
 
-        return 0
+
+        else:
+            raise Exception('cannot recognise flame type')

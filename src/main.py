@@ -15,7 +15,7 @@ def main():
     # plotter("freely_prop_0.5H2_0.5NH3", 'freely_prop_H2_NH3/Lhulier_data_0.6.csv', 'flame_speed', 1, "laminar burning velocity (cm/s)", 100)
 
     # error calculation:
-    error_object = ErrorCalculator("freely_prop_0.5H2_0.5NH3", 'freely_prop_H2_NH3/Lhulier_data_0.6.csv', "flame_speed")
+    error_object = ErrorCalculator("freely_prop_0.5H2_0.5NH3", 'freely_prop_H2_NH3/Lhulier_data_0.6.csv', "freely_prop")
 
 
 if __name__ == "__main__":
