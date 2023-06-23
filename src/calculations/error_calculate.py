@@ -38,12 +38,14 @@ class ErrorCalculator:
         if self.flame_type == "stagnation":
             # define the species that are compared by checking which ones are in the exp file:
             species = [x for x in self.exp_df.columns if 'Er' in x]
-            self.exp_df.rename(columns={'flame_speed': 'flame_speed_exp'}, inplace=True)
+            species.remove("phi Er")
+            species = [x.replace(" Er", "") for x in species]
+            self.exp_df.columns = ['exp_' + col if col in species else col for col in df.columns]
             merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T', 'phi', 'blend'], how = 'inner')
             merged_df['error_val'] = ((merged_df['flame_speed'] - merged_df['flame_speed_exp'])/merged_df['flame_speed Er'])**2
             N = len(merged_df)
-            N_fsd = N = len(species)
-            return (1 / N) * merged_df['error_val'].sum()
+            N_fsd = len(species)
+            return (1 / N) * (1 / N_fsd) * merged_df['error_val'].sum()
 
 
         elif self.flame_type == "freely_prop":
