@@ -1,5 +1,5 @@
 import cantera as ct
-from src.settings.filepaths import mech_path, output_dir, output_dir_numerical
+from src.settings.filepaths import mech_path, output_dir_numerical
 import pandas as pd
 from src.settings.logger import LogConfig
 import os
