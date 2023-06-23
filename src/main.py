@@ -1,7 +1,6 @@
+from src.calculations.error_calculate import ErrorCalculator
 
-from core.call_flame import run_flame
-from core.error_calculate import ErrorCalculator
-from plotter.numerical_vs_exp import plotter
+
 def main():
     # run_flame(f"{mech_path}/okafor-2017.cti", f"{input_dir}/stagnation_CH4_NH3/20%_data.csv", flame_type = "stagnation")
     # run_flame(f"{mech_path}/okafor-2017.cti", f"{input_dir}/freely_prop_0.5H2_0.5NH3/Lhulier_data_0.6.csv", flame_type = "freely_prop_0.5H2_0.5NH3")
