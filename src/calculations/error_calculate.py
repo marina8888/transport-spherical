@@ -2,17 +2,16 @@ import pandas as pd
 from src.settings.filepaths import output_dir_numerical, input_dir
 import os
 from src.settings.logger import LogConfig
-from tqdm import tqdm
+import pandas as pd
 
 # this file calculates the error between the numerical and experimental files
 
 logger = LogConfig.configure_logger(__name__)
 
-import os
-import pandas as pd
+
 
 class ErrorCalculator:
-    def __init__(self, name_of_exp_file: str, name_of_numerical_folder: str, flame_type: str):
+    def __init__(self, name_of_numerical_folder: str, name_of_exp_file: str, flame_type: str):
 
         logger.info(f"Calculating error on experiment results file: {name_of_exp_file}")
         logger.info(f"Using flame type: {flame_type}")
@@ -21,6 +20,7 @@ class ErrorCalculator:
         self.numerical_folder_path = f"{output_dir_numerical}/{name_of_numerical_folder}"
         self.exp_df = pd.read_csv(self.exp_results_file)
         self.error = {}
+        self.calculate_error_main()
 
     def calculate_error_main(self):
         for root, directories, files in os.walk(self.numerical_folder_path):
@@ -40,13 +40,17 @@ class ErrorCalculator:
         N = len(numerical_df)
 
         if self.flame_type == "stagnation":
-            # self.exp_df
+            print(self.exp_df)
+            print(numerical_df)
             # lookup to the same condition (T_in, P, U, T_in, phi, blend):
-            pass
-
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T_in', 'phi', 'blend'], how='inner')
+            print(merged_df)
 
         elif self.flame_type == "freely_prop":
             # lookup to the same condition (T_in, P, phi, blend):
-            pass
+            print(self.exp_df)
+            print(numerical_df)
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how='inner')
+            print(merged_df)
 
-        return error_value
+        return 0
