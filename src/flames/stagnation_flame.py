@@ -1,5 +1,5 @@
 import cantera as ct
-from src.settings.filepaths import mech_path, output_dir_numerical
+from src.settings.filepaths import mech_dir, output_dir_numerical
 import pandas as pd
 from src.settings.logger import LogConfig
 import os
@@ -23,7 +23,7 @@ class StagnationFlame:
 
     def configure_gas(self):
         # gas is a solution class from the Cantera library
-        self.gas = ct.Solution(f"{mech_path}/{self.mech_name}.cti")
+        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.cti")
         self.gas.TP = self.TP
         self.gas.set_equivalence_ratio(self.phi, fuel=self.fuel, oxidizer=self.oxidizer)
 

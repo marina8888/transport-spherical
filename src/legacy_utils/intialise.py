@@ -8,7 +8,7 @@ def check_input(mech:str, exp_results:str, flame_type:str):
 
         if flame_type == 'stagnation':
             expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'T', 'U','P']
-        elif flame_type == 'freely_prop':
+        elif flame_type == 'freely_prop_0.5H2_0.5NH3':
             expected_headers = ['phi', 'phi Er', 'fuel', 'blend', 'T_in', 'P', 'LBV', 'LBV Er']
         else:
             raise Exception('flame type not recognised')
