@@ -49,7 +49,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
             axis=1,
         )
 
-    elif flame_type == 'freely_prop_0.5H2_0.5NH3':
+    elif flame_type == 'freely_prop':
         classes["experiment_class"] = exp_df.apply(
             lambda row: FreelyPropFlame(
                 {"O2": 0.21, "N2": 0.79},

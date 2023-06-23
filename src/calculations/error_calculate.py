@@ -20,7 +20,9 @@ class ErrorCalculator:
         self.numerical_folder_path = f"{output_dir_numerical}/{name_of_numerical_folder}"
         self.exp_df = pd.read_csv(self.exp_results_file)
         self.error = {}
+
         self.calculate_error_main()
+        print(self.error)
 
     def calculate_error_main(self):
         for root, directories, files in os.walk(self.numerical_folder_path):
@@ -32,6 +34,7 @@ class ErrorCalculator:
                 logger.info(f"Error for mechanism file: {mech_name}")
                 logger.info(f"Error for numerical file: {file_path}")
                 self.error[mech_name] = self.calculate_error(numerical_df)
+
 
     def calculate_error(self, numerical_df: pd.DataFrame):
 
