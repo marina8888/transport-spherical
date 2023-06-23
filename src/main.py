@@ -4,7 +4,7 @@ from src.settings.filepaths import input_dir, mech_dir
 from src.core.call_flame import run_flame
 
 def main():
-    run_flame("UCSD.cti", "freely_prop_H2_NH3/Lhulier_data_0.6.csv", flame_type = "freely_prop")
+    # run_flame("UCSD.cti", "freely_prop_H2_NH3/Lhulier_data_0.6.csv", flame_type = "freely_prop")
     # run_flame(f"{mech_path}/okafor-2017.cti", f"{input_dir}/freely_prop_0.5H2_0.5NH3/Lhulier_data_0.6.csv", flame_type = "freely_prop_0.5H2_0.5NH3")
     # run_flame(f"{mech_path}/shrestha.cti", f"{input_dir}/freely_prop_0.5H2_0.5NH3/Lhulier_data_0.6.csv", flame_type="freely_prop_0.5H2_0.5NH3")
     # run_flame(f"wang.cti", "/freely_prop_0.5H2_0.5NH3/Lhulier_data_0.6.csv", flame_type="freely_prop_0.5H2_0.5NH3")
