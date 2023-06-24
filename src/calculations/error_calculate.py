@@ -20,6 +20,7 @@ class ErrorCalculator:
         """
         logger.info(f"Calculating error on experiment results file: {name_of_exp_file}")
         logger.info(f"Using flame type: {flame_type}")
+
         self.exp_results_file = f"{input_dir}/{name_of_exp_file}"
         self.flame_type = flame_type
         self.numerical_folder_path = f"{output_dir_numerical}/{name_of_numerical_folder}"
