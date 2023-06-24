@@ -20,7 +20,5 @@ def main():
 
     # error calculation:
     error_object = ErrorCalculator("freely_prop_0.6H2_0.4NH3", 'freely_prop_H2_NH3/Lhulier_data_0.6.csv', "freely_prop")
-
-
 if __name__ == "__main__":
     main()

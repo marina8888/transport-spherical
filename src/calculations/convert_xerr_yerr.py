@@ -1,1 +1,0 @@
-# take in an experimental file containing a phi Er and convert it to y values
