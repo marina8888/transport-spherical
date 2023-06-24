@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from src.settings.filepaths import output_dir_numerical, input_dir
+
 TEXT_SIZE = 14
 def plotter(numerical_folder: str, exp_results: str, col:str, multiplier:float, y_label:str, global_multiplier = 1.0):
     """
@@ -40,7 +41,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, multiplier:float, 
         facecolors="none",
         label="Experiment",
     )
-    plt.errorbar(exp_df["phi"], exp_df[col]*global_multiplier, xerr=exp_df["phi Er"], yerr=exp_df[f"{col} Er"]*global_multiplier, color="black", fmt="")
+    plt.errorbar(exp_df["phi"], exp_df[col]*global_multiplier, yerr=exp_df[f"{col} Er"]*global_multiplier, color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
     plt.legend(fontsize=TEXT_SIZE)
     plt.tight_layout()

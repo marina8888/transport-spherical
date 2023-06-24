@@ -44,8 +44,19 @@ root
 |   ├──templates
 |-- src
 |   ├── core
-|   ├── flames (stagnation and freely propagating)
-|   ├── settings (for project structure)
+|   |   ├── call a flame and print numerical results to file
+|   |   ├── call a flame and get ROPs and sensitivities
+|   ├── calculations
+|   |   ├── convert between x and y error
+|   |   ├── find the y values of interest
+|   |   ├── calculate error between experimental and numerical results sheets
+|   |   ├── call the optimisation algorithm
+|   ├── flames
+|   |   ├── stagnation flame
+|   |   ├── freely-propagating
+|   ├── settings
+|   |   ├── define project file paths
+|   |   ├── define project logging
 |   ├── utils (processing tools)
   └── README.md
 </code>
