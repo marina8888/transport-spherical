@@ -50,10 +50,8 @@ class ErrorCalculator:
         # merge based on alignment between key input conditions:
         if self.flame_type == "stagnation":
             merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T', 'phi', 'blend'], how = 'inner')
-
         elif self.flame_type == "freely_prop":
             merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how = 'inner')
-
         else:
             raise Exception('cannot recognise flame type')
 
