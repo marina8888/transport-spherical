@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-from src.settings.filepaths import output_dir_numerical, input_dir
+from src.settings.filepaths import output_dir_numerical, input_dir, output_dir
 
 TEXT_SIZE = 14
 def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0):
@@ -17,7 +17,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     """
     exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
     numerical_folder = f"{output_dir_numerical}/{numerical_folder}"
-    files = os.listdir(numerical_folder)
+    files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
 
     # create a linestyle list to loop so the linestyle is always different:
     linestyle = ["--", ":", "-."]
@@ -44,7 +44,11 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     )
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(fontsize=TEXT_SIZE)
+    # plt.legend(fontsize=TEXT_SIZE)
+    plt.ylim(0)
+    plt.xlim(0.88, 1.16)
     plt.tight_layout()
+    plt.savefig(f"{output_dir}/graphs/0%/{col}.jpg")
     plt.show()
+    plt.switch_backend('Agg')
 

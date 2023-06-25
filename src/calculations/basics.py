@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def find_y(experimental_data):
+def find_y(experimental_data, exclude_carbon_sp = False, exclude_water = True):
     """
     Return list of y values from a dataset based on the fact that each and all y values should have a 'y Er' column
     @param experimental_data:
@@ -17,6 +17,13 @@ def find_y(experimental_data):
 
     y_vals = [x for x in exp_df.columns if 'Er' in x]
     y_vals.remove("phi Er")
+    if exclude_carbon_sp == True:
+        carbon_sp = ["CO Er", "C2O Er", "CO2 Er", "CH4 Er"]
+        y_vals = [x for x in y_vals if x not in carbon_sp]
+    if exclude_water == True:
+        water_sp = ["H2O Er"]
+        y_vals = [x for x in y_vals if x not in water_sp]
+
     y_vals = [x.replace(" Er", "") for x in y_vals]
 
     return y_vals
@@ -43,7 +50,6 @@ def x_err_to_y_err(experimental_data, y_vals:list):
         trend_y = np.polyval(coefficients_y, exp_df["phi"])
 
         # Calculate the new Er vals:
-        print(exp_df[f"{y} Er"])
         exp_df[f"{y}_x_er_Er"] = abs(np.polyval(coefficients_y, exp_df["min_phi"]) - np.polyval(coefficients_y, exp_df["max_phi"]))/2
         exp_df[f"{y} Er"] = np.sqrt((exp_df[f"{y} Er"] ** 2) + (exp_df[f"{y}_x_er_Er"] ** 2))
         print(exp_df[f"{y} Er"])

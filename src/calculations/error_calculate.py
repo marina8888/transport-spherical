@@ -24,32 +24,39 @@ class ErrorCalculator:
         self.exp_results_file = f"{input_dir}/{name_of_exp_file}"
         self.flame_type = flame_type
         self.numerical_folder_path = f"{output_dir_numerical}/{name_of_numerical_folder}"
+        self.files = [f for f in os.listdir(self.numerical_folder_path) if not f.startswith('.')]
         self.exp_df = pd.read_csv(self.exp_results_file)
-        self.error = {}
+
 
         # find the list of y values and use them for the exp df:
-        self.y_vals = find_y(self.exp_df)
+        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True)
+        self.error = {}
+        self.df_error_sp = pd.DataFrame(columns=self.y_vals)
+
         self.exp_df = x_err_to_y_err(self.exp_df, self.y_vals) #convert x error into y
         self.exp_df.columns = ['exp_' + col if col in self.y_vals else col for col in self.exp_df.columns]
         self.calculate_error_main()
 
+        # Save sum error dataframe to a CSV file
+        df_error = pd.DataFrame(list(self.error.items()), columns=['Mech', 'Error'])
+        df_error.to_csv(f"error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv", index=False)
+        self.df_error_sp.to_csv(f"sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
+
+
     def calculate_error_main(self):
-        for root, directories, files in os.walk(self.numerical_folder_path):
-            for file_name in files:
-                mech_name = os.path.splitext(file_name)[0].rsplit('_', 1)[-1]
-                file_path = os.path.join(root, file_name)
-                numerical_df = pd.read_csv(file_path)
+        for file_name in self.files:
+            mech_name = file_name.rsplit(".", 1)[0]
+            numerical_df = pd.read_csv(f"{self.numerical_folder_path }/{file_name}")
+            self.error[mech_name] = self.calculate_error(numerical_df, mech_name)
 
-                logger.info(f"Error for mechanism file: {mech_name}")
-                logger.info(f"Error for numerical file: {file_path}")
-                self.error[mech_name] = self.calculate_error(numerical_df)
+            logger.info(f"Calculating error for mechanism file: {mech_name}")
+            logger.info(f"Calculating error for numerical file: {self.numerical_folder_path}/{file_name}")
 
 
-    def calculate_error(self, numerical_df: pd.DataFrame):
-
+    def calculate_error(self, numerical_df: pd.DataFrame, mech_name):
         # merge based on alignment between key input conditions:
         if self.flame_type == "stagnation":
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'U', 'T', 'phi', 'blend'], how = 'inner')
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T', 'phi', 'blend'], how = 'inner')
         elif self.flame_type == "freely_prop":
             merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how = 'inner')
         else:
@@ -57,15 +64,11 @@ class ErrorCalculator:
 
         # Perform the calculations and store in 'error_val' columns
         for y in self.y_vals:
-            print(f"y vals are: {self.y_vals}")
             merged_df[f"error_val_{y}"] = ((merged_df[y] - merged_df[f"exp_{y}"]) / merged_df[f"{y} Er"]) ** 2
-
-        # Sum the 'error_val' columns to get 'error_val' column
-        merged_df['error_val'] = merged_df[[col for col in merged_df.columns if col.startswith('error_val')]].sum(axis=1)
-
-        N = len(merged_df)
-        N_fsd = len(self.y_vals)
-        error = (1 / N) * (1 / N_fsd) * merged_df['error_val'].sum()
+        error_per_sp = merged_df[[col for col in merged_df.columns if col.startswith('error_val')]].sum().tolist()
+        self.df_error_sp.loc[mech_name] = [value / (len(merged_df)) for value in error_per_sp]
+        print((len(merged_df)))
+        error = (1 / len(self.y_vals)) * sum(error_per_sp)
 
         return error
 
