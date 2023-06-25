@@ -17,7 +17,7 @@ def main():
     # run_flame(f"{mech_path}/mei.cti", f"{input_dir}/CH4_NH3/20%_data.csv", flame_type = "stagnation")
 
     # plotting example:
-    plotter("1000grid/stagnation_H2_NH3/0%", 'stagnation/NH3_H2/0%_data_full.csv', 'NO2', 1, "X_NO (ppmv)", 1000000)
+    plotter("1000grid/stagnation_H2_NH3/20%", 'stagnation/NH3_H2/20%_data_full.csv', 'H2O', 1, "X_H2O (ppmv)", 1000000)
 
     # error calculation:
     # error_object = ErrorCalculator("1000grid/stagnation_H2_NH3/30%", 'stagnation/NH3_H2/30%_data_full.csv', "stagnation")

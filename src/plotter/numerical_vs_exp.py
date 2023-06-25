@@ -34,7 +34,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, linewidth=3, label=legend)
         plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
         plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
-    coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 5)
+    coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 6)
     trend_y = np.polyval(coefficients_y, (np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 30, endpoint=True))
 )
     plt.plot(
@@ -46,11 +46,11 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(fontsize=TEXT_SIZE)
+    # plt.legend(fontsize=TEXT_SIZE)
     plt.ylim(0)
-    plt.xlim(0.88, 1.15)
+    plt.xlim(0.58, 1.35)
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/graphs/0%/{col}.jpg")
+    plt.savefig(f"{output_dir}/graphs/20%/{col}.jpg")
     plt.show()
     plt.switch_backend('Agg')
 
