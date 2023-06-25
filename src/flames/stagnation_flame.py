@@ -3,6 +3,7 @@ from src.settings.filepaths import mech_dir, output_dir_numerical
 import pandas as pd
 from src.settings.logger import LogConfig
 import os
+import numpy as np
 
 # this file runs a stagnation stabilised flame in Cantera
 
@@ -43,6 +44,35 @@ class StagnationFlame:
         if not (os.path.exists(filename)):
             pd.DataFrame(columns=columns).to_csv(f"{filename}")
 
+
+    def solve(self):
+        try:
+            self.f.solve(loglevel=0, auto=True)
+            if max(self.f.T) < self.flash_point:
+                return 0
+            else:
+                data_x = {
+                    "phi": self.phi,
+                    "grid": len(self.f.grid),
+                    "T_in": self.T_in,
+                    "T": self.T,
+                    "P": self.P,
+                    "vel": self.vel,
+                    "blend": self.blend,
+                    "fuel": self.fuel,
+                    "oxidizer": self.oxidizer,
+                }
+                data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
+                data = {**data_x, **data_y}
+                df = pd.json_normalize(data)
+                filename = f"{output_dir_numerical}/{self.blend}_{self.mech_name}.csv"
+
+                self.check_solution_file_exists(filename, df.columns)
+                df.to_csv(f"{filename}", mode="a", header=False)
+
+        except ct.CanteraError:
+            pass
+
     def get_rops(self, gas, f, species=None):
         """
         Getting the integral ROP across the domain for each reaction
@@ -55,22 +85,16 @@ class StagnationFlame:
 
         # intialise integral_ROP list:
         int_rop = []
-        net_stoich_coeffs = (
-            f.gas.product_stoich_coeffs() - f.gas.reactant_stoich_coeffs()
-        )
+        net_stoich_coeffs = (f.gas.product_stoich_coeffs() - f.gas.reactant_stoich_coeffs())
 
         for r in range(len(gas.reaction_equations())):
-            print(f.grid[550])
-            print(f.grid[750])
-            ropr = f.net_rates_of_progress[r, 550:750]
+            ropr = f.net_rates_of_progress[r, :] #put grids in here [r, 550:750]
             rop = net_stoich_coeffs[species_ix, r] * ropr
-            x = f.grid[550:750]
-            # use numpy trapezium rule to calculate integral rop values:
-            temp_r = np.trapz(y=rop, x=x)
+            x = f.grid[:] #put grids in here [550:750]
+            temp_r = np.trapz(y=rop, x=x) # use numpy trapezium rule to calculate integral rop values:
             int_rop.append(temp_r)
-        rops = pd.DataFrame(
-            index=gas.reaction_equations(), columns=["base_case"], data=int_rop
-        )
+        rops = pd.DataFrame(index=gas.reaction_equations(), columns=["base_case"], data=int_rop)
+        rops['x'] = x
         return rops
 
     def get_sensitivities(self, gas, f, species=None):
@@ -121,4 +145,5 @@ class StagnationFlame:
             sensitivities.iloc[m, 0] = (Su - Su0) / (Su0 * self.pertubation)
         # return mech to normal:
         gas.set_multiplier(1.0)
-return sensititvites
+
+        return sensitivities
