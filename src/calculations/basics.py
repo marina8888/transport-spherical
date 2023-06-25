@@ -47,7 +47,6 @@ def x_err_to_y_err(experimental_data, y_vals:list):
     for y in y_vals:
         # Use polyfit from NumPy to calculate the trend for exp_df[y] and exp_df["phi"]
         coefficients_y = np.polyfit(exp_df["phi"], exp_df[y], 6)
-        trend_y = np.polyval(coefficients_y, exp_df["phi"])
 
         # Calculate the new Er vals:
         exp_df[f"{y}_x_er_Er"] = abs(np.polyval(coefficients_y, exp_df["min_phi"]) - np.polyval(coefficients_y, exp_df["max_phi"]))/2

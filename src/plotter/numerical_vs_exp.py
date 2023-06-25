@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 from src.settings.filepaths import output_dir_numerical, input_dir, output_dir
 
 TEXT_SIZE = 14
@@ -33,20 +34,21 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, linewidth=3, label=legend)
         plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
         plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
-    plt.scatter(
-        exp_df["phi"],
-        exp_df[col] * exp_multiplier,
-        marker="o",
-        color="black",
-        s=80,
-        facecolors="none",
-        label="Experiment",
+    coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 5)
+    trend_y = np.polyval(coefficients_y, (np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 30, endpoint=True))
+)
+    plt.plot(
+        np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 30, endpoint=True),
+        trend_y * exp_multiplier,
+        color="black", linestyle = '-', marker = None,
     )
-    plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, color="black", fmt="")
+    plt.scatter(exp_df["phi"], exp_df[col] * exp_multiplier, s = 80, marker="o",facecolor='none', linestyle = '', color="black",
+        label="Experiment")
+    plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    # plt.legend(fontsize=TEXT_SIZE)
+    plt.legend(fontsize=TEXT_SIZE)
     plt.ylim(0)
-    plt.xlim(0.88, 1.16)
+    plt.xlim(0.88, 1.15)
     plt.tight_layout()
     plt.savefig(f"{output_dir}/graphs/0%/{col}.jpg")
     plt.show()

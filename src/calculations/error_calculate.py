@@ -1,5 +1,5 @@
 from src.calculations.basics import find_y, x_err_to_y_err
-from src.settings.filepaths import output_dir_numerical, input_dir
+from src.settings.filepaths import output_dir_numerical, input_dir, output_dir
 import os
 from src.settings.logger import LogConfig
 import pandas as pd
@@ -39,8 +39,8 @@ class ErrorCalculator:
 
         # Save sum error dataframe to a CSV file
         df_error = pd.DataFrame(list(self.error.items()), columns=['Mech', 'Error'])
-        df_error.to_csv(f"error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv", index=False)
-        self.df_error_sp.to_csv(f"sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
+        df_error.to_csv(f"{output_dir}/error/error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv", index=False)
+        self.df_error_sp.to_csv(f"{output_dir}/error/sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
 
 
     def calculate_error_main(self):
