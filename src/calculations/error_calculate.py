@@ -29,7 +29,7 @@ class ErrorCalculator:
 
 
         # find the list of y values and use them for the exp df:
-        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True)
+        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True, exclude_water = False)
         self.error = {}
         self.df_error_sp = pd.DataFrame(columns=self.y_vals)
 
@@ -64,7 +64,11 @@ class ErrorCalculator:
 
         # Perform the calculations and store in 'error_val' columns
         for y in self.y_vals:
-            merged_df[f"error_val_{y}"] = ((merged_df[y] - merged_df[f"exp_{y}"]) / merged_df[f"{y} Er"]) ** 2
+            print(y)
+            if y == 'O2' or y == 'H2':
+                merged_df[f"error_val_{y}"] = (((merged_df[y]*100) - merged_df[f"exp_{y}"]) / merged_df[f"{y} Er"]) ** 2
+            else:
+                merged_df[f"error_val_{y}"] = (((merged_df[y]*1000000) - merged_df[f"exp_{y}"]  )/ merged_df[f"{y} Er"]) ** 2
         error_per_sp = merged_df[[col for col in merged_df.columns if col.startswith('error_val')]].sum().tolist()
         self.df_error_sp.loc[mech_name] = [value / (len(merged_df)) for value in error_per_sp]
         print((len(merged_df)))
