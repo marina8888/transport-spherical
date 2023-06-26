@@ -36,19 +36,15 @@ class ErrorCalculator:
         self.exp_df = x_err_to_y_err(self.exp_df, self.y_vals) #convert x error into y
         self.exp_df.columns = ['exp_' + col if col in self.y_vals else col for col in self.exp_df.columns]
         self.calculate_error_main()
-
-        # Save sum error dataframe to a CSV file
-        df_error = pd.DataFrame(list(self.error.items()), columns=['Mech', 'Error'])
-        df_error.to_csv(f"{output_dir}/error/error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv", index=False)
         self.df_error_sp.to_csv(f"{output_dir}/error/sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
 
+        print(self.error)
 
     def calculate_error_main(self):
         for file_name in self.files:
             mech_name = file_name.rsplit(".", 1)[0]
             numerical_df = pd.read_csv(f"{self.numerical_folder_path }/{file_name}")
             self.error[mech_name] = self.calculate_error(numerical_df, mech_name)
-
             logger.info(f"Calculating error for mechanism file: {mech_name}")
             logger.info(f"Calculating error for numerical file: {self.numerical_folder_path}/{file_name}")
 
@@ -66,14 +62,13 @@ class ErrorCalculator:
         for y in self.y_vals:
             print(y)
             if y == 'O2' or y == 'H2':
-                merged_df[f"error_val_{y}"] = (((merged_df[y]*100) - merged_df[f"exp_{y}"]) / merged_df[f"{y} Er"]) ** 2
+                merged_df[f"error_val_{y}"] = ((merged_df[y] - (merged_df[f"exp_{y}"]*0.01)) / (0.01 * merged_df[f"{y} Er"])) ** 2
             else:
-                merged_df[f"error_val_{y}"] = (((merged_df[y]*1000000) - merged_df[f"exp_{y}"]  )/ merged_df[f"{y} Er"]) ** 2
+                merged_df[f"error_val_{y}"] = ((merged_df[y] - (merged_df[f"exp_{y}"]*0.000001))/ (0.000001 * merged_df[f"{y} Er"])) ** 2
         error_per_sp = merged_df[[col for col in merged_df.columns if col.startswith('error_val')]].sum().tolist()
-        self.df_error_sp.loc[mech_name] = [value / (len(merged_df)) for value in error_per_sp]
-        print((len(merged_df)))
-        error = (1 / len(self.y_vals)) * sum(error_per_sp)
-
+        error_sp = [value / (len(merged_df)) for value in error_per_sp]
+        self.df_error_sp.loc[mech_name] = error_sp
+        error = sum(error_sp)/(len(self.y_vals))
         return error
 
     def get_error(self):
