@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import cantera.cti2yaml as cli
 
 def find_y(experimental_data, exclude_carbon_sp = False, exclude_water = True):
     """
