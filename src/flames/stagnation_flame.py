@@ -31,7 +31,7 @@ class StagnationFlame:
     def configure_flame(self):
         # we are using an ImpingingJet class but there are others that might be suitable for other experiments
         self.f = ct.ImpingingJet(gas=self.gas, width=0.02)
-        self.f.set_max_grid_points(domain=1, npmax=1800)
+        self.f.set_max_grid_points(domain=1, npmax=1250)
         self.f.inlet.mdot = self.vel * self.gas.density
         self.f.surface.T = self.T
         self.f.transport_model = "Multi"
@@ -39,6 +39,7 @@ class StagnationFlame:
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
         self.f.set_refine_criteria(ratio=3, slope=0.014, curve=0.028, prune=0)
+        # self.f.set_refine_criteria(ratio=3, slope=0.4, curve=0.8, prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):

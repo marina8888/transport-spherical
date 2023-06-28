@@ -4,7 +4,7 @@ END
 
 SPECIES
 
-AR      N2      H       H2      HE      FN2    !for the investigation of thermal effect
+AR      N2      H       H2      HE
 O       OH      H2O     HO2     H2O2    O2    OH*                                
 N       NH      NH2     NH3     NNH     N2H2
 N2H3    N2H4    H2NN    NO      N2O     NO2
@@ -47,7 +47,7 @@ OH+OH = O+H2O					      -2.697E+10   0.567  0.0
 H2+M = H+H+M						4.577E+19 -1.40  1.0438E+05                                                                                                                          
    H2/2.5/ H2O/12/                                                                                                                                                           
    CO/1.9/ CO2/3.8/                                                                                                                                                          
-   AR/0.0/ HE/0.0/                                                                                                                                                           
+   AR/0.0/ HE/0.0/
                                                                                                                                                                             
 ! Tsang and Hampson, J. Phys. Chem. Ref. Data, 15:1087 (1986)                                                                                                                
 H2+AR = H+H+AR                              	5.840E+18 -1.10  1.0438E+05                                                                                                    
@@ -73,7 +73,7 @@ O+H+M = OH+M                                	4.714E+18 -1.00  0.000E+00
 ! Rate constant is for Ar with efficiencies from Michael et al., J. Phys. Chem. A, 106 (2002)                                                                                
 H2O+M = H+OH+M                              	6.064E+27 -3.322 1.2079E+05                                                                                                    
    H2/3.0/  H2O/0.0/                        
-   HE/1.10/ N2/2.00/    FN2/2.00/                    
+   HE/1.10/ N2/2.00/
    O2/1.5/                                                                                                                                                                   
 ! Efficiencies for CO and CO2 taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)                                                                                   
    CO/1.9/ CO2/3.8/                                                                                                                                                          
@@ -117,7 +117,7 @@ HO2+OH = H2O+O2 				                1.93E20    -2.49  5.84E+02
 HO2+OH = H2O+O2 			                    1.21E+09   1.24   -1.31E+03                                                                                                                     
     DUPLICATE                                                                                                                                                                
                
-!M. Burke, S. Klippenstein, Nature Chemistry, 9, 1078¨C1082 (2017)
+!M. Burke, S. Klippenstein, Nature Chemistry, 9, 1078ï¿½C1082 (2017)
 H+O2+H = H2+O2                                  8.80E+22   -1.835  800
 H+O2+H = OH+OH                                  4.00E+22   -1.835  800
 H+O2+O = OH+O2                                  7.35E+22   -1.835  800
@@ -139,7 +139,7 @@ H2O2(+M) = OH+OH(+M)            			2.00E+12   0.90  4.8749E+04
    LOW/2.49E+24 -2.30 4.8749E+04/                                                                                                                                            
    TROE/0.43 1E-30 1E+30/                                                                                                                                                    
    H2O/7.5/ CO2/1.6/                                                                                                                                                         
-   N2/1.5/  O2/1.2/       FN2/1.5/                                                                                                                                                   
+   N2/1.5/  O2/1.2/
    HE/0.65/ H2O2/7.7/                                                                                                                                                        
 ! Efficiencies for H2 and CO taken from Li et al., Int. J. Chem. Kinet. 36:566-575 (2004)                                                                                    
    H2/3.7/ CO/2.8/                                                                                                                                                           
@@ -265,7 +265,7 @@ H2O2+OH = HO2+H2O                           	7.590E+13  0.00  7.270E+03
  LOW /1.6E+34 -5.49 1.987E+03/                                                 !
  TROE /0.31 1.0E-30 1.0E+30 1.0E+30/                                           !
  N2H4+M=N2H3+H+M                                 1.000E+15   0.00    6.360E+04 ! Allen 1997 also used by Coppens 2007
- N2/2.4/ NH3/3.0/ N2H4/4.0/    FN2/2.4/                                                !
+ N2/2.4/ NH3/3.0/ N2H4/4.0/                                                 !
  N2H4+H=N2H3+H2                                  4.5E07      1.8     2613      ! Hwang 2003
  N2H4+O=N2H2+H2O                                 4.400E+11   0.00   -1.270E+03 ! SKR/GLA04 VAG96 KLIMIC2011
  N2H4+O=N2H3+OH                                  6.700E+08   1.50    2.851E+03 ! SKR/GLA04 DEA/BOZ00 KLIMIC2011
@@ -357,7 +357,7 @@ PLOG / 100				 .2689E+32 -4.920  112778.7 /
  NNH+O=N2+OH                                     1.200E+13   0.145  -2.170E+02 ! KLIMIC2011 also used by Lamoureux 2016
  NNH+OH=N2+H2O                                   5.000E+13   0.00    0.000E+00 ! KLIMIC2011 also used by Lamoureux 2016
  NNH+O2=N2+HO2                                   5.6E14     -0.385  -13        ! Klippenstein 2011
- NNH+O2=N2+H+O2                                  5.000E+13   0.00    0.000E+00 ! Glarborg; CF 115:1¨C27 (1998) also used by Lamoureux 2016/Tian 2009/Zhang 2011
+ NNH+O2=N2+H+O2                                  5.000E+13   0.00    0.000E+00 ! Glarborg; CF 115:1ï¿½C27 (1998) also used by Lamoureux 2016/Tian 2009/Zhang 2011
  NNH+NO=N2+HNO                                   5.000E+13   0.00    0.000E+00 ! KLIMIC2011 also used by Lamoureux 2016
  NNH+NH=N2+NH2                                   5.000E+13   0.00    0.000E+00 ! KLIMIC2011 also used by Lamoureux 2016
  NNH+NH2=N2+NH3                                  5.000E+13   0.00    0.000E+00 ! KLIMIC2011 also used by Lamoureux 2016
@@ -396,7 +396,7 @@ PLOG /		      1000.		 			.97111e+22  -2.642  48940.0   /
 !-----------------------------------------------------------------------------
 !-------------------------NO REACTIONS----------------------------------------
 !-----------------------------------------------------------------------------
- NO+OH(+M)=HONO(+M)                              1.100E+14  -0.30    0.000E+00 ! Rasmussen ;IJCK 40: 454¨C480,2008 cited FUL/TRO98 also used by KLIMIC2011/Mendiara 2009
+ NO+OH(+M)=HONO(+M)                              1.100E+14  -0.30    0.000E+00 ! Rasmussen ;IJCK 40: 454ï¿½C480,2008 cited FUL/TRO98 also used by KLIMIC2011/Mendiara 2009
  LOW / 3.392E+23 -2.51  0.000E+00/                                             ! FUL/TRO98
  TROE/0.75  1.0E-30  1.0E+30  1.0E+30/                                         ! FUL/TRO98 [M=He,T=400K]
 !NO+OH(+M)=HONO(+M)                            1.99E+12   -0.1     -721.0      !
@@ -406,20 +406,20 @@ PLOG /		      1000.		 			.97111e+22  -2.642  48940.0   /
 !------------------------------------------------------------------------------
 !------------------------NO2 REACTIONS-----------------------------------------
 !------------------------------------------------------------------------------
- NO2+H2=HONO+H                                   1.300E+04   2.76    2.977E+04 ! Rasmussen ;IJCK 40: 454¨C480,2008 cited PAR/LIN98 also used by KLIMIC2011/Mendiara 2009
- NO2+H2=HNO2+H                                   2.400E+00   3.73    3.240E+04 ! Rasmussen ;IJCK 40: 454¨C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Mendiara 2009
+ NO2+H2=HONO+H                                   1.300E+04   2.76    2.977E+04 ! Rasmussen ;IJCK 40: 454ï¿½C480,2008 cited PAR/LIN98 also used by KLIMIC2011/Mendiara 2009
+ NO2+H2=HNO2+H                                   2.400E+00   3.73    3.240E+04 ! Rasmussen ;IJCK 40: 454ï¿½C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Mendiara 2009
  NO2+H=NO+OH                                     1.507E14    0       362       ! Zhang 2017 ! Thesis update
  NO2+O=NO+O2                                     5.86E12     0      -238       ! Zhang 2017
  NO+O(+M)=NO2(+M)                                1.3E15     -0.75    0         ! Zhang 2017
  LOW/9.44E24  -2.87  1551/ 
  TROE/0.962  10.0  7962/ 
  AR /0.6/ NO2 /6.2/ NO /1.8/ O2 /0.8/ N2O /4.4/ CO2/6.0/ H2O /10.0/ 
- NO2+OH(+M)=HONO2(+M)                            3.000E+13   0.00    0.000E+00 ! Rasmussen;IJCK 40: 454¨C480,2008 also used by Mendiara 2009/KLIMIC2011 
+ NO2+OH(+M)=HONO2(+M)                            3.000E+13   0.00    0.000E+00 ! Rasmussen;IJCK 40: 454ï¿½C480,2008 also used by Mendiara 2009/KLIMIC2011 
  LOW/ 2.938E+25 -3.00  0.000E+00 /                                             !
  TROE /0.40  1.0E-30  1.0E+30  1.0E+30/                                        !
- NO2+NO2=NO+NO+O2                                4.500E+12   0.00    2.760E+04 ! Rasmussen;IJCK 40: 454¨C480,2008 cited PAR/LIN98 also used by Lamoureux 2016
- NO2+HO2=HONO+O2                                 1.910E+00   3.32    3.044E+03 ! Rasmussen;IJCK 40: 454¨C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Tian 2009/Zhang2011/Mendiara 2009 
- NO2+HO2=HNO2+O2                                 1.850E+01   3.26    4.983E+03 ! Rasmussen;IJCK 40: 454¨C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011
+ NO2+NO2=NO+NO+O2                                4.500E+12   0.00    2.760E+04 ! Rasmussen;IJCK 40: 454ï¿½C480,2008 cited PAR/LIN98 also used by Lamoureux 2016
+ NO2+HO2=HONO+O2                                 1.910E+00   3.32    3.044E+03 ! Rasmussen;IJCK 40: 454ï¿½C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Tian 2009/Zhang2011/Mendiara 2009 
+ NO2+HO2=HNO2+O2                                 1.850E+01   3.26    4.983E+03 ! Rasmussen;IJCK 40: 454ï¿½C480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011
 !-------------------------------------------------------------------------------
 !-----------------------N2O REACTIONS-------------------------------------------
 !-------------------------------------------------------------------------------
@@ -432,8 +432,8 @@ PLOG /		      1000.		 			.97111e+22  -2.642  48940.0   /
  DUP
  N2O+O=NO+NO                                     9.200E+13   0.00    2.767E+04 ! Baulch 2005 A/9.200E+13 error(+/-0.2-0.4) 1000-4000K
  N2O+O=N2+O2                                     3.700E+12   0.00    1.593E+04 ! Baulch 2005 A/3.700E+12 error(+/-0.2-0.5) 1000-2500K
- N2O+OH=N2+HO2                                   1.300E-02   4.70    3.656E+04 ! Mebel et al.;IJCK 1996, 28, 693¨C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
- N2O+NO=NO2+N2                                   5.300E+05   2.20    4.628E+04 ! Mebel et al.;IJCK 1996, 28, 693¨C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+ N2O+OH=N2+HO2                                   1.300E-02   4.70    3.656E+04 ! Mebel et al.;IJCK 1996, 28, 693ï¿½C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+ N2O+NO=NO2+N2                                   5.300E+05   2.20    4.628E+04 ! Mebel et al.;IJCK 1996, 28, 693ï¿½C703 also used by Tian 2009/KLIMIC2011/Zhang 2011
  N2O+N=N2+NO                                     1.000E+13   0.00    1.987E+04 ! Mathieu 2015
 ! N2O+H=N2+OH*                                    1.600E+14   0.00    5.030E+04 ! Hidaka 1985 error (1.6+/-1) ! The Journal of Physical Chemistry, Vol. 89, No. 23, 1985
 !------------------------------------------------------------------------------
@@ -453,27 +453,27 @@ PLOG /		      1000.		 			.97111e+22  -2.642  48940.0   /
 !-----------------------------------------------------------------------------
 !-------------------------HONO REACTIONS--------------------------------------! 
 !-----------------------------------------------------------------------------
- HONO+O=NO2+OH                                   1.200E+13   0.00    6.000E+03 ! Rasmussen; IJCK 40, 454¨C480 cited GLA/MIL98also used by Lamoureux 2016
+ HONO+O=NO2+OH                                   1.200E+13   0.00    6.000E+03 ! Rasmussen; IJCK 40, 454ï¿½C480 cited GLA/MIL98also used by Lamoureux 2016
  HONO+H=HNO+OH                                   5.600E+10   0.90    5.000E+03 ! Skreiberg 2004 cited Hsu 1997 also used by KLIMIC2011/Lamoureux 2016
  HONO+H=NO+H2O                                   8.100E+06   1.90    3.850E+03 ! Skreiberg 2004 cited Hsu 1997 also used by KLIMIC2011/Lamoureux 2016
- HONO+OH=NO2+H2O                                 1.700E+12   0.00   -5.200E+02 ! Rasmussen; IJCK 40, 454¨C480 cited BUR/RAV92 also used by KLIMIC2011 Lamoureux 2016
- HONO+NO2=HONO2+NO                               2.000E+11   0.00    3.270E+04 ! Rasmussen; IJCK 40, 454¨C480 cited PAR/LIN98
- HONO+HONO=NO+NO2+H2O                            3.500E-01   3.64    1.214E+04 ! Rasmussen; IJCK 40, 454¨C480 cited MEB/MEL98
+ HONO+OH=NO2+H2O                                 1.700E+12   0.00   -5.200E+02 ! Rasmussen; IJCK 40, 454ï¿½C480 cited BUR/RAV92 also used by KLIMIC2011 Lamoureux 2016
+ HONO+NO2=HONO2+NO                               2.000E+11   0.00    3.270E+04 ! Rasmussen; IJCK 40, 454ï¿½C480 cited PAR/LIN98
+ HONO+HONO=NO+NO2+H2O                            3.500E-01   3.64    1.214E+04 ! Rasmussen; IJCK 40, 454ï¿½C480 cited MEB/MEL98
 !------------------------------------------------------------------------------
 !------------------------HNO2 REACTIONS----------------------------------------!
 !------------------------------------------------------------------------------
- HNO2(+M)=HONO(+M)                               2.500E+14   0.00    3.230E+04 ! Rasmussen; IJCK 40, 454¨C480 (ab initio CBS-QB3) calculation
+ HNO2(+M)=HONO(+M)                               2.500E+14   0.00    3.230E+04 ! Rasmussen; IJCK 40, 454ï¿½C480 (ab initio CBS-QB3) calculation
  LOW /  3.100E+18   0.0   3.150E+04 /                                          !
  TROE /1.149  1E-30  3.125E+03  1E+30 /                                        !
- HNO2+O=NO2+OH                                   1.700E+08   1.50    2000.0    ! Rasmussen; IJCK 40, 454¨C480 cited DEA/BOZ00 also used by KLIMIC2011
- HNO2+OH=NO2+H2O                                 4.000E+13   0.00    0.000E+00 ! Rasmussen; IJCK 40, 454¨C480 (ab initio CBS-QB3) calculation also used by Mendiara 2009/Klippenstein 2011
+ HNO2+O=NO2+OH                                   1.700E+08   1.50    2000.0    ! Rasmussen; IJCK 40, 454ï¿½C480 cited DEA/BOZ00 also used by KLIMIC2011
+ HNO2+OH=NO2+H2O                                 4.000E+13   0.00    0.000E+00 ! Rasmussen; IJCK 40, 454ï¿½C480 (ab initio CBS-QB3) calculation also used by Mendiara 2009/Klippenstein 2011
 !------------------------------------------------------------------------------
 !--------------------------HONO2 REACTIONS-------------------------------------
 !------------------------------------------------------------------------------
- HONO2+H=H2+NO3                                  5.600E+08   1.50    16400.0   ! Rasmussen; IJCK 40, 454¨C480 cited BOU/LIN97 also used by KLIMIC2011
- HONO2+H=H2O+NO2                                 6.100E+01   3.30    6285.0    ! Rasmussen; IJCK 40, 454¨C480 cited BOU/LIN97 also used by KLIMIC2011
- HONO2+H=OH+HONO                                 3.800E+05   2.30    6976.0    ! Rasmussen; IJCK 40, 454¨C480 cited BOU/LIN97 also used by KLIMIC2011
- HONO2+OH=H2O+NO3                                1.000E+10   0.00   -1240.0    ! Rasmussen; IJCK 40, 454¨C480 cited LAM/BEN84 also used by KLIMIC2011
+ HONO2+H=H2+NO3                                  5.600E+08   1.50    16400.0   ! Rasmussen; IJCK 40, 454ï¿½C480 cited BOU/LIN97 also used by KLIMIC2011
+ HONO2+H=H2O+NO2                                 6.100E+01   3.30    6285.0    ! Rasmussen; IJCK 40, 454ï¿½C480 cited BOU/LIN97 also used by KLIMIC2011
+ HONO2+H=OH+HONO                                 3.800E+05   2.30    6976.0    ! Rasmussen; IJCK 40, 454ï¿½C480 cited BOU/LIN97 also used by KLIMIC2011
+ HONO2+OH=H2O+NO3                                1.000E+10   0.00   -1240.0    ! Rasmussen; IJCK 40, 454ï¿½C480 cited LAM/BEN84 also used by KLIMIC2011
 !------------------------------------------------------------------------------
 !---------------------------NO3 REACTIONS-------------------------------------- 
 !------------------------------------------------------------------------------
