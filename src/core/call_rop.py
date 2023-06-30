@@ -46,7 +46,6 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
                 row["P"],
                 row["T"],
                 row["U"],
-                260,
                 mech_name,
                 species
             ),
@@ -62,7 +61,6 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
                 row["phi"],
                 row["T_in"],
                 row["P"],
-                260,
                 mech_name,
                 species,
             ),
@@ -79,9 +77,5 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
     )
     tqdm.pandas(desc="Igniting Flames")
     classes["experiment_class"].progress_apply(lambda x: x.solve())
-    classes["rop"] = classes["experiment_class"].apply(
-        lambda x: x.get_rops(species)
-    )
-    # classes["sens"] = classes["experiment_class"].apply(
-    #     lambda x: x.get_sens(species)
-    # )
+    classes["experiment_class"].apply(lambda x: x.get_rops())
+    classes["experiment_class"].apply(lambda x: x.get_sens())

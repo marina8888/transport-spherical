@@ -6,7 +6,7 @@ import os
 
 # this file runs a freely propagating flame model in Cantera
 class FreelyPropFlame:
-    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, flash_point, mech_name):
+    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, mech_name):
         self.oxidizer = oxidizer
         self.blend = blend
         self.fuel = str(fuel)
@@ -14,7 +14,6 @@ class FreelyPropFlame:
         self.T_in = T_in
         self.P = P
         self.TP = (T_in, P)
-        self.flash_point = flash_point
         self.mech_name = mech_name
         self.logger = LogConfig.configure_logger(__name__)
 
@@ -40,7 +39,7 @@ class FreelyPropFlame:
     def solve(self):
         try:
             self.f.solve(loglevel=0, auto=True)
-            if max(self.f.T) < self.flash_point:
+            if max(self.f.T) < self.T_in+100:
                 return 0
             else:
                 data_x = {

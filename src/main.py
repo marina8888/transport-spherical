@@ -19,7 +19,7 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_H2_NH3/10%", 'stagnation/NH3_H2/10%_data_full.csv', "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("gri-liu.cti", "stagnation/CH4_NH3/temp.csv", flame_type="stagnation", species='NO')
+    run_rop_sens("gri.cti", "stagnation/CH4_NH3/temp.csv", flame_type="stagnation", species='lbv')
 
 if __name__ == "__main__":
     main()

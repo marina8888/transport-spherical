@@ -43,9 +43,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
                 row["P"],
                 row["T"],
                 row["U"],
-                200,
-                mech_name,
-            ),
+                mech_name),
             axis=1,
         )
 
@@ -58,7 +56,6 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
                 row["phi"],
                 row["T_in"],
                 row["P"],
-                260,
                 mech_name,
             ),
             axis=1,

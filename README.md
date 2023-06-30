@@ -1,8 +1,5 @@
 # transport-spherical
-<head>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
+
 Code to dynamically modify reaction constants for combustion kinetics mechanisms based on results of LBV, unstretched LBV and stagnation flame
 
 ****
@@ -39,7 +36,7 @@ Code to dynamically modify reaction constants for combustion kinetics mechanisms
 
 ****
 <h3> ROP AND SENSITIVITY ANALYSIS </h3>
-The rate of production can only be undertaken on various species, so the following rules are made for the run_rops_sens:  <br>
+The rate of production can only be undertaken on various species, so the following rules are made for the run_rops_sens:  <br><br>
 1. If the user specifies a species like 'NO', and its searchable in the mechanism, we run the sensitivity and rop analysis as usual on the species. The ROP can only include reactions in thhe mechanism, but sensitivity should be able to include thermo and transport files <br>
 2. If the user species 'lbv', we can only run sensitivity analysis on that. This should only be an option available for freely_prop <br>
 
@@ -50,6 +47,9 @@ The rate of production can only be undertaken on various species, so the followi
 ![img.png](resources/images/error_eq.png)
 
 <h3> SENSITIVITY ANALYSIS </h3>
+Sensitivity analysis is undertaken using the brute force method, where variables are perturbed. 
+
+![img.png](resources/images/brute_force.png)
 
 
 ****

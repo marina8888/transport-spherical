@@ -8,11 +8,11 @@ import numpy as np
 import matplotlib.pyplot  as plt
 
 # this file runs a stagnation stabilised flame in Cantera
-SENSITIVITY_THRESHOLD = 0.01
-ROP_THRESHOLD = 0.01
+SENSITIVITY_THRESHOLD = 0.00001
+ROP_THRESHOLD = 0.000001
 
 class StagnationFlame:
-    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, T, vel, flash_point, mech_name, species = None):
+    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, T, vel, mech_name, species = None):
         self.oxidizer = oxidizer
         self.blend = blend
         self.fuel = fuel
@@ -23,7 +23,6 @@ class StagnationFlame:
         self.T = T
         self.vel = vel
         self.species = species
-        self.flash_point = flash_point
         self.mech_name = mech_name
         self.logger = LogConfig.configure_logger(__name__)
 
@@ -43,8 +42,8 @@ class StagnationFlame:
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.05, curve=0.1, prune=0)
+        # self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028, prune=0.0001)
+        self.f.set_refine_criteria(ratio=3, slope=0.2, curve=0.4, prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -52,12 +51,13 @@ class StagnationFlame:
 
 
     def solve(self):
-
         try:
-            self.f.solve(loglevel=1, auto=True)
-            if max(self.f.T) < self.flash_point:
+            self.f.solve(loglevel=0, auto=True)
+            if max(self.f.T) < float(self.T)+100:
+                self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
             else:
+                self.logger.info(f"\n FLAME AT phi = {self.phi}  IGNITED!")
                 data_x = {
                     "phi": self.phi,
                     "grid": len(self.f.grid),
@@ -80,26 +80,32 @@ class StagnationFlame:
         except ct.CanteraError:
             pass
 
-    def get_rops(self, species:str):
+    def get_rops(self):
         """
         Plot ROP graphs for each condition and save to csv
         @param self:
         @param species:
         @return:
         """
-        species_ix = self.gas.species_index(species)
-        x = self.f.grid[:]  # put grids in here [550:750]
+        try:
+            species_ix = self.gas.species_index(self.species)
+            x = self.f.grid[:]  # put grids in here [550:750]
 
-        int_rop = []
-        net_stoich_coeffs = (self.f.gas.product_stoich_coeffs() - self.f.gas.reactant_stoich_coeffs())
+            int_rop = []
+            net_stoich_coeffs = (self.f.gas.product_stoich_coeffs() - self.f.gas.reactant_stoich_coeffs())
 
-        for r in range(len(self.gas.reaction_equations())):
-            ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
-            rop = net_stoich_coeffs[species_ix, r] * ropr
-            int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
-        rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"], data=int_rop)
+            for r in range(len(self.gas.reaction_equations())):
+                ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
+                rop = net_stoich_coeffs[species_ix, r] * ropr
+                int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
+            rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"], data=int_rop)
+            print(rops_df.head(30))
+            self.plot_rop(rops_df)
+        except ValueError:
+            self.logger.info('Cannot recognise species. Will not plot ROP.')
+            pass
 
-        self.plot_rop(rops_df)
+
 
     def plot_rop(self, df: pd.DataFrame):
         # sort in order and take main reactions only:
@@ -108,20 +114,19 @@ class StagnationFlame:
             rop_subset.abs().sort_values(by="base_case", ascending=False).index)
         rop_subset.loc[reactions_above_threshold].plot.barh(
             title=f"Rate of Production for {self.species}", legend=None)
-
         plt.rcParams.update({"axes.labelsize": 10})
         plt.gca().invert_yaxis()
         plt.locator_params(axis="x", nbins=6)
         plt.tight_layout()
-        plt.savefig()
+
+        plt.savefig(f"{output_dir}/rops/ROP_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
         plt.show()
         df.to_csv(f"{output_dir}/rops/ROP_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
 
-    def get_sensitivities(self, species=None):
+    def get_sens(self, species=None):
         """
 
-        @param self:
         @param species:
         @return:
         """
