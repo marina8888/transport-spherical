@@ -59,7 +59,7 @@ The simulated parameter is either laminar burning velocity (velocity at inlet) o
     The rotational relaxation collision number (Zrot) at 298K: This parameter characterizes the rotational relaxation time of molecules in collisions. It can have uncertainties associated with experimental measurements or theoretical models used to calculate it.
 
 - For the thermodynamic properties, these store the NASA polynomial coefficients for each temperature range.
-- These polynomial coefficients are used to calculate the 
+- These polynomial coefficients are used to calculate the enthalpy, entropy and molar heat capacity.
 
 ![img.png](resources/images/thermo_notes.png)
 
