@@ -41,9 +41,15 @@ The rate of production can only be undertaken on various species, so the followi
 
 ****
 <h3> ERROR CALCULATION </h3>
-E = 1/N $$
-\displaystyle\sum_{k=3}^5 k^2=3^2 + 4^2 + 5^2 =50
-$$
+  Some math here:
+    ```math
+    x = {-b \pm \sqrt{b^2-4ac} \over 2a} 
+    ```
+    and here:
+    ```math
+    \sqrt{3}
+    ```
+
 E = 1/N ∑_(f=1)^(N_f)▒〖∑_(s=1)^(N_fs)▒1/N_fsd  ∑_(d=1)^(N_fsd)▒((Y_fsd^sim-Y_fsd^exp)/〖δX_i〗_fsd )^2 〗
 
 ****
