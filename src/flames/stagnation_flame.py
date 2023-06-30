@@ -10,6 +10,7 @@ import matplotlib.pyplot  as plt
 # this file runs a stagnation stabilised flame in Cantera
 SENSITIVITY_THRESHOLD = 0.00001
 ROP_THRESHOLD = 0.000001
+PERTURBATION = 1e-2
 
 class StagnationFlame:
     def __init__(self, oxidizer, blend, fuel, phi, T_in, P, T, vel, mech_name, species = None):
@@ -108,12 +109,11 @@ class StagnationFlame:
 
 
     def plot_rop(self, df: pd.DataFrame):
+
         # sort in order and take main reactions only:
         rop_subset = df[df["base_case"].abs() > ROP_THRESHOLD]
-        reactions_above_threshold = (
-            rop_subset.abs().sort_values(by="base_case", ascending=False).index)
-        rop_subset.loc[reactions_above_threshold].plot.barh(
-            title=f"Rate of Production for {self.species}", legend=None)
+        reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
+        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Rate of Production for {self.species}", legend=None)
         plt.rcParams.update({"axes.labelsize": 10})
         plt.gca().invert_yaxis()
         plt.locator_params(axis="x", nbins=6)
@@ -123,52 +123,55 @@ class StagnationFlame:
         plt.show()
         df.to_csv(f"{output_dir}/rops/ROP_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
-
-    def get_sens(self, species=None):
+    def get_sens(self):
         """
 
-        @param species:
         @return:
         """
-
-        Su = None
-        Su0 = None
-        if species == None:
-            # take lbv sense by default:
+        # take species at outlet or velocity at inlet:
+        if self.species == 'lbv':
             Su0 = self.f.velocity[0]
         else:
-            print(f"doing sensitivity analysis for {species}")
-            # take species at outlet:
-            species_ix = gas.species_index(species)
-            Su0 = f.X[species_ix, -1]
+            species_ix = self.gas.species_index(self.species)
+            Su0 = self.f.X[species_ix, -1]
 
-        # Create a dataframe to store sensitivity-analysis data
-        sensitivities = pd.DataFrame(
-            index=gas.reaction_equations(), columns=["base_case"]
-        )
+        # Create a dataframe to store sensitivity-analysis data:
+        sensitivities = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"])
 
-        for m in range(gas.n_reactions):
-            gas.set_multiplier(1.0)  # reset all multipliers
-            gas.set_multiplier(1 + self.pertubation, m)  # perturb reaction m
+        for m in range(self.gas.n_reactions):
+            print(f'reaction {m}')
+            self.gas.set_multiplier(1.0)  # reset all multipliers
+            self.gas.set_multiplier(1 + PERTURBATION, m)  # perturb reaction m
 
-            # Always force loglevel=0 for this
-            # Make sure the grid is not refined, otherwise it won't strictly
-            # be a small perturbation analysis
+            # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
             # Turn auto-mode off since the flame has already been solved
-            f.solve(loglevel=0, refine_grid=False, auto=False)
+            self.f.solve(loglevel=0, refine_grid=False, auto=False)
 
             # new values with pertubation:
-            if species == None:
-                # take lbv sense by default:
-                Su = f.velocity[0]
+            if self.species == 'lbv':
+                Su = self.f.velocity[0]
             else:
-                print(f"doing sensitivity analysis for {species}")
-                # take species at outlet:
-                species_ix = gas.species_index(species)
-                Su = f.X[species_ix, -1]
+                species_ix = self.gas.species_index(self.species)
+                Su = self.f.X[species_ix, -1]
 
-            sensitivities.iloc[m, 0] = (Su - Su0) / (Su0 * self.pertubation)
-        # return mech to normal:
-        gas.set_multiplier(1.0)
+            sensitivities.iloc[m, 0] = (Su - Su0) / (Su0 * PERTURBATION)
 
-        return sensitivities
+        # return mech to normal multipliers:
+        self.gas.set_multiplier(1.0)
+        print(sensitivities.head(30))
+        self.plot_sens(sensitivities)
+
+    def plot_sens(self, df: pd.DataFrame):
+
+        # sort in order and take main reactions only:
+        rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD]
+        reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
+        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species}", legend=None)
+        plt.rcParams.update({"axes.labelsize": 10})
+        plt.gca().invert_yaxis()
+        plt.locator_params(axis="x", nbins=6)
+        plt.tight_layout()
+
+        plt.savefig(f"{output_dir}/sens/SENS_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+        plt.show()
+        df.to_csv(f"{output_dir}/sens/SENS_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
