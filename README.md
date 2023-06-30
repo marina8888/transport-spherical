@@ -3,8 +3,8 @@ Code to dynamically modify reaction constants for combustion kinetics mechanisms
 
 ****
 <h3> INPUT FLAME TYPES CURRENTLY AVAILABLE AS INPUTS IN THE CORE FUNCTIONS </h3>
-'stagnation' for a ImpingingJet flame
-'freely_prop' for a FreelyPropagating flame
+'stagnation' for a ImpingingJet flame <br>
+'freely_prop' for a FreelyPropagating flame <br>
 
 ****
 
@@ -35,10 +35,16 @@ Code to dynamically modify reaction constants for combustion kinetics mechanisms
 
 ****
 <h3> ROP AND SENSITIVITY ANALYSIS </h3>
-The rate of production can only be undertaken on various species, so the following rules are made for the run_rops_sens:  
+The rate of production can only be undertaken on various species, so the following rules are made for the run_rops_sens:  <br>
 1. If the user specifies a species like 'NO', and its searchable in the mechanism, we run the sensitivity and rop analysis as usual on the species. The ROP can only include reactions in thhe mechanism, but sensitivity should be able to include thermo and transport files <br>
 2. If the user species 'lbv', we can only run sensitivity analysis on that. This should only be an option available for freely_prop <br>
 
+****
+<h3> ERROR CALCULATION </h3>
+E = 1/N $$
+\displaystyle\sum_{k=3}^5 k^2=3^2 + 4^2 + 5^2 =50
+$$
+E = 1/N ∑_(f=1)^(N_f)▒〖∑_(s=1)^(N_fs)▒1/N_fsd  ∑_(d=1)^(N_fsd)▒((Y_fsd^sim-Y_fsd^exp)/〖δX_i〗_fsd )^2 〗
 
 ****
 <h3> PROJECT STRUCTURE </h3>
