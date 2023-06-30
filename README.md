@@ -1,6 +1,13 @@
 # transport-spherical
 Code to dynamically modify reaction constants for combustion kinetics mechanisms based on results of LBV, unstretched LBV and stagnation flame
 
+****
+<h3> INPUT FLAME TYPES CURRENTLY AVAILABLE AS INPUTS IN THE CORE FUNCTIONS </h3>
+'stagnation' for a ImpingingJet flame
+'freely_prop' for a FreelyPropagating flame
+
+****
+
 <h4>Lets assume that the following process needs to take place, initially:  </h4>
 1. Experimental data is taken as an input, and the mechanism(s) are run for this data <br>
 2. An error is calculated between the numerical and experimental data<br>
@@ -10,7 +17,7 @@ Code to dynamically modify reaction constants for combustion kinetics mechanisms
 1. A few key reactions/factors are identified and perturbed dynamically within user specifications<br>
 2. The numerical result is saved and a new error factor is calculated<br>
 3. The factor values and score are saved and input into an optimisation algorithm<br>
-3. The factors are perturbed again, and until optimised values are reached<br>
+4. The factors are perturbed again, and until optimised values are reached<br>
 
 
 <h3> TO DO: </h3>
@@ -19,20 +26,21 @@ Code to dynamically modify reaction constants for combustion kinetics mechanisms
 <br>[x] Run numerical results based on an input file and get output numerical files in csv format for the output directory
 <br>[x] Plot experimental and numerical data on one graph
 <br>[x] Calculate the error between numerical and experimental data
-<br>[ ] Undertake a ROP and sensitivity analysis for the main reactions and paste to file, given a specific input condition
-<br>[ ] Understake a thermal and transport file sensitivity analysis
-
-****
-
-<h3> FUTURE WORK: </h3>
+<br>[x] Undertake a ROP and sensitivity analysis for the main reactions and paste to file, given a specific input condition
+<br>[x] Undertake a thermal and transport file sensitivity analysis
 <br>[ ] Integrate the above with UFlame
 <br>[ ] Allow dynamic opimisation of constants, given experimental boundaries of data for each constant
 <br>[ ] Calculate a SUE sensitivity given, given experimental boundaries of data for each constant
 <br>[ ] Release as a pip python package
 
 ****
+<h3> ROP AND SENSITIVITY ANALYSIS </h3>
+The rate of production can only be undertaken on various species, so the following rules are made for the run_rops_sens:  
+1. If the user specifies a species like 'NO', and its searchable in the mechanism, we run the sensitivity and rop analysis as usual on the species. The ROP can only include reactions in thhe mechanism, but sensitivity should be able to include thermo and transport files <br>
+2. If the user species 'lbv', we can only run sensitivity analysis on that. This should only be an option available for freely_prop <br>
 
 
+****
 <h3> PROJECT STRUCTURE </h3>
 <pre>
 <code>

@@ -17,4 +17,5 @@ class LogConfig:
 
         logger.addHandler(ch)
 
+
         return logger

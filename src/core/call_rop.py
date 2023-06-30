@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 logger = LogConfig.configure_logger(__name__)
 
-def run_flame(mech:str, exp_results:str, flame_type:str, conditions: list, species: str):
+def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
     """
 
     @param mech: input mechanism
@@ -48,6 +48,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str, conditions: list, speci
                 row["U"],
                 260,
                 mech_name,
+                species
             ),
             axis=1,
         )
@@ -63,6 +64,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str, conditions: list, speci
                 row["P"],
                 260,
                 mech_name,
+                species,
             ),
             axis=1,
         )
@@ -80,6 +82,6 @@ def run_flame(mech:str, exp_results:str, flame_type:str, conditions: list, speci
     classes["rop"] = classes["experiment_class"].apply(
         lambda x: x.get_rops(species)
     )
-    classes["sens"] = classes["experiment_class"].apply(
-        lambda x: x.get_sens(species)
-    )
+    # classes["sens"] = classes["experiment_class"].apply(
+    #     lambda x: x.get_sens(species)
+    # )

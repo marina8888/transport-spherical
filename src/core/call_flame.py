@@ -43,7 +43,7 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
                 row["P"],
                 row["T"],
                 row["U"],
-                260,
+                200,
                 mech_name,
             ),
             axis=1,
@@ -74,4 +74,3 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
     )
     tqdm.pandas(desc="Igniting Flames")
     classes["experiment_class"].progress_apply(lambda x: x.solve())
-
