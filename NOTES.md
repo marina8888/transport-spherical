@@ -1,4 +1,3 @@
-****
 
 <h4>Lets assume that the following process needs to take place, initially:  </h4>
 1. Experimental data is taken as an input, and the mechanism(s) are run for this data <br>
@@ -10,7 +9,7 @@
 2. The numerical result is saved and a new error factor is calculated<br>
 3. The factor values and score are saved and input into an optimisation algorithm<br>
 4. The factors are perturbed again, and until optimised values are reached<br>
-
+****
 
 <h3> TO DO: </h3>
 
@@ -42,3 +41,36 @@ Sensitivity analysis is undertaken using the brute force method, where variables
 The simulated parameter is either laminar burning velocity (velocity at inlet) or species at outlet. 
 
 ![img.png](resources/images/brute_force.png)
+
+
+- For reactions, pre-exponential (A) factor is perturbed. 
+- For transport properties the following list of variables are available: 
+
+![img.png](resources/images/transport_notes.png)
+
+    The Lennard-Jones potential well depth (ε): This parameter represents the strength of intermolecular interactions. It often has some uncertainty due to variations in different potential energy models or fitting procedures.
+
+    The Lennard-Jones collision diameter (σ): This parameter represents the size of molecules or atoms and can vary based on experimental measurements or estimation methods.
+
+    The dipole moment (μ): This property measures the polarity of a molecule and can vary depending on the measurement technique or estimation method used. It is common for dipole moments to have uncertainties reported in the literature.
+
+    The polarizability (α): This property describes how easily a molecule's electron cloud can be distorted by an external electric field. It can have variations based on the method used for calculation or experimental measurements.
+
+    The rotational relaxation collision number (Zrot) at 298K: This parameter characterizes the rotational relaxation time of molecules in collisions. It can have uncertainties associated with experimental measurements or theoretical models used to calculate it.
+
+- For the thermodynamic properties, these store the NASA polynomial coefficients for each temperature range.
+- These polynomial coefficients are used to calculate the 
+
+![img.png](resources/images/thermo_notes.png)
+
+****
+
+<h3> EXAMPLES OF DATABASES </h3>
+The main databases I have found are as follows: <br>
+Py-RMG: <br>
+
+https://rmg.mit.edu/database/transport/molecule/1%20C%20u0%20p0%20c0%20%7B2,T%7D%20%7B3,S%7D%0A2%20N%20u0%20p1%20c0%20%7B1,T%7D%0A3%20H%20u0%20p0%20c0%20%7B1,S%7D%0A
+https://rmg.mit.edu/database/thermo/molecule/1%20C%20u0%20p0%20c0%20%7B2,T%7D%20%7B3,S%7D%0A2%20N%20u0%20p1%20c0%20%7B1,T%7D%0A3%20H%20u0%20p0%20c0%20%7B1,S%7D%0A
+
+Respecth: <br>
+https://respecth.elte.hu/find.php?id=159852&name=%20HCN

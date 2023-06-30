@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot  as plt
 
 # this file runs a stagnation stabilised flame in Cantera
-SENSITIVITY_THRESHOLD = 0.00001
+SENSITIVITY_THRESHOLD = 0.01
 ROP_THRESHOLD = 0.000001
 PERTURBATION = 1e-2
 
