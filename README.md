@@ -44,17 +44,13 @@ The rate of production can only be undertaken on various species, so the followi
 2. If the user species 'lbv', we can only run sensitivity analysis on that. This should only be an option available for freely_prop <br>
 
 ****
-<h3> ERROR CALCULATION </h3>
-  Some math here:
-    ```math
-    x = {-b \pm \sqrt{b^2-4ac} \over 2a} 
-    ```
-    and here:
-    ```math
-    \sqrt{3}
-    ```
 
-E = 1/N ∑_(f=1)^(N_f)▒〖∑_(s=1)^(N_fs)▒1/N_fsd  ∑_(d=1)^(N_fsd)▒((Y_fsd^sim-Y_fsd^exp)/〖δX_i〗_fsd )^2 〗
+<h3> ERROR EQUATION: </h3>
+
+![img.png](resources/images/error_eq.png)
+
+<h3> SENSITIVITY ANALYSIS </h3>
+
 
 ****
 <h3> PROJECT STRUCTURE </h3>
