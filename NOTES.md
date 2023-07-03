@@ -18,7 +18,9 @@
 <br>[x] Plot experimental and numerical data on one graph
 <br>[x] Calculate the error between numerical and experimental data
 <br>[x] Undertake a ROP and sensitivity analysis for the main reactions and paste to file, given a specific input condition
-<br>[x] Undertake a thermal and transport file sensitivity analysis
+<br>[] Switch to the solver adjoint method
+<br>[] Undertake a thermo file sensitivity analysis
+<br>[] Undertake  transport file sensitivity analysis
 <br>[ ] Integrate the above with UFlame
 <br>[ ] Allow dynamic opimisation of constants, given experimental boundaries of data for each constant
 <br>[ ] Calculate a SUE sensitivity given, given experimental boundaries of data for each constant
