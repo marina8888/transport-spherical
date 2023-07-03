@@ -7,6 +7,9 @@ from src.calculations.diffusion import TransportCalc
 import cantera.cti2yaml as cli
 
 def main():
+    import cantera as ct
+    gas = ct.Solution('GRI30.yaml')
+    print(gas.species()[0].thermo.coeffs)
 
     # run_flame("gri-liu.cti", "stagnation/CH4_NH3/20%_data.csv", flame_type="stagnation")
     # run_flame("gri.cti", "stagnation/CH4_NH3/20%_data.csv", flame_type="stagnation")

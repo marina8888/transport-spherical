@@ -1,0 +1,4 @@
+- Which databases do we use to define our uncertainty boundaries? What kind of approach do we use - i.e spline uncertainty fitting, monte carlo sampling, just brute force across all polynomial parameters? <br>
+- Which parameters do we want to perturb? For example, all NASA polynomial coefficients directly or just the calculated enthalpy, specific heat etc values? <br>
+- Do we want to perturb all the arrhenius parameters (and is it valid to do so) or just A? <br>
+- Are we happy to try to introduce this method for stretched flame speed calculations (via. UFLame) - would this actually be helpful? <br>

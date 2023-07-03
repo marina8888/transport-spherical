@@ -64,6 +64,25 @@ The simulated parameter is either laminar burning velocity (velocity at inlet) o
 ![img.png](resources/images/thermo_notes.png)
 
 ****
+<h3> HOW DO WE ACTUALLY PERTURB THE VALUES IN CODE VIA BRUTE FORCE? </h3>
+
+The existing cantera set_multiplier function is as below. 
+```
+    def set_multiplier(self, double value, int i_reaction=-1):
+        """
+        Set the multiplier for for reaction ``i_reaction`` to ``value``.
+        If ``i_reaction`` is not specified, then the multiplier for all reactions
+        is set to ``value``. See `multiplier`.
+        """
+        if i_reaction == -1:
+            for i_reaction in range(self.n_reactions):
+                self.kinetics.setMultiplier(i_reaction, value)
+        else:
+            self._check_reaction_index(i_reaction)
+            self.kinetics.setMultiplier(i_reaction, value)
+```
+
+****
 
 <h3> EXAMPLES OF DATABASES </h3>
 The main databases I have found are as follows: <br>

@@ -1,12 +1,13 @@
 import cantera as ct
-from src.settings.filepaths import mech_dir, output_dir_numerical
 import pandas as pd
-from src.settings.logger import LogConfig
 import os
 
+from src.settings.filepaths import mech_dir, output_dir_numerical
+from src.settings.logger import LogConfig
+from src.calculations.rop_sens import BaseFlame
 # this file runs a freely propagating flame model in Cantera
-class FreelyPropFlame:
-    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, mech_name):
+class FreelyPropFlame(BaseFlame):
+    def __init__(self, oxidizer, blend, fuel, phi, T_in, P, mech_name, species = None):
         self.oxidizer = oxidizer
         self.blend = blend
         self.fuel = str(fuel)
@@ -15,6 +16,7 @@ class FreelyPropFlame:
         self.P = P
         self.TP = (T_in, P)
         self.mech_name = mech_name
+        self.species = species
         self.logger = LogConfig.configure_logger(__name__)
 
     def configure_gas(self):
