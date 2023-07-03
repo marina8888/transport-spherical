@@ -54,9 +54,9 @@ class BaseFlame(abc.ABC):
         plt.locator_params(axis="x", nbins=6)
         plt.tight_layout()
 
-        plt.savefig(f"{output_dir}/rops/ROP_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+        plt.savefig(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
         plt.show()
-        df.to_csv(f"{output_dir}/rops/ROP_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        df.to_csv(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
 
     def get_sens(self):
@@ -95,7 +95,6 @@ class BaseFlame(abc.ABC):
 
         # return mech to normal multipliers:
         self.gas.set_multiplier(1.0)
-        print(sensitivities.head(30))
         self.plot_sens(sensitivities)
 
 
@@ -109,6 +108,44 @@ class BaseFlame(abc.ABC):
         plt.locator_params(axis="x", nbins=6)
         plt.tight_layout()
 
-        plt.savefig(f"{output_dir}/sens/SENS_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+        plt.savefig(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
         plt.show()
-        df.to_csv(f"{output_dir}/sens/SENS_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        df.to_csv(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+
+    def plot_thermo_sens(self):
+
+        # take species at outlet or velocity at inlet:
+        if self.species == 'lbv':
+            print('WARNING: taking lbv for a stagnation flame')
+            Su0 = self.f.velocity[0]
+        else:
+            species_ix = self.gas.species_index(self.species)
+            Su0 = self.f.X[species_ix, -1]
+
+        # Create a dataframe to store sensitivity-analysis data:
+        sensitivities = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"])
+
+        for m in range(self.gas.n_reactions):
+            self.gas.species()[0].thermo.coeffs = [ 1.00000000e+03, 3.33727920e+00, -4.94024731e-05  4.99456778e-07
+ -1.79566394e-10  2.00255376e-14 -9.50158922e+02 -3.20502331e+00
+  2.34433112e+00  7.98052075e-03 -1.94781510e-05  2.01572094e-08
+ -7.37611761e-12 -9.17935173e+02  6.83010238e-01]
+
+            # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
+            # Turn auto-mode off since the flame has already been solved
+            self.f.solve(loglevel=0, refine_grid=False, auto=False)
+
+            # new values with pertubation:
+            if self.species == 'lbv':
+                Su = self.f.velocity[0]
+            else:
+                species_ix = self.gas.species_index(self.species)
+                Su = self.f.X[species_ix, -1]
+
+            sensitivities.iloc[m, 0] = (Su - Su0) / (Su0 * PERTURBATION)
+
+        # return mech to normal multipliers:
+        self.gas.set_multiplier(1.0)
+        self.plot_sens(sensitivities)
+
+        print(self.gas.species()[0].thermo.coeffs)

@@ -7,9 +7,6 @@ from src.calculations.diffusion import TransportCalc
 import cantera.cti2yaml as cli
 
 def main():
-    import cantera as ct
-    gas = ct.Solution('GRI30.yaml')
-    print(gas.species()[0].thermo.coeffs)
 
     # run_flame("gri-liu.cti", "stagnation/CH4_NH3/20%_data.csv", flame_type="stagnation")
     # run_flame("gri.cti", "stagnation/CH4_NH3/20%_data.csv", flame_type="stagnation")
@@ -22,7 +19,7 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_H2_NH3/10%", 'stagnation/NH3_H2/10%_data_full.csv', "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("okafor-2017.cti", "stagnation/CH4_NH3/temp.csv", flame_type="stagnation", species='NO')
+    run_rop_sens("okafor-2017.cti", "stagnation/CH4_NH3/temp.csv", flame_type="freely_prop", species='NO')
 
 if __name__ == "__main__":
     main()

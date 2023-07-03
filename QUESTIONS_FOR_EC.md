@@ -1,4 +1,6 @@
-- Which databases do we use to define our uncertainty boundaries? What kind of approach do we use - i.e spline uncertainty fitting, monte carlo sampling, just brute force across all polynomial parameters? <br>
 - Which parameters do we want to perturb? For example, all NASA polynomial coefficients directly or just the calculated enthalpy, specific heat etc values? <br>
+- Do we want them on seperate graphs (preferable) - so for example the thermo sensitivity will be a list of species along the y axis (based on modification to NASA polynomial) and sensitivities along the x axis. <br>
+- Meanwhile, the transport graphs will look like...? Each species has a few transport parameters - just do all independently (so 5 x number of species of perturbations available on y axis list)?<br>
+- Which databases do we use to define our uncertainty boundaries? What kind of approach do we use - i.e spline uncertainty fitting, monte carlo sampling, just brute force across all polynomial parameters? <br>
 - Do we want to perturb all the arrhenius parameters (and is it valid to do so) or just A? <br>
 - Are we happy to try to introduce this method for stretched flame speed calculations (via. UFLame) - would this actually be helpful? <br>
