@@ -126,10 +126,9 @@ class BaseFlame(abc.ABC):
         sensitivities = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"])
 
         for m in range(self.gas.n_reactions):
-            self.gas.species()[0].thermo.coeffs = [ 1.00000000e+03, 3.33727920e+00, -4.94024731e-05  4.99456778e-07
- -1.79566394e-10  2.00255376e-14 -9.50158922e+02 -3.20502331e+00
-  2.34433112e+00  7.98052075e-03 -1.94781510e-05  2.01572094e-08
- -7.37611761e-12 -9.17935173e+02  6.83010238e-01]
+            self.gas.species()[0].thermo.coeffs = [ 1.00000000e+03, 3.33727920e+00, -4.94024731e-05, 4.99456778e-07,
+ -1.79566394e-10, 2.00255376e-14, -9.50158922e+02, -3.20502331e+00, 2.34433112e+00, 7.98052075e-03, -1.94781510e-05, 2.01572094e-08,
+ -7.37611761e-12, -9.17935173e+02, 6.83010238e-01]
 
             # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
             # Turn auto-mode off since the flame has already been solved
