@@ -211,9 +211,7 @@ class TransportCalc:
         molecular_flux_sum = np.zeros(self.f.Y.shape)
         for s in range(len(self.gas.species_names)):
             if s != self.species:
-                molecular_flux_sum[s, :] = self.gas_temp.molecular_weights[
-                    s
-                ] * np.multiply(self.D_kj[s, :], self.dX_dx[s, :])
+                molecular_flux_sum[s, :] = self.gas_temp.molecular_weights[s] * np.multiply(self.D_kj[s, :], self.dX_dx[s, :])
 
         # NASA paper version of equation, to match thermal flux:
         multic_flux = 1 * np.divide(

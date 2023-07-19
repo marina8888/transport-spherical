@@ -6,11 +6,11 @@ import os
 from src.settings.logger import LogConfig
 from tqdm import tqdm
 
-# this file calls various flame types to create numerical csv solution files of output data only
+# this file calls various flame types to create numerical file for whole domain profile
 
 logger = LogConfig.configure_logger(__name__)
 
-def run_flame(mech:str, exp_results:str, flame_type:str):
+def run_flame_domain(mech:str, exp_results:str, flame_type:str):
     """
 
     :param mech:
@@ -70,4 +70,4 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
         lambda x: x.configure_flame()
     )
     tqdm.pandas(desc="Igniting Flames")
-    classes["experiment_class"].progress_apply(lambda x: x.solve())
+    classes["experiment_class"].progress_apply(lambda x: x.solve_domain())

@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-from src.settings.filepaths import output_dir, output_dir_numerical, output_dir_graphs
+from src.settings.filepaths import output_dir
 
 SENSITIVITY_THRESHOLD = 0.1
-ROP_THRESHOLD = 0.00001
+ROP_THRESHOLD = 0.0000001
 PERTURBATION = 1e-2
 
 class BaseFlame(abc.ABC):
@@ -37,7 +37,7 @@ class BaseFlame(abc.ABC):
                 rop = net_stoich_coeffs[species_ix, r] * ropr
                 int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
             rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"], data=int_rop)
-            print(rops_df.head(30))
+
             self.plot_rop(rops_df)
         except ValueError:
             self.logger.info('Cannot recognise species. Will not plot ROP.')
@@ -48,7 +48,7 @@ class BaseFlame(abc.ABC):
         # sort in order and take main reactions only:
         rop_subset = df[df["base_case"].abs() > ROP_THRESHOLD]
         reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
-        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Rate of Production for {self.species}", legend=None)
+        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Rate of Production for phi = {self.species} at {self.phi}", legend=None)
         plt.rcParams.update({"axes.labelsize": 10})
         plt.gca().invert_yaxis()
         plt.locator_params(axis="x", nbins=6)

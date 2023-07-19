@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 import numpy as np
-from src.settings.filepaths import output_dir_numerical, input_dir, output_dir
+from src.settings.filepaths import output_dir_numerical_output, input_dir, output_dir
 
 TEXT_SIZE = 14
 def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0):
@@ -17,7 +17,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     @return:
     """
     exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
-    numerical_folder = f"{output_dir_numerical}/{numerical_folder}"
+    numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
 
     # create a linestyle list to loop so the linestyle is always different:
@@ -53,4 +53,5 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     plt.savefig(f"{output_dir}/graphs/0%/{col}.jpg")
     plt.show()
     plt.switch_backend('Agg')
+
 

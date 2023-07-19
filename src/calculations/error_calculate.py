@@ -1,5 +1,5 @@
 from src.calculations.basics import find_y, x_err_to_y_err
-from src.settings.filepaths import output_dir_numerical, input_dir, output_dir
+from src.settings.filepaths import output_dir_numerical_output, input_dir, output_dir, output_dir_numerical_domain
 import os
 from src.settings.logger import LogConfig
 import pandas as pd
@@ -23,7 +23,7 @@ class ErrorCalculator:
 
         self.exp_results_file = f"{input_dir}/{name_of_exp_file}"
         self.flame_type = flame_type
-        self.numerical_folder_path = f"{output_dir_numerical}/{name_of_numerical_folder}"
+        self.numerical_folder_path = f"{output_dir_numerical_output}/{name_of_numerical_folder}"
         self.files = [f for f in os.listdir(self.numerical_folder_path) if not f.startswith('.')]
         self.exp_df = pd.read_csv(self.exp_results_file)
 
