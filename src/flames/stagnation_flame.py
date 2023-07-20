@@ -34,16 +34,16 @@ class StagnationFlame(BaseFlame):
     def configure_flame(self):
         # we are using an ImpingingJet class but there are others that might be suitable for other experiments
         self.f = ct.ImpingingJet(gas=self.gas, width=0.02)
-        self.f.set_max_grid_points(domain=1, npmax=1400)
+        self.f.set_max_grid_points(domain=1, npmax=1300)
         self.f.inlet.mdot = self.vel * self.gas.density
         self.f.surface.T = self.T
         self.f.transport_model = "Multi"
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        self.f.set_refine_criteria(ratio=3, slope=0.02, curve=0.04, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.2, curve=0.4, prune=0)
+        # self.f.set_refine_criteria(ratio=3, slope=0.02, curve=0.04, prune=0.0001)
+        self.f.set_refine_criteria(ratio=3, slope=0.012, curve=0.028, prune=0.0001)
+        # self.f.set_refine_criteria(ratio=3, slope=0.4, curve=0.8, prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -68,7 +68,8 @@ class StagnationFlame(BaseFlame):
                     "blend": self.blend,
                     "fuel": self.fuel,
                     "oxidizer": self.oxidizer,
-                    "strain": self.strain,
+                    "strain_t1": [self.strain_t1()] * len(self.f.grid),
+                    "strain_t2": [self.strain_t2()] * len(self.f.grid),
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
                 data = {**data_x, **data_y}
@@ -83,7 +84,7 @@ class StagnationFlame(BaseFlame):
 
     def solve_domain(self):
         try:
-            self.f.solve(loglevel=1, auto=True)
+            self.f.solve(loglevel=0, auto=True)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
@@ -100,17 +101,16 @@ class StagnationFlame(BaseFlame):
                     "vel": [self.vel] * len(self.f.grid),
                     "blend": [self.blend] * len(self.f.grid),
                     "fuel": [self.fuel] * len(self.f.grid),
-                    "strain_t1": [self.strain_t1] * len(self.f.grid),
-                    "strain_t2": [self.strain_t2] * len(self.f.grid),
+                    "strain_t1": [self.strain_t1()] * len(self.f.grid),
+                    "strain_t2": [self.strain_t2()] * len(self.f.grid),
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X))
                 data = {**data_x, **data_y}
                 df = pd.DataFrame(data)
                 filename = f"{self.blend}_{self.mech_name}.csv"
+
                 self.check_solution_file_exists(filename, df.columns)
-                df.reset_index(drop=True, inplace=True)
-                print(df)
-                df.to_csv(f"{filename}", sep = ',', index=False)
+                df.to_csv(f"{filename}", mode="a", header=False)
 
         except ct.CanteraError:
             pass
@@ -133,6 +133,10 @@ class StagnationFlame(BaseFlame):
             strain = np.min(grad_vel[0:idx])
         except TypeError:
             print("cannot do strain, strain = 0")
+            return 0
+        except ValueError:
+            print("cannot do strain, strain = 0")
+            return 0
         return -1 * strain
 
     def strain_t2(self):

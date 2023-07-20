@@ -38,7 +38,7 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
     if flame_type == 'stagnation':
         classes["experiment_class"] = exp_df.apply(
             lambda row: StagnationFlame(
-                {"O2": 0.21, "N2": 0.79},
+                row['oxidizer'],
                 row["blend"],
                 row["fuel"],
                 row["phi"],
@@ -55,7 +55,7 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str):
     elif flame_type == 'freely_prop':
         classes["experiment_class"] = exp_df.apply(
             lambda row: FreelyPropFlame(
-                {"O2": 0.21, "N2": 0.79},
+                row['oxidizer'],
                 row["blend"],
                 row["fuel"],
                 row["phi"],

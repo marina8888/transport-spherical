@@ -55,3 +55,46 @@ def x_err_to_y_err(experimental_data, y_vals:list):
         print(exp_df[f"{y} Er"])
     return exp_df
 
+def split_df(df, labels):
+    """
+    Split up a large dataframe by grid points = 0 so to find individual flames
+    @param df:
+    @param labels:
+    @return:
+    """
+    split_dfs = []
+
+    # Find the index of the row where "grid" column equals 0
+    df =  df.drop("Unnamed: 0", axis=1).reset_index(drop=True)
+    split_index = df.index[df["grid"] == 0].to_list()
+
+
+    while len(split_index) > 1:
+        # Split the DataFrame into two based on the split_index
+        df_new = df.iloc[split_index[0]:int(split_index[1])-1]
+
+        # remove the index just used and restart
+        split_dfs.append(df_new)
+        split_index.pop(0)
+
+
+    # Add the last DataFrame after the last occurrence of "grid" column equals 0
+    split_dfs.append(df.iloc[int(split_index[0]):])
+
+    if len(split_dfs) != len(labels):
+        raise TypeError("please check the length of your label")
+    else:
+        return split_dfs
+
+def make_linestyle(col_list:list):
+    """
+    create a linestyle list to loop so the linestyle is always different:
+    @param col_list:
+    @return:
+    """
+    linestyle = ["--", ":", "-."]
+    repetitions = len(col_list) // len(linestyle)
+    remainder =  len(col_list) % len(linestyle)
+    new_list = linestyle * repetitions + linestyle[:remainder]
+    linestyle = [new_list[i % len(linestyle)] for i in range(len(col_list))]
+    return linestyle
