@@ -7,16 +7,17 @@ import os
 from src.settings.filepaths import output_dir, output_dir_numerical_output,output_dir_numerical_domain
 from src.calculations.basics import make_linestyle, split_df
 
-figure(figsize=(7, 6), dpi=80)
-COL_LIST = ["NO", "NH3", "H2", "NH2", "NH", "H"]
-MULT_LIST =  [50, 1, 1.5, 150, 100, 150, 150]
-COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
-TEXT_SIZE = 16
+# figure(figsize=(7, 6), dpi=80)
+# COL_LIST = ["NO", "NH3", "H2", "NH2", "NH", "H"]
+# MULT_LIST =  [50, 1, 1.5, 150, 100, 150, 150]
+# COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
+# TEXT_SIZE = 16
 
 figure(figsize=(7, 6), dpi=80)
-COL_LIST = ["NO", "NH3", "H2"]
-MULT_LIST =  [50, 1, 1.5]
+COL_LIST = ["NH2", "OH", "HNO"]
+MULT_LIST =  [200, 50, 1000]
 COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
+# COLOUR_LIST = ["black", "black", "black", "black"]
 TEXT_SIZE = 16
 LINESTYLE = ['-.', ':', '-']
 
@@ -66,25 +67,32 @@ def plotter_domain_sheet(numerical_sheet: str, LABELS_LIST:list):
     @return:
     """
     fig, ax1 = plt.subplots()
-    df = pd.read_csv("../src/ICFD_5bar_0.2_okafor-2017.csv")
+    df = pd.read_csv("../src/ICFD_1bar_0.2_okafor-2017.csv")
     # df = pd.read_csv(f"{output_dir_numerical_domain}/{numerical_sheet}")
 
     df_split_list = split_df(df = df, labels = LABELS_LIST)
     # ax2 = ax1.twinx()
-    for df_split, l in zip(df_split_list, LINESTYLE):
-        for c, col, mult, lab in zip(COLOUR_LIST, COL_LIST, MULT_LIST, LABELS_LIST):
-            label = f"{col} at E_NH3 = {lab}"
-            if mult != 1:
-                label = rf"{col} $ \times $ {mult} at E_NH3 = {lab}"
+    i = 0
+    for df_split, c in zip(df_split_list, COLOUR_LIST):
+        for l, col, mult, lab in zip(LINESTYLE, COL_LIST, MULT_LIST, LABELS_LIST):
+            if i == 0:
+                label = f"{col} at E_NH3 = {lab}"
+                if mult != 1:
+                    label = rf"{col} $ \times $ {mult}"
+
+            else:
+                label = None
             ax1.plot(df_split["grid"], df_split[col] * mult, color=c, linestyle=l, linewidth=1.5, label=label)
+        i = 1
 
         # for col, l, lab in zip(COL_LIST, linestyle, LABELS_LIST):
         #     # ax2.plot(df["grid"], df["HRR"] * 0.000001, linestyle=l, color="black", label="HRR x-axis location" if l == "-" else None,)
         #     ax2.plot(df_split["grid"],df_split["T"], color = "magenta", linestyle=l, label="Temperature" if l == "-" else None)
         #     ax1.plot(df_split["grid"],(df_split["O"] * 100) + (df_split["OH"] * 100), "maroon",linestyle=l,label=r"O+OH $ \times $ 100")
 
-    ax1.set_ylim(0, 0.5)
+    ax1.set_ylim(0, 0.3)
     # ax2.set_ylim(290, 3000)
+    # ax1.set_xlim(0.002, 0.02)
     ax1.set_xlim(0.002, 0.02)
     ax1.set_xlabel("flame domain, (m)", size = TEXT_SIZE)
     ax1.set_ylabel(r"Mole fraction, X", size = TEXT_SIZE)
@@ -95,7 +103,7 @@ def plotter_domain_sheet(numerical_sheet: str, LABELS_LIST:list):
     ax1.locator_params(axis="both", nbins=4)
     # ax2.locator_params(axis="both", nbins=4)
     plt.xlabel(r"grid, m")
-    ax1.legend(loc=2, fontsize = TEXT_SIZE)
+    ax1.legend(fontsize = 8)
     # ax2.legend(loc=1)
     plt.tight_layout()
     plt.show()

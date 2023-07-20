@@ -11,7 +11,7 @@ from src.calculations.diffusion import TransportCalc
 import cantera.cti2yaml as cli
 
 def main():
-    # run_flame_domain("okafor-2017.cti", '/stagnation/CH4_NH3/icfd_2023_reduced.csv', flame_type='stagnation')
+    run_flame_domain("okafor-2017.cti", '/stagnation/CH4_NH3/icfd_2023_reduced.csv', flame_type='stagnation')
     # run_flame("okafor-2017.cti", "freely_prop/CH4_NH3/icfd_lbv_test.csv", flame_type="freely_prop")
 
     # plotting example:
@@ -19,7 +19,7 @@ def main():
 
 
     # plotting domain example, mech only:
-    plotter_domain_sheet("stagnation_CH4_NH3/0.2_strain_allE_0.9phi/ICFD_5bar_0.2_okafor-2017.csv", [0.2, 0.4, 0.6, 0.8, 1.0])
+    # plotter_domain_sheet("stagnation_CH4_NH3/0.2_strain_allE_0.9phi/ICFD_5bar_0.2_okafor-2017.csv", [0, 0.2, 0.4, 0.6, 0.8, 1.0])
 
     # error calculation:
     # error_object = ErrorCalculator("1000grid/stagnation_H2_NH3/10%", 'stagnation/NH3_H2/10%_data_full.csv', "stagnation")
