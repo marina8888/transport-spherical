@@ -86,7 +86,7 @@ class FreelyPropFlame(BaseFlame):
                 df = pd.json_normalize(data)
                 filename = f"{output_dir_numerical_domain}/{self.blend}_{self.mech_name}.csv"
 
-                self.check_solution_file_exists(filename, df.columns)
+                # self.check_solution_file_exists(filename, df.columns)
                 df.to_csv(f"{filename}", mode="a", header=False)
 
         except ct.CanteraError:

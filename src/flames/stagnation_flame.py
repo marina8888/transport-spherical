@@ -52,7 +52,7 @@ class StagnationFlame(BaseFlame):
 
     def solve(self):
         try:
-            self.f.solve(loglevel=1, auto=True)
+            self.f.solve(loglevel=0, auto=True)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
@@ -68,8 +68,8 @@ class StagnationFlame(BaseFlame):
                     "blend": self.blend,
                     "fuel": self.fuel,
                     "oxidizer": self.oxidizer,
-                    "strain_t1": [self.strain_t1()] * len(self.f.grid),
-                    "strain_t2": [self.strain_t2()] * len(self.f.grid),
+                    "strain_t1": self.strain_t1(),
+                    "strain_t2": self.strain_t2(),
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
                 data = {**data_x, **data_y}
@@ -84,7 +84,7 @@ class StagnationFlame(BaseFlame):
 
     def solve_domain(self):
         try:
-            self.f.solve(loglevel=1, auto=True)
+            self.f.solve(loglevel=0, auto=True)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
@@ -111,7 +111,6 @@ class StagnationFlame(BaseFlame):
 
                 self.check_solution_file_exists(filename, df.columns)
                 df.to_csv(f"{filename}", mode="a", header=False)
-
         except ct.CanteraError:
             pass
 
