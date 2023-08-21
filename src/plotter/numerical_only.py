@@ -106,7 +106,7 @@ def plotter_domain_sheet(numerical_sheet: str, LABELS_LIST:list):
     plt.tight_layout()
     plt.show()
 
-def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_label:str, legend:list, num_mulitplier = 1.0, ):
+def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_label:str, legend:list = None, num_mulitplier = 1.0 ):
     """
     Plot a single numerical file.
     @param numerical_folder:
@@ -118,7 +118,9 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
     @return:
     """
     numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
-    files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
+    files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
+    if legend == None:
+        legend = [f.strip('.csv') for f in files]
 
     # create a linestyle list to loop so the linestyle is always different:
     linestyle = ["--", ":", "-."]
@@ -127,19 +129,20 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
     new_list = linestyle * repetitions + linestyle[:remainder]
     linestyle = [new_list[i % len(linestyle)] for i in range(len(files))]
 
+    fig, ax1 = plt.subplots(figsize=(6, 5))
     for file, l, leg in zip(files, linestyle, legend):
         df = pd.read_csv(f"{numerical_folder}/{file}")
-        coefficients_y = np.polyfit([0, 0.2, 0.4, 0.6, 0.8, 1.0], df[y_col], 4)
-        trend_y = np.polyval(coefficients_y, np.linspace(0, 1, 20))
-        plt.plot(np.linspace(0, 1, 20), trend_y * num_mulitplier,linestyle=l, linewidth=3, label=leg)
-        plt.scatter(df[x_col], df[y_col]* num_mulitplier)
+        coefficients_y = np.polyfit(df[x_col], df[y_col], 6)
+        trend_y = np.polyval(coefficients_y, np.linspace(df[x_col].min(), df[x_col].max(), 20))
+        plt.plot(np.linspace(df[x_col].min(), df[x_col].max(),20), trend_y* num_mulitplier,linestyle=l, linewidth=3, label=leg)
+        plt.scatter(df[x_col], df[y_col]*num_mulitplier)
         plt.xlabel(x_label, fontsize=TEXT_SIZE)
         plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(fontsize=TEXT_SIZE)
+    # plt.legend(fontsize=TEXT_SIZE)
     plt.ylim(0)
     # plt.xlim(0.88, 1.15)
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/graphs/CH4_NH3/{y_col}.jpg")
+    plt.savefig(f"{output_dir}/graphs/H2_NH3/test_{y_col}.jpg")
     plt.show()
     plt.switch_backend('Agg')

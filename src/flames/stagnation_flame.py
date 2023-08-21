@@ -42,8 +42,8 @@ class StagnationFlame(BaseFlame):
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
         # self.f.set_refine_criteria(ratio=3, slope=0.02, curve=0.04, prune=0.0001)
-        self.f.set_refine_criteria(ratio=3, slope=0.014, curve=0.028, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.4, curve=0.8, prune=0)
+        # self.f.set_refine_criteria(ratio=3, slope=0.014, curve=0.028, prune=0.0001)
+        self.f.set_refine_criteria(ratio=3, slope=0.2, curve=0.4, prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -52,7 +52,7 @@ class StagnationFlame(BaseFlame):
 
     def solve(self):
         try:
-            self.f.solve(loglevel=0, auto=True)
+            self.f.solve(loglevel=1, auto=True)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0

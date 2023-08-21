@@ -19,7 +19,6 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
     numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
-
     # create a linestyle list to loop so the linestyle is always different:
     linestyle = ["--", ":", "-."]
     repetitions = len(files) // len(linestyle)
@@ -29,28 +28,32 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
 
     for file, l in zip(files, linestyle):
         df = pd.read_csv(f"{numerical_folder}/{file}")
-        exp_df = exp_df[exp_df["blend"] == df.loc[0, "blend"]]
+        # exp_df = exp_df[exp_df["blend"] == df.loc[0, "blend"]]
         legend = file.split('_')[-1].split('.')[0]
+        coefficients_y = np.polyfit(df["phi"], df[col], 10)
+        # trend_y = np.polyval(coefficients_y, np.linspace(df["phi"].min(), df["phi"].max(), 20))
+        # plt.plot(np.linspace(df["phi"].min(), df["phi"].max(),20), trend_y* num_mulitplier,linestyle=l, linewidth=3)
+        # plt.scatter(df["phi"], df[col] * num_mulitplier)
+
         plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, linewidth=3, label=legend)
         plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
         plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
-    coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 4)
-    trend_y = np.polyval(coefficients_y, (np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 30, endpoint=True))
-)
-    plt.plot(
-        np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 30, endpoint=True),
-        trend_y * exp_multiplier,
-        color="black", linestyle = '-', marker = None,
-    )
+    coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 5)
+    print(coefficients_y)
+    print(exp_df['phi'].min())
+    print(exp_df['phi'].max())
+    trend_y = np.polyval(coefficients_y, (np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 20, endpoint=True)))
+    plt.plot(np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 20, endpoint=True),
+        trend_y * exp_multiplier,color="black", linestyle = '-', marker = None )
     plt.scatter(exp_df["phi"], exp_df[col] * exp_multiplier, s = 80, marker="o",facecolor='none', linestyle = '', color="black",
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    # plt.legend(fontsize=TEXT_SIZE)
+    plt.legend(fontsize=TEXT_SIZE)
     plt.ylim(0)
-    plt.xlim(0.88, 1.15)
+    plt.xlim(0.55, 1.45)
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/graphs/0%/{col}.jpg")
+    plt.savefig(f"{output_dir}/graphs/tester_{col}.jpg")
     plt.show()
     plt.switch_backend('Agg')
 

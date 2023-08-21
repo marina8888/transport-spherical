@@ -29,7 +29,7 @@ class ErrorCalculator:
 
 
         # find the list of y values and use them for the exp df:
-        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True, exclude_water = False)
+        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True, exclude_water = True, exclude_oxygen = False)
         self.error = {}
         self.df_error_sp = pd.DataFrame(columns=self.y_vals)
 
@@ -52,12 +52,14 @@ class ErrorCalculator:
     def calculate_error(self, numerical_df: pd.DataFrame, mech_name):
         # merge based on alignment between key input conditions:
         if self.flame_type == "stagnation":
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T', 'phi', 'blend'], how = 'inner')
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T', 'phi'], how = 'inner')
         elif self.flame_type == "freely_prop":
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi', 'blend'], how = 'inner')
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi'], how = 'inner')
         else:
             raise Exception('cannot recognise flame type')
 
+        if len(merged_df) == 0:
+            raise TypeError(f' {mech_name}: Your experimental file does not cover all the numerical file conditions')
         # Perform the calculations and store in 'error_val' columns
         for y in self.y_vals:
             print(y)
