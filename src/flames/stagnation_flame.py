@@ -4,6 +4,7 @@ import numpy as np
 from src.settings.logger import LogConfig
 import os
 from scipy.signal import argrelextrema
+import matplotlib.pyplot as plt
 
 from src.calculations.rop_sens import BaseFlame
 from src.settings.filepaths import mech_dir
@@ -34,7 +35,7 @@ class StagnationFlame(BaseFlame):
     def configure_flame(self):
         # we are using an ImpingingJet class but there are others that might be suitable for other experiments
         self.f = ct.ImpingingJet(gas=self.gas, width=0.02)
-        self.f.set_max_grid_points(domain=1, npmax=1300)
+        self.f.set_max_grid_points(domain=1, npmax=1950)
         self.f.inlet.mdot = self.vel * self.gas.density
         self.f.surface.T = self.T
         self.f.transport_model = "Multi"
@@ -42,8 +43,8 @@ class StagnationFlame(BaseFlame):
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
         # self.f.set_refine_criteria(ratio=3, slope=0.02, curve=0.04, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.014, curve=0.028, prune=0.0001)
-        self.f.set_refine_criteria(ratio=3, slope=0.2, curve=0.4, prune=0)
+        self.f.set_refine_criteria(ratio=3, slope=0.014, curve=0.028, prune=0.0001)
+        # self.f.set_refine_criteria(ratio=3, slope=0.1, curve=0.2, prune=0)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -52,7 +53,8 @@ class StagnationFlame(BaseFlame):
 
     def solve(self):
         try:
-            self.f.solve(loglevel=1, auto=True)
+            self.f.solve(loglevel=0, auto=True)
+            plt.plot(self.f.grid, self.f.T)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
@@ -80,11 +82,14 @@ class StagnationFlame(BaseFlame):
                 df.to_csv(f"{filename}", mode="a", header=False)
 
         except ct.CanteraError:
+            print("Flame fail")
             pass
 
     def solve_domain(self):
         try:
             self.f.solve(loglevel=0, auto=True)
+            plt.plot(self.f.grid, self.f.T)
+            plt.show()
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
                 return 0
