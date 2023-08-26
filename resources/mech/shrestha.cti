@@ -1,6 +1,6 @@
 """
 This mechanism is supplementary material to the work of
-Authors:Krishna Prasad Shrestha, Charles Lhuillier, Amanda Alves Barbosa, Pierre Brequigny, Francesco Contino, Christine Mouna    m-Rousselle, Lars Seidel, Fabian Mauss
+Authors:Krishna Prasad Shrestha, Charles Lhuillier, Amanda Alves Barbosa, Pierre Brequigny, Francesco Contino, Christine Mounam-Rousselle, Lars Seidel, Fabian Mauss
 Title: An experimental and modeling study of ammonia with enriched oxygen content and ammonia/hydrogen laminar flame speed at elevated pressure and temperature
 Proc. Combust. Inst. 38, 2020, https://doi.org/10.1016/j.proci.2020.06.197
  Corresponding Authors: Lars seidel, e-mail: lars.seidel@logesoft.com
@@ -2747,27 +2747,27 @@ falloff_reaction('CH3 + O2 (+ M) <=> CH3O2 (+ M)',
 
 # Reaction 145
 reaction('CH3O2 + H <=> CH3O + OH', [9.600000e+13, 0.0, 0.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166 cited TSA86
+#  Hashemi et al. C&Flame 182 (2017) 150166 cited TSA86
 
 # Reaction 146
 reaction('CH3O2 + O <=> CH3O + O2', [2.850000e+10, 1.0, -724.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166
+#  Hashemi et al. C&Flame 182 (2017) 150166
 
 # Reaction 147
 reaction('CH3O2 + OH <=> CH3O + HO2', [5.110000e+15, -0.81, 0.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166 cited Yan eta al. Phys. Chem. A 2016, 120, 6111       6121
+#  Hashemi et al. C&Flame 182 (2017) 150166 cited Yan eta al. Phys. Chem. A 2016, 120, 61116121
 
 # Reaction 148
 reaction('CH3O2 + HO2 <=> CH3O2H + O2', [2.470000e+11, 0.0, -1570.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166 cited Lightfoot et al., atmos. environ. part A: 26, 1805-1961 (1992)
+#  Hashemi et al. C&Flame 182 (2017) 150166 cited Lightfoot et al., atmos. environ. part A: 26, 1805-1961 (1992)
 
 # Reaction 149
 reaction('CH3O2 + CH3 <=> CH3O + CH3O', [5.080000e+12, 0.0, -1411.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166 cited Keiffer et al.,J. Chem. soc. faraday trans. 2: 84, 505 (1988)
+#  Hashemi et al. C&Flame 182 (2017) 150166 cited Keiffer et al.,J. Chem. soc. faraday trans. 2: 84, 505 (1988)
 
 # Reaction 150
 reaction('CH3O2 + CH4 <=> CH3 + CH3O2H', [4.450000e-03, 4.691, 19860.0])
-#  Hashemi et al. C&Flame 172 (2016) 349        364, 400-2000 K
+#  Hashemi et al. C&Flame 172 (2016) 349364, 400-2000 K
 
 # Reaction 151
 reaction('CH3O2 + CO <=> CH3O + CO2', [1.600000e+05, 2.18, 17940.0])
@@ -2779,15 +2779,15 @@ reaction('CH3O2 + HCO <=> CH3O + H + CO2', [3.000000e+13, 0.0, 0.0])
 
 # Reaction 153
 reaction('CH3O2 + CH2O <=> CH3O2H + HCO', [1.981000e+09, 1.111, 12490.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166
+#  Hashemi et al. C&Flame 182 (2017) 150166
 
 # Reaction 154
 reaction('CH3O2 + CH2O <=> CH3O2H + H + CO', [2.454000e+14, 0.027, 30130.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166
+#  Hashemi et al. C&Flame 182 (2017) 150166
 
 # Reaction 155
 reaction('CH3O2 + CH2OH <=> CH2O + CH3O2H', [1.200000e+13, 0.0, 0.0])
-#  Hashemi et al. C&Flame 182 (2017) 150        166
+#  Hashemi et al. C&Flame 182 (2017) 150166
 
 # Reaction 156
 reaction('CH3O2 + CH3O <=> CH2O + CH3O2H', [3.000000e+11, 0.0, 0.0])
@@ -2907,11 +2907,11 @@ falloff_reaction('CH3OH (+ M) <=> CH2OH + H (+ M)',
 
 # Reaction 178
 reaction('CH3OH + H <=> CH2OH + H2', [8.000000e+05, 2.351, 5914.0])
-#  Pa    eda J. Chem. phys. 134, 094302 (2011)
+#  Paeda J. Chem. phys. 134, 094302 (2011)
 
 # Reaction 179
 reaction('CH3OH + H <=> CH3O + H2', [2.745000e+06, 2.147, 11140.0])
-#  Pa    eda J. Chem. phys. 134, 094302 (2011)
+#  Paeda J. Chem. phys. 134, 094302 (2011)
 
 # Reaction 180
 reaction('CH3OH + O <=> CH2OH + OH', [2.460000e+13, 0.0, 5305.0])
@@ -2969,39 +2969,39 @@ falloff_reaction('CH3O2H (+ M) <=> CH3O + OH (+ M)',
                  kf=[4.100000e+19, -1.153, 44220.0],
                  kf0=[3.900000e+42, -7.502, 46730.0],
                  falloff=Troe(A=0.8375, T3=36562.0, T1=498.8, T2=9990.0))
-#  Hashemi C&Flame 182 (2017) 150        166 cited JAS/KLI/HAR Proc. Combust. Inst. 32 (2009) 279-286
+#  Hashemi C&Flame 182 (2017) 150166 cited JAS/KLI/HAR Proc. Combust. Inst. 32 (2009) 279-286
 
 # Reaction 193
 reaction('CH3O2H + H <=> CH3O2 + H2', [5.400000e+10, 0.0, 1860.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b (45%) cited Slemr Warneck IJCK 9:267 1977
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b (45%) cited Slemr Warneck IJCK 9:267 1977
 
 # Reaction 194
 reaction('CH3O2H + H <=> CH2O2H + H2', [5.400000e+10, 0.0, 1860.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b (45%) cited Slemr Warneck IJCK 9:267 1977
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b (45%) cited Slemr Warneck IJCK 9:267 1977
 
 # Reaction 195
 reaction('CH3O2H + H <=> CH3O + H2O', [1.200000e+10, 0.0, 1860.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b (10%) cited Slemr Warneck IJCK 9:267 1977
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b (10%) cited Slemr Warneck IJCK 9:267 1977
 
 # Reaction 196
 reaction('CH3O2H + OH <=> CH3O2 + H2O', [1.100000e+12, 0.0, -437.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b cited Baulch 2005
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b cited Baulch 2005
 
 # Reaction 197
 reaction('CH3O2H + OH <=> CH2O2H + H2O', [7.200000e+11, 0.0, -258.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b cited Baulch 2005
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b cited Baulch 2005
 
 # Reaction 198
 reaction('CH3O2H + O <=> CH2O2H + OH', [1.600000e+13, 0.0, 4750.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b cited Baulch 2005
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b cited Baulch 2005
 
 # Reaction 199
 reaction('CH3O2H + O <=> CH3O2 + OH', [8.700000e+12, 0.0, 4750.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08b cited Baulch 2005
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08b cited Baulch 2005
 
 # Reaction 200
 reaction('CH3O2H + HO2 <=> CH3O2 + H2O2', [4.100000e+04, 2.5, 10200.0])
-#  Hashemi C&Flame 182 (2017) 150        166 cited RAS/GLA08  IJCK 40 (2008) 778-807
+#  Hashemi C&Flame 182 (2017) 150166 cited RAS/GLA08  IJCK 40 (2008) 778-807
 
 # Reaction 201
 pdep_arrhenius('CH2O2H <=> CH2O + OH',
@@ -3009,7 +3009,7 @@ pdep_arrhenius('CH2O2H <=> CH2O + OH',
                [(1.0, 'atm'), 2.400000e+12, -0.925, 1567.0],
                [(10.0, 'atm'), 2.500000e+13, -0.927, 1579.0],
                [(100.0, 'atm'), 7.000000e+14, -1.064, 1744.0])
-#  Hashemi C&Flame 182 (2017) 150        166
+#  Hashemi C&Flame 182 (2017) 150166
 # -------------------------------------------------------------------------------
 # ----------------------C2 REACTIONS --------------------------------------------
 # -------------------------------------------------------------------------------
@@ -3456,7 +3456,7 @@ falloff_reaction('C2H2 + H (+ M) <=> C2H3 (+ M)',
                  kf0=[6.346000e+31, -4.664, 3780.0],
                  efficiencies='AR:0.35 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45',
                  falloff=Troe(A=0.788, T3=-10200.0, T1=1e-30))
-#  Miller & Klippenstein; Phys. Chem. Chem. Phys., 2004, 6, 1192        1202
+#  Miller & Klippenstein; Phys. Chem. Chem. Phys., 2004, 6, 11921202
 #  Griffith & Barnard
 
 # Reaction 292
@@ -3515,7 +3515,7 @@ pdep_arrhenius('C2H3 + CH2O <=> C2H4 + HCO',
                [(1.0, 'atm'), 1.420000e+10, 0.209, 3934.2],
                [(10.0, 'atm'), 3.450000e+13, -0.726, 6944.3],
                [(100.0, 'atm'), 3.310000e+14, -0.866, 10965.7])
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 305
 pdep_arrhenius('C2H3 + CH2O <=> C2H3CHO + H',
@@ -3525,7 +3525,7 @@ pdep_arrhenius('C2H3 + CH2O <=> C2H3CHO + H',
                [(1.0, 'atm'), 1.750000e+07, 1.45, 3428.0],
                [(10.0, 'atm'), 1.350000e+09, 0.933, 5173.0],
                [(100.0, 'atm'), 2.240000e+11, 0.357, 8001.3])
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 # ---------------------Formation of 2-Propanal----------------------------------
 
 # Reaction 306
@@ -3544,7 +3544,7 @@ pdep_arrhenius('C2H3 + O2 <=> CHCHO + OH',
                [(31.6, 'atm'), 6.110000e+25, -4.21, 13050.0],
                [(100.0, 'atm'), 1.650000e+30, -5.35, 18430.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 308
 pdep_arrhenius('C2H3 + O2 <=> CHCHO + OH',
@@ -3557,7 +3557,7 @@ pdep_arrhenius('C2H3 + O2 <=> CHCHO + OH',
                [(31.6, 'atm'), 1.420000e+11, 0.05, 3774.0],
                [(100.0, 'atm'), 3.170000e+11, -0.02, 5338.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 309
 pdep_arrhenius('C2H3 + O2 <=> C2H2 + HO2',
@@ -3570,7 +3570,7 @@ pdep_arrhenius('C2H3 + O2 <=> C2H2 + HO2',
                [(31.6, 'atm'), 1.190000e+09, 0.82, 5617.0],
                [(100.0, 'atm'), 1.060000e+17, -1.45, 12230.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 310
 pdep_arrhenius('C2H3 + O2 <=> C2H2 + HO2',
@@ -3584,7 +3584,7 @@ pdep_arrhenius('C2H3 + O2 <=> C2H2 + HO2',
                [(31.6, 'atm'), 4.470000e+08, 0.0, 955.0],
                [(100.0, 'atm'), 2.020000e+01, 2.94, 1847.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 311
 pdep_arrhenius('C2H3 + O2 <=> CHOCHO + H',
@@ -3597,7 +3597,7 @@ pdep_arrhenius('C2H3 + O2 <=> CHOCHO + H',
                [(31.6, 'atm'), 3.570000e+33, -6.5, 14910.0],
                [(100.0, 'atm'), 3.280000e+31, -5.76, 16250.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 312
 pdep_arrhenius('C2H3 + O2 <=> CHOCHO + H',
@@ -3610,7 +3610,7 @@ pdep_arrhenius('C2H3 + O2 <=> CHOCHO + H',
                [(31.6, 'atm'), 3.840000e+10, 0.22, 941.3],
                [(100.0, 'atm'), 2.750000e+08, 0.83, 857.6],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 313
 pdep_arrhenius('C2H3 + O2 <=> CH2CO + OH',
@@ -3623,7 +3623,7 @@ pdep_arrhenius('C2H3 + O2 <=> CH2CO + OH',
                [(31.6, 'atm'), 2.490000e+06, 1.42, 8480.0],
                [(100.0, 'atm'), 1.660000e+10, 0.36, 12010.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 314
 pdep_arrhenius('C2H3 + O2 <=> CH2CO + OH',
@@ -3636,7 +3636,7 @@ pdep_arrhenius('C2H3 + O2 <=> CH2CO + OH',
                [(31.6, 'atm'), 1.190000e-04, 4.21, 2043.0],
                [(100.0, 'atm'), 1.300000e-03, 3.97, 3414.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 315
 pdep_arrhenius('C2H3 + O2 <=> CH3O + CO',
@@ -3649,7 +3649,7 @@ pdep_arrhenius('C2H3 + O2 <=> CH3O + CO',
                [(31.6, 'atm'), 1.100000e+18, -2.22, 5178.0],
                [(100.0, 'atm'), 5.790000e+32, -6.45, 16810.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 316
 pdep_arrhenius('C2H3 + O2 <=> CH3O + CO',
@@ -3662,7 +3662,7 @@ pdep_arrhenius('C2H3 + O2 <=> CH3O + CO',
                [(31.6, 'atm'), 1.020000e+72, -20.69, 15860.0],
                [(100.0, 'atm'), 1.100000e+09, 0.31, 1024.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 317
 pdep_arrhenius('C2H3 + O2 <=> CO2 + CH3',
@@ -3675,7 +3675,7 @@ pdep_arrhenius('C2H3 + O2 <=> CO2 + CH3',
                [(31.6, 'atm'), 3.840000e+18, -2.44, 5408.0],
                [(100.0, 'atm'), 1.210000e+32, -6.32, 16190.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 318
 pdep_arrhenius('C2H3 + O2 <=> CO2 + CH3',
@@ -3688,7 +3688,7 @@ pdep_arrhenius('C2H3 + O2 <=> CO2 + CH3',
                [(31.6, 'atm'), 1.400000e+70, -20.1, 15430.0],
                [(100.0, 'atm'), 9.210000e+08, 0.25, 855.3],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 319
 pdep_arrhenius('C2H3OO <=> CHCHO + OH',
@@ -3701,7 +3701,7 @@ pdep_arrhenius('C2H3OO <=> CHCHO + OH',
                [(31.6, 'atm'), 2.000000e+54, -12.22, 61840.0],
                [(100.0, 'atm'), 9.540000e+195, -52.27, 163500.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 320
 pdep_arrhenius('C2H3OO <=> CHCHO + OH',
@@ -3714,7 +3714,7 @@ pdep_arrhenius('C2H3OO <=> CHCHO + OH',
                [(31.6, 'atm'), 1.510000e+57, -13.94, 55390.0],
                [(100.0, 'atm'), 1.790000e+34, -6.4, 50000.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 321
 pdep_arrhenius('C2H3OO <=> CH2CHO + O',
@@ -3727,7 +3727,7 @@ pdep_arrhenius('C2H3OO <=> CH2CHO + O',
                [(31.6, 'atm'), 1.110000e+53, -11.79, 56690.0],
                [(100.0, 'atm'), 4.300000e+48, -10.31, 56090.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 322
 pdep_arrhenius('C2H3OO <=> CH2CHO + O',
@@ -3740,7 +3740,7 @@ pdep_arrhenius('C2H3OO <=> CH2CHO + O',
                [(31.6, 'atm'), 4.660000e+27, -4.5, 40530.0],
                [(100.0, 'atm'), 5.990000e+25, -3.85, 40120.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 323
 pdep_arrhenius('C2H3OO <=> CHOCHO + H',
@@ -3753,7 +3753,7 @@ pdep_arrhenius('C2H3OO <=> CHOCHO + H',
                [(31.6, 'atm'), 2.060000e+33, -6.38, 39520.0],
                [(100.0, 'atm'), 1.300000e+32, -5.92, 40660.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 324
 pdep_arrhenius('C2H3OO <=> CHOCHO + H',
@@ -3766,7 +3766,7 @@ pdep_arrhenius('C2H3OO <=> CHOCHO + H',
                [(31.6, 'atm'), 7.140000e+61, -16.16, 43280.0],
                [(100.0, 'atm'), 1.140000e+19, -2.56, 29670.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 325
 pdep_arrhenius('C2H3OO <=> CH2CO + OH',
@@ -3779,7 +3779,7 @@ pdep_arrhenius('C2H3OO <=> CH2CO + OH',
                [(31.6, 'atm'), 1.190000e+37, -7.8, 56460.0],
                [(100.0, 'atm'), 9.080000e+35, -7.21, 57550.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 326
 pdep_arrhenius('C2H3OO <=> CH2CO + OH',
@@ -3792,7 +3792,7 @@ pdep_arrhenius('C2H3OO <=> CH2CO + OH',
                [(31.6, 'atm'), 5.620000e+02, 1.7, 36450.0],
                [(100.0, 'atm'), 1.110000e+07, 0.52, 38670.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 327
 pdep_arrhenius('C2H3OO <=> CH2O + HCO',
@@ -3805,7 +3805,7 @@ pdep_arrhenius('C2H3OO <=> CH2O + HCO',
                [(31.6, 'atm'), 1.850000e+34, -6.57, 38510.0],
                [(100.0, 'atm'), 5.700000e+29, -5.19, 36800.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 328
 pdep_arrhenius('C2H3OO <=> CH2O + HCO',
@@ -3818,7 +3818,7 @@ pdep_arrhenius('C2H3OO <=> CH2O + HCO',
                [(31.6, 'atm'), 1.070000e+185, -54.22, 88990.0],
                [(100.0, 'atm'), 4.680000e+02, 1.81, 18100.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 329
 pdep_arrhenius('C2H3OO => CH2O + H + CO',
@@ -3831,7 +3831,7 @@ pdep_arrhenius('C2H3OO => CH2O + H + CO',
                [(31.6, 'atm'), 4.320000e+34, -6.57, 38510.0],
                [(100.0, 'atm'), 1.330000e+30, -5.19, 36800.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 330
 pdep_arrhenius('C2H3OO => CH2O + H + CO',
@@ -3844,7 +3844,7 @@ pdep_arrhenius('C2H3OO => CH2O + H + CO',
                [(31.6, 'atm'), 2.490000e+185, -54.22, 88990.0],
                [(100.0, 'atm'), 1.090000e+03, 1.81, 18100.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 331
 pdep_arrhenius('C2H3OO <=> CO + CH3O',
@@ -3857,7 +3857,7 @@ pdep_arrhenius('C2H3OO <=> CO + CH3O',
                [(31.6, 'atm'), 6.860000e+44, -10.04, 47030.0],
                [(100.0, 'atm'), 1.000000e-10, 0.0, 0.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 
 # Reaction 332
 pdep_arrhenius('C2H3OO <=> CO + CH3O',
@@ -3870,7 +3870,7 @@ pdep_arrhenius('C2H3OO <=> CO + CH3O',
                [(31.6, 'atm'), 1.970000e+17, -2.23, 28590.0],
                [(100.0, 'atm'), 3.250000e+04, 1.694, 23320.0],
                options='duplicate')
-#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 3325        3346
+#  Goldsmith; J. phys. chem. A, 2012, 116 (13), PP 33253346
 # -------------- Additional C2H3+O2 REACTIONS ----------------------------------
 
 # Reaction 333
@@ -4250,7 +4250,7 @@ reaction('C2H4 + CH3 <=> C2H3 + CH4', [6.020000e+07, 1.56, 16650.0])
 
 # Reaction 401
 reaction('C2H4 + HO2 <=> C2H3 + H2O2', [1.020000e+01, 3.794, 21580.0])
-#  Guo et al., J. Phys. Chem. A 2015, 119, 3161       3170
+#  Guo et al., J. Phys. Chem. A 2015, 119, 31613170
 
 # Reaction 402
 reaction('C2H4 + CH2-1 <=> C2H4 + CH2-3', [1.132000e+13, 0.0, -556.6])
@@ -4515,7 +4515,7 @@ pdep_arrhenius('C2H5 + O2 <=> CH3CHO + OH',
                [(0.04, 'atm'), 4.908000e-06, 4.76, 254.3],
                [(1.0, 'atm'), 6.803000e-02, 3.57, 2643.0],
                [(10.0, 'atm'), 8.265000e+02, 2.41, 5285.0])
-#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 4415        4427
+#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 44154427
 
 # Reaction 451
 falloff_reaction('C2H5 + O2 (+ M) <=> C2H4 + HO2 (+ M)',
@@ -4523,7 +4523,7 @@ falloff_reaction('C2H5 + O2 (+ M) <=> C2H4 + HO2 (+ M)',
                  kf0=[1.409000e+07, 1.09, -1975.0],
                  efficiencies='AR:0.35 CH4:3.0 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45',
                  falloff=Troe(A=0.45, T3=1e-30, T1=1e+30, T2=1e+30))
-#  Wang 2017 cited  Miller & Klippenstein,  IJCK 33: 654        668, 2001
+#  Wang 2017 cited  Miller & Klippenstein,  IJCK 33: 654668, 2001
 #  298-2000K
 #  Griffith & Barnard
 
@@ -4549,7 +4549,7 @@ falloff_reaction('C2H5O (+ M) <=> CH3 + CH2O (+ M)',
                  kf=[6.300000e+10, 0.93, 17090.0],
                  kf0=[4.700000e+25, -3.0, 16532.0],
                  falloff=Troe(A=0.426, T3=0.3, T1=2278.0, T2=100000.0))
-#  Hashemi 2017 cited Dames,IJCK 46 (2014) 176        188
+#  Hashemi 2017 cited Dames,IJCK 46 (2014) 176188
 #  M=N2
 
 # Reaction 456
@@ -4736,7 +4736,7 @@ falloff_reaction('C2H5 + O2 (+ M) <=> C2H5O2 (+ M)',
                  kf0=[8.490000e+29, -4.29, 220.0],
                  efficiencies='AR:0.35 CH4:3.0 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45',
                  falloff=Troe(A=0.103, T3=601.0, T1=1e-15, T2=1000000000000000.0))
-#  Miller & Klippenstein; IJCK 33: 654        668, 2001
+#  Miller & Klippenstein; IJCK 33: 654668, 2001
 #  Griffith & Barnard
 
 # Reaction 488
@@ -4744,8 +4744,8 @@ pdep_arrhenius('C2H5O2 <=> CH3CHO + OH',
                [(0.04, 'atm'), 1.237000e+35, -9.42, 36360.0],
                [(1.0, 'atm'), 1.687000e+36, -9.22, 38700.0],
                [(10.0, 'atm'), 2.520000e+41, -10.2, 43710.0])
-#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 995        1003
-#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 4415        4427
+#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 9951003
+#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 44154427
 
 # Reaction 489
 falloff_reaction('C2H5O2 (+ M) <=> C2H4 + HO2 (+ M)',
@@ -4753,7 +4753,7 @@ falloff_reaction('C2H5O2 (+ M) <=> C2H4 + HO2 (+ M)',
                  kf0=[8.310000e+21, -0.651, 22890.0],
                  efficiencies='AR:0.35 CH4:3.0 CO:0.75 CO2:1.5 H2:1.0 H2O:6.4 HE:0.35 N2:0.4 O2:0.45',
                  falloff=Troe(A=0.0, T3=106.0, T1=1e-15, T2=1000000000000000.0))
-#  Miller & Klippenstein; IJCK 33: 654        668, 2001
+#  Miller & Klippenstein; IJCK 33: 654668, 2001
 #  Griffith & Barnard
 
 # Reaction 490
@@ -4761,9 +4761,9 @@ pdep_arrhenius('C2H5O2 <=> C2H4O1-2 + OH',
                [(0.04, 'atm'), 5.778000e+45, -11.9, 4112.0],
                [(1.0, 'atm'), 1.916000e+43, -10.75, 42400.0],
                [(10.0, 'atm'), 3.965000e+43, -10.46, 45580.0])
-#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 995        1003
-#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 4415        4427
-#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 995        1003
+#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 9951003
+#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 44154427
+#  Burke 2015 : Carstensen and Dean Proc. Combust. Inst. 30 (2005) 9951003
 
 # Reaction 491
 reaction('C2H5O2 + HO2 <=> O2 + C2H5O2H', [4.520000e+11, 0.0, -1900.0])
@@ -4847,7 +4847,7 @@ pdep_arrhenius('C2H4O2H <=> CH3CHO + OH',
                [(0.04, 'atm'), 5.819000e+26, -7.97, 20860.0],
                [(1.0, 'atm'), 5.520000e+34, -9.88, 26230.0],
                [(10.0, 'atm'), 1.188000e+34, -9.02, 29210.0])
-#  Burke 2015 cited Carstensen and Dean, Proc. Combust. Inst 30 (2005) 995        1003
+#  Burke 2015 cited Carstensen and Dean, Proc. Combust. Inst 30 (2005) 9951003
 
 # Reaction 503
 pdep_arrhenius('C2H4O2H <=> C2H4O1-2 + OH',
@@ -4872,7 +4872,7 @@ pdep_arrhenius('C2H5 + O2 <=> C2H4O1-2 + OH',
                [(0.04, 'atm'), 1.303000e+03, 1.93, -502.7],
                [(1.0, 'atm'), 2.438000e+02, 2.18, -62.5],
                [(10.0, 'atm'), 4.621000e+09, 0.15, 5409.0])
-#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 4415        4427
+#  John D. DeSain, J. Phys. Chem. A, 2003, 107 (22), pp 44154427
 
 # Reaction 505
 reaction('C2H4O1-2 <=> CH3 + HCO', [3.400000e+13, 0.0, 57780.0])
@@ -4932,7 +4932,7 @@ pdep_arrhenius('C2H5O2H <=> C2H5O + OH',
                [(0.1, 'atm'), 6.050000e+58, -14.05, 54131.0],
                [(1.0, 'atm'), 9.260000e+52, -11.91, 53378.0],
                [(100.0, 'atm'), 1.380000e+33, -5.27, 48696.0])
-#  Hashemi 2017; (300-1000 K) cited  D. Chen et al., J. Phys. Chem. A 115 (2011) 602        611.
+#  Hashemi 2017; (300-1000 K) cited  D. Chen et al., J. Phys. Chem. A 115 (2011) 602611.
 # ------------------------------------------------------------------------------
 # -------------------------C2H6 REACTIONS---------------------------------------
 # ------------------------------------------------------------------------------
@@ -5200,35 +5200,35 @@ falloff_reaction('CH3OCHO (+ M) <=> CH3OH + CO (+ M)',
                  kf=[2.000000e+13, 0.0, 60000.0],
                  kf0=[2.400000e+59, -11.8, 71400.0],
                  falloff=Troe(A=0.239, T3=555.1, T1=8340000000.0, T2=8210000000.0))
-#  Alzueta et al.;C&Flame 160 (2013) 853        860
+#  Alzueta et al.;C&Flame 160 (2013) 853860
 
 # Reaction 576
 falloff_reaction('CH3OCHO (+ M) <=> CH4 + CO2 (+ M)',
                  kf=[1.500000e+12, 0.0, 59700.0],
                  kf0=[5.630000e+61, -12.79, 71100.0],
                  falloff=Troe(A=0.179, T3=357.5, T1=9918000000.0, T2=3280000000.0))
-#  Alzueta et al.;C&Flame 160 (2013) 853        860
+#  Alzueta et al.;C&Flame 160 (2013) 853860
 
 # Reaction 577
 falloff_reaction('CH3OCHO (+ M) <=> CH2O + CH2O (+ M)',
                  kf=[1.000000e+12, 0.0, 60500.0],
                  kf0=[1.550000e+57, -11.57, 71700.0],
                  falloff=Troe(A=0.781, T3=649.0, T1=618.0, T2=6710000000.0))
-#  Alzueta et al.;C&Flame 160 (2013) 853        860
+#  Alzueta et al.;C&Flame 160 (2013) 853860
 
 # Reaction 578
 falloff_reaction('CH3OCHO (+ M) <=> CH3 + OCHO (+ M)',
                  kf=[2.170000e+24, -2.4, 92600.0],
                  kf0=[5.710000e+47, -8.43, 98490.0],
                  falloff=Troe(A=6.89e-15, T3=4730.0, T1=9330000000.0, T2=1780000000.0))
-#  Alzueta et al.;C&Flame 160 (2013) 853        860
+#  Alzueta et al.;C&Flame 160 (2013) 853860
 
 # Reaction 579
 falloff_reaction('CH3OCHO (+ M) <=> CH3O + HCO (+ M)',
                  kf=[4.180000e+16, 0.0, 97400.0],
                  kf0=[5.270000e+63, -12.3, 109180.0],
                  falloff=Troe(A=0.894, T3=7490000000.0, T1=647.0, T2=669000000.0))
-#  Alzueta et al.;C&Flame 160 (2013) 853        860
+#  Alzueta et al.;C&Flame 160 (2013) 853860
 # ---------------------------------------------------------------------------
 
 # Reaction 580
@@ -5241,35 +5241,35 @@ reaction('CH3OCO + H <=> CH3OCHO', [1.000000e+14, 0.0, 0.0])
 
 # Reaction 582
 reaction('CH3OCHO + O2 <=> CH3OCO + HO2', [1.000000e+13, 0.0, 49700.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 583
 reaction('CH3OCHO + O2 <=> CH2OCHO + HO2', [2.050000e+13, 0.0, 52000.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 584
 reaction('CH3OCHO + OH <=> CH3OCO + H2O', [1.580000e+07, 1.8, 934.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 585
 reaction('CH3OCHO + OH <=> CH2OCHO + H2O', [5.270000e+09, 0.97, 1586.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 586
 reaction('CH3OCHO + HO2 <=> CH3OCO + H2O2', [4.820000e+03, 2.6, 13910.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 587
 reaction('CH3OCHO + HO2 <=> CH2OCHO + H2O2', [2.380000e+04, 2.55, 16490.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 588
 reaction('CH3OCHO + O <=> CH3OCO + OH', [2.755000e+05, 2.45, 2830.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 589
 reaction('CH3OCHO + O <=> CH2OCHO + OH', [9.800000e+05, 2.43, 4750.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 590
 reaction('CH3OCHO + H <=> CH3OCO + H2', [6.500000e+05, 2.4, 4471.0])
@@ -5281,39 +5281,39 @@ reaction('CH3OCHO + H <=> CH2OCHO + H2', [6.650000e+05, 2.54, 6756.0])
 
 # Reaction 592
 reaction('CH3OCHO + CH3 <=> CH3OCO + CH4', [7.550000e-01, 3.46, 5481.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 593
 reaction('CH3OCHO + CH3 <=> CH2OCHO + CH4', [4.520000e-01, 3.65, 7154.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 594
 reaction('CH3OCHO + CH3O <=> CH3OCO + CH3OH', [5.480000e+11, 0.0, 5000.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 595
 reaction('CH3OCHO + CH3O <=> CH2OCHO + CH3OH', [2.170000e+11, 0.0, 6458.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 596
 reaction('CH3OCHO + CH3O2 <=> CH3OCO + CH3O2H', [4.820000e+03, 2.6, 13910.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 597
 reaction('CH3OCHO + CH3O2 <=> CH2OCHO + CH3O2H', [2.380000e+04, 2.55, 16490.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 598
 reaction('CH3OCHO + HCO <=> CH3OCO + CH2O', [5.400000e+06, 1.9, 17010.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 599
 reaction('CH3OCHO + HCO <=> CH2OCHO + CH2O', [1.025000e+05, 2.5, 18430.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 600
 reaction('CH3OCO <=> CH2OCHO', [1.629000e+12, -0.18, 40670.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 601
 pdep_arrhenius('CH3OCO <=> CH3 + CO2',
@@ -5321,7 +5321,7 @@ pdep_arrhenius('CH3OCO <=> CH3 + CO2',
                [(1.0, 'atm'), 1.250000e+16, -1.83, 11340.77],
                [(10.0, 'atm'), 1.040000e+18, -2.1, 12826.89],
                [(100.0, 'atm'), 8.690000e+17, -1.81, 13656.72])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 602
 pdep_arrhenius('CH3OCO <=> CH3O + CO',
@@ -5329,11 +5329,11 @@ pdep_arrhenius('CH3OCO <=> CH3O + CO',
                [(1.0, 'atm'), 4.090000e+05, 0.81, 21969.12],
                [(10.0, 'atm'), 9.020000e+14, -1.72, 21767.45],
                [(100.0, 'atm'), 2.820000e+22, -3.44, 23592.37])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 603
 reaction('CH2O + HCO <=> CH2OCHO', [1.500000e+11, 0.0, 11900.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 # -- Low temperature sequence--------------------------------------------------
 
 # Reaction 604
@@ -5445,7 +5445,7 @@ pdep_arrhenius('CH2OCH2O2H => CH2O + CH2O + OH',
                [(20.0, 'atm'), 9.090000e+22, -3.14, 23899.0],
                [(50.0, 'atm'), 4.590000e+22, -2.94, 24262.0],
                [(100.0, 'atm'), 1.400000e+22, -2.72, 24407.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 619
 pdep_arrhenius('CH2OCH2O2H + O2 <=> O2CH2OCH2O2H',
@@ -5457,7 +5457,7 @@ pdep_arrhenius('CH2OCH2O2H + O2 <=> O2CH2OCH2O2H',
                [(20.0, 'atm'), 8.550000e+14, -1.01, 1312.0],
                [(50.0, 'atm'), 2.680000e+13, -0.54, 727.0],
                [(100.0, 'atm'), 4.870000e+12, -0.32, 428.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 620
 pdep_arrhenius('CH2OCH2O2H + O2 <=> HO2CH2OCHO + OH',
@@ -5469,7 +5469,7 @@ pdep_arrhenius('CH2OCH2O2H + O2 <=> HO2CH2OCHO + OH',
                [(20.0, 'atm'), 1.040000e+22, -3.16, 11500.0],
                [(50.0, 'atm'), 6.950000e+19, -2.6, 10860.0],
                [(100.0, 'atm'), 3.960000e+18, -2.31, 10500.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 621
 reaction('CH2OCH2O2H <=> CH3OCHO + OH', [3.550000e-05, 5.4, 29880.0])
@@ -5486,7 +5486,7 @@ pdep_arrhenius('O2CH2OCH2O2H <=> HO2CH2OCHO + OH',
                [(20.0, 'atm'), 1.110000e+09, 0.54, 18100.0],
                [(50.0, 'atm'), 1.070000e+08, 0.84, 17661.0],
                [(100.0, 'atm'), 3.860000e+07, 0.98, 17467.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 623
 reaction('HO2CH2OCHO <=> OCH2OCHO + OH', [3.000000e+16, 0.0, 40000.0])
@@ -5500,20 +5500,20 @@ pdep_arrhenius('OCH2OCHO => HOCH2OCO',
                [(1.0, 'atm'), 4.190000e+52, -15.11, 21607.0],
                [(10.0, 'atm'), 4.820000e+56, -15.73, 24786.0],
                [(1000000.0, 'atm'), 3.330000e+08, 1.08, 15714.0])
-#  Wang 2015 : C&F 162 (2015) 1113        1125
+#  Wang 2015 : C&F 162 (2015) 11131125
 
 # Reaction 626
 pdep_arrhenius('OCH2OCHO => HOCHO + HCO',
                [(1.0, 'atm'), 5.170000e+20, -3.78, 11390.0],
                [(10.0, 'atm'), 3.180000e+25, -4.88, 14500.0],
                [(1000000.0, 'atm'), 1.100000e+10, 0.72, 13200.0])
-#  Wang 2015 : C&F 162 (2015) 1113        1125
+#  Wang 2015 : C&F 162 (2015) 11131125
 
 # Reaction 627
 pdep_arrhenius('OCH2OCHO => CH2OH + CO2',
                [(1.0, 'atm'), 2.220000e+19, -5.01, 14050.0],
                [(10.0, 'atm'), 9.960000e+25, -6.28, 18450.0])
-#  Wang 2015 : C&F 162 (2015) 1113        1125
+#  Wang 2015 : C&F 162 (2015) 11131125
 
 # Reaction 628
 reaction('HOCH2OCO <=> HOCH2O + CO', [2.920000e+18, -1.965, 19610.0])
@@ -5527,15 +5527,15 @@ reaction('HOCH2OCO <=> CH2OH + CO2', [1.117000e+17, -1.526, 20770.0])
 pdep_arrhenius('HOCH2OCO => HCO + HOCHO',
                [(1.0, 'atm'), 9.200000e+29, -7.74, 21720.0],
                [(10.0, 'atm'), 2.840000e+37, -9.45, 26660.0])
-#  Wang 2015 : C&F 162 (2015) 1113        1125
+#  Wang 2015 : C&F 162 (2015) 11131125
 
 # Reaction 631
 reaction('HOCH2O <=> HOCHO + H', [1.320000e+15, 0.004, 26160.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 632
 reaction('CH2O + OH <=> HOCH2O', [4.500000e+15, -1.11, 0.0])
-#  Burke et al., C&Flame 162 (2015) 315        330
+#  Burke et al., C&Flame 162 (2015) 315330
 
 # Reaction 633
 reaction('CH2OH + HO2 <=> HOCH2O + OH', [1.000000e+13, 0.0, 0.0])
@@ -5733,7 +5733,7 @@ reaction('NH + N <=> N2 + H', [3.000000e+13, 0.0, 0.0])
 
 # Reaction 677
 reaction('NH + NO <=> N2O + H', [2.900000e+14, -0.4, 0.0])
-#  Glarborg 1998; Combust. Flame 115 (1998) 1        27
+#  Glarborg 1998; Combust. Flame 115 (1998) 127
 
 # Reaction 678
 reaction('NH + NO <=> N2 + OH', [2.690000e+12, -0.072, -513.0])
@@ -5832,11 +5832,11 @@ reaction('NH2 + N <=> N2 + H + H', [5.000000e+13, 0.0, 0.0])
 
 # Reaction 699
 reaction('NH2 + NO <=> N2 + H2O', [2.800000e+20, -2.7, 1258.0])
-#  Miller and Glarborg 1999;  IJCK 31: 757        765 also used by Zhang 2011 /Tian 2009/Duynslaegher 2012/Lamoureux 2016
+#  Miller and Glarborg 1999;  IJCK 31: 757765 also used by Zhang 2011 /Tian 2009/Duynslaegher 2012/Lamoureux 2016
 
 # Reaction 700
 reaction('NH2 + NO <=> NNH + OH', [3.800000e+10, 0.425, -814.0])
-#  Miller and Glarborg 1999;  IJCK 31: 757        765 also used by Zhang 2011 /Duynslaegher 2012/Lamoureux 2016
+#  Miller and Glarborg 1999;  IJCK 31: 757765 also used by Zhang 2011 /Duynslaegher 2012/Lamoureux 2016
 
 # Reaction 701
 reaction('NH2 + NO <=> N2O + H2', [1.000000e+13, 0.0, 33700.0])
@@ -6244,7 +6244,7 @@ falloff_reaction('NH3 (+ M) <=> NH + H2 (+ M)',
 
 # Reaction 790
 reaction('NH3 + H <=> NH2 + H2', [2.031000e+04, 2.58, 6540.0])
-#  300 - 2500 K | Nguyen and Stanton; Int J Chem Kinet.2019;51:321        328
+#  300 - 2500 K | Nguyen and Stanton; Int J Chem Kinet.2019;51:321328
 # Ab initio thermal rate coefficients for H+NH3=H2+NH2;  Thanh Lam Nguyen, John F. Stanton; https://doi.org/10.1002/kin.21255
 
 # Reaction 791
@@ -6403,7 +6403,7 @@ falloff_reaction('NO + OH (+ M) <=> HONO (+ M)',
                  kf=[1.100000e+14, -0.3, 0.0],
                  kf0=[3.392000e+23, -2.51, 0.0],
                  falloff=Troe(A=0.75, T3=1e-30, T1=1e+30, T2=1e+30))
-#  Rasmussen ;IJCK 40: 454        480,2008 cited FUL/TRO98 also used by KLIMIC2011/Mendiara 2009
+#  Rasmussen ;IJCK 40: 454480,2008 cited FUL/TRO98 also used by KLIMIC2011/Mendiara 2009
 #  FUL/TRO98
 #  FUL/TRO98 [M=He,T=400K]
 # NO+OH(+M)=HONO(+M)                            1.99E+12   -0.1     -721.0      !
@@ -6419,11 +6419,11 @@ reaction('NO + HO2 <=> NO2 + OH', [2.100000e+12, 0.0, -480.0])
 
 # Reaction 826
 reaction('NO2 + H2 <=> HONO + H', [1.300000e+04, 2.76, 29770.0])
-#  Rasmussen ;IJCK 40: 454        480,2008 cited PAR/LIN98 also used by KLIMIC2011/Mendiara 2009
+#  Rasmussen ;IJCK 40: 454480,2008 cited PAR/LIN98 also used by KLIMIC2011/Mendiara 2009
 
 # Reaction 827
 reaction('NO2 + H2 <=> HNO2 + H', [2.400000e+00, 3.73, 32400.0])
-#  Rasmussen ;IJCK 40: 454        480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Mendiara 2009
+#  Rasmussen ;IJCK 40: 454480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Mendiara 2009
 
 # Reaction 828
 reaction('NO2 + H <=> NO + OH', [2.500000e+14, 0.0, 676.0])
@@ -6449,20 +6449,20 @@ falloff_reaction('NO2 + OH (+ M) <=> HONO2 (+ M)',
                  kf=[3.000000e+13, 0.0, 0.0],
                  kf0=[2.938000e+25, -3.0, 0.0],
                  falloff=Troe(A=0.4, T3=1e-30, T1=1e+30, T2=1e+30))
-#  Rasmussen;IJCK 40: 454        480,2008 also used by Mendiara 2009/KLIMIC2011
+#  Rasmussen;IJCK 40: 454480,2008 also used by Mendiara 2009/KLIMIC2011
 #  Troe J IJCK 33:878 2001
 
 # Reaction 832
 reaction('NO2 + NO2 <=> NO + NO + O2', [4.500000e+12, 0.0, 27600.0])
-#  Rasmussen;IJCK 40: 454        480,2008 cited PAR/LIN98 also used by Lamoureux 2016
+#  Rasmussen;IJCK 40: 454480,2008 cited PAR/LIN98 also used by Lamoureux 2016
 
 # Reaction 833
 reaction('NO2 + HO2 <=> HONO + O2', [1.910000e+00, 3.32, 3044.0])
-#  Rasmussen;IJCK 40: 454        480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Tian 2009/Zhang2011/Mendiara 2009
+#  Rasmussen;IJCK 40: 454480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011/Tian 2009/Zhang2011/Mendiara 2009
 
 # Reaction 834
 reaction('NO2 + HO2 <=> HNO2 + O2', [1.850000e+01, 3.26, 4983.0])
-#  Rasmussen;IJCK 40: 454        480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011
+#  Rasmussen;IJCK 40: 454480,2008 (ab initio CBS-QB3) calculation also used by KLIMIC2011
 # -------------------------------------------------------------------------------
 # -----------------------N2O REACTIONS-------------------------------------------
 # -------------------------------------------------------------------------------
@@ -6472,7 +6472,7 @@ falloff_reaction('N2O (+ M) <=> N2 + O (+ M)',
                  kf=[1.300000e+12, 0.0, 62570.0],
                  kf0=[4.000000e+14, 0.0, 56600.0],
                  efficiencies='CO2:3.0 H2O:12.0 N2:1.7 O2:1.4')
-#  R    hrig 1996 also used by Tian 2009/Zhang 2011/KLIMIC2011
+#  Rhrig 1996 also used by Tian 2009/Zhang 2011/KLIMIC2011
 # N2O(+M)=N2+O(+M)                                9.900E+10  0.00     5.790E+04 ! ## Glarborg 2018
 # LOW/6.0E14   0.000   5.7444E+04/                                              !
 # N2/1.7/ O2/1.4/ H2O/12.0/                                                     !
@@ -6499,11 +6499,11 @@ reaction('N2O + O <=> N2 + O2', [3.700000e+12, 0.0, 15930.0])
 
 # Reaction 840
 reaction('N2O + OH <=> N2 + HO2', [1.300000e-02, 4.7, 36560.0])
-#  Mebel et al.;IJCK 1996, 28, 693        703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+#  Mebel et al.;IJCK 1996, 28, 693703 also used by Tian 2009/KLIMIC2011/Zhang 2011
 
 # Reaction 841
 reaction('N2O + NO <=> NO2 + N2', [5.300000e+05, 2.2, 46280.0])
-#  Mebel et al.;IJCK 1996, 28, 693        703 also used by Tian 2009/KLIMIC2011/Zhang 2011
+#  Mebel et al.;IJCK 1996, 28, 693703 also used by Tian 2009/KLIMIC2011/Zhang 2011
 
 # Reaction 842
 reaction('N2O + N <=> N2 + NO', [1.000000e+13, 0.0, 19870.0])
@@ -6565,7 +6565,7 @@ reaction('H2NO + NO2 <=> HONO + HNO', [4.400000e+04, 2.64, 4040.0])
 
 # Reaction 854
 reaction('HONO + O <=> NO2 + OH', [1.200000e+13, 0.0, 6000.0])
-#  Rasmussen; IJCK 40, 454        480 cited GLA/MIL98also used by Lamoureux 2016
+#  Rasmussen; IJCK 40, 454480 cited GLA/MIL98also used by Lamoureux 2016
 
 # Reaction 855
 reaction('HONO + H <=> HNO + OH', [5.600000e+10, 0.9, 5000.0])
@@ -6577,15 +6577,15 @@ reaction('HONO + H <=> NO + H2O', [8.100000e+06, 1.9, 3850.0])
 
 # Reaction 857
 reaction('HONO + OH <=> NO2 + H2O', [1.700000e+12, 0.0, -520.0])
-#  Rasmussen; IJCK 40, 454        480 cited BUR/RAV92 also used by KLIMIC2011 Lamoureux 2016
+#  Rasmussen; IJCK 40, 454480 cited BUR/RAV92 also used by KLIMIC2011 Lamoureux 2016
 
 # Reaction 858
 reaction('HONO + NO2 <=> HONO2 + NO', [2.000000e+11, 0.0, 32700.0])
-#  Rasmussen; IJCK 40, 454        480 cited PAR/LIN98
+#  Rasmussen; IJCK 40, 454480 cited PAR/LIN98
 
 # Reaction 859
 reaction('HONO + HONO <=> NO + NO2 + H2O', [3.500000e-01, 3.64, 12140.0])
-#  Rasmussen; IJCK 40, 454        480 cited MEB/MEL98
+#  Rasmussen; IJCK 40, 454480 cited MEB/MEL98
 # ------------------------------------------------------------------------------!
 # ------------------------HNO2 REACTIONS----------------------------------------!
 # ------------------------------------------------------------------------------!
@@ -6595,15 +6595,15 @@ falloff_reaction('HNO2 (+ M) <=> HONO (+ M)',
                  kf=[2.500000e+14, 0.0, 32300.0],
                  kf0=[3.100000e+18, 0.0, 31500.0],
                  falloff=Troe(A=1.149, T3=1e-30, T1=3125.0, T2=1e+30))
-#  Rasmussen; IJCK 40, 454        480 (ab initio CBS-QB3) calculation
+#  Rasmussen; IJCK 40, 454480 (ab initio CBS-QB3) calculation
 
 # Reaction 861
 reaction('HNO2 + O <=> NO2 + OH', [1.700000e+08, 1.5, 2000.0])
-#  Rasmussen; IJCK 40, 454        480 cited DEA/BOZ00 also used by KLIMIC2011
+#  Rasmussen; IJCK 40, 454480 cited DEA/BOZ00 also used by KLIMIC2011
 
 # Reaction 862
 reaction('HNO2 + OH <=> NO2 + H2O', [4.000000e+13, 0.0, 0.0])
-#  Rasmussen; IJCK 40, 454        480 (ab initio CBS-QB3) calculation also used by Mendiara 2009/Klippenstein 2011
+#  Rasmussen; IJCK 40, 454480 (ab initio CBS-QB3) calculation also used by Mendiara 2009/Klippenstein 2011
 # ------------------------------------------------------------------------------
 # ---------------------------NO3 REACTIONS--------------------------------------
 # ------------------------------------------------------------------------------
@@ -6656,19 +6656,19 @@ three_body_reaction('NO + HO2 + M <=> HONO2 + M', [1.500000e+24, -3.5, 2200.0])
 
 # Reaction 873
 reaction('HONO2 + H <=> H2 + NO3', [5.560000e+08, 1.53, 16400.0])
-#  Rasmussen; IJCK 40, 454        480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+#  Rasmussen; IJCK 40, 454480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
 
 # Reaction 874
 reaction('HONO2 + H <=> H2O + NO2', [6.080000e+01, 3.29, 6290.0])
-#  Rasmussen; IJCK 40, 454        480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+#  Rasmussen; IJCK 40, 454480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
 
 # Reaction 875
 reaction('HONO2 + H <=> OH + HONO', [3.820000e+05, 2.3, 6980.0])
-#  Rasmussen; IJCK 40, 454        480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
+#  Rasmussen; IJCK 40, 454480 cited Boughton JW Kristyan S Lin MC Chem. Phys 214:219 1997
 
 # Reaction 876
 reaction('HONO2 + OH <=> NO3 + H2O', [1.030000e+10, 0.0, -1240.0])
-#  Rasmussen; IJCK 40, 454        480 cited Lamb JJ Mozurkewich M Benson SW JPC 88:6441-6448 1984
+#  Rasmussen; IJCK 40, 454480 cited Lamb JJ Mozurkewich M Benson SW JPC 88:6441-6448 1984
 
 # Reaction 877
 reaction('HONO2 + NH2 <=> NH3 + NO3', [1.030000e+21, -3.85, 191.0],
@@ -6769,11 +6769,11 @@ reaction('CH + NH3 <=> H2CN + H + H', [4.400000e+13, 0.0, -630.0])
 
 # Reaction 900
 reaction('CH + NH2 <=> H2CN + H', [3.000000e+13, 0.0, 0.0])
-#  Mathieu 2016 : Fuel 182 (2016) 597        612
+#  Mathieu 2016 : Fuel 182 (2016) 597612
 
 # Reaction 901
 reaction('CH + NH <=> HCN + H', [3.000000e+13, 0.0, 0.0])
-#  Mathieu 2016 : Fuel 182 (2016) 597        612
+#  Mathieu 2016 : Fuel 182 (2016) 597612
 # ------------------------C REACTIONS------------------------------------------
 
 # Reaction 902
@@ -6801,7 +6801,7 @@ reaction('CH2-1 + NO <=> CH2-3 + NO', [1.000000e+14, 0.0, 0.0])
 reaction('CH2-1 + N2O <=> CH2O + N2', [3.800000e+13, 0.0, 0.0])
 #  Mendiara 2009
 #  M Koch, F Temps, R Wagener, HG Wagner,
-#  "Kinetics of the reactions of CH2 (    1A1) with CH3C2H, HCN, CO2, N2O and COS."
+#  "Kinetics of the reactions of CH2 (1A1) with CH3C2H, HCN, CO2, N2O and COS."
 #  Ber Bunsenges phys Chem 94 (1990) 645-650.
 
 # Reaction 908
@@ -6878,12 +6878,12 @@ reaction('CH3 + NO <=> H2CN + OH', [1.500000e-01, 3.52, 3950.0])
 # Reaction 924
 reaction('CH3 + NO2 <=> CH3O + NO', [4.000000e+13, -0.2, 0.0])
 #  4.000E+13 / Alzueta 1999 also used by RASMUSSEN 2008/Tian 2009/Mathieu 2016 : GLA/BEN99
-# CH3+NO2=CH3O+NO                                 5.600E+14  -0.50    0.000E+00 ! Matsugi et al. 2017; J. Phys. Chem. A 2017, 121, 4218       4224
+# CH3+NO2=CH3O+NO                                 5.600E+14  -0.50    0.000E+00 ! Matsugi et al. 2017; J. Phys. Chem. A 2017, 121, 42184224
 
 # Reaction 925
 reaction('CH3 + HNO <=> CH4 + NO', [1.500000e+11, 0.76, 348.0])
-#  YM Choi, MC Lin Int J Chem Kinet 2005 37 261-274 !  298        2500 K !Added in this work
-# # CH3+HNO=CH3NO+H                                 8.100E+03   2.40    6.160E+03 ! YM Choi, MC Lin Int J Chem Kinet 2005 37 261-274 !  298        2500 K !Added in this work
+#  YM Choi, MC Lin Int J Chem Kinet 2005 37 261-274 !  2982500 K !Added in this work
+# # CH3+HNO=CH3NO+H                                 8.100E+03   2.40    6.160E+03 ! YM Choi, MC Lin Int J Chem Kinet 2005 37 261-274 !  2982500 K !Added in this work
 # ------------------------CH3OH/CH3O/CH3O2 REACTIONS----------------------------
 
 # Reaction 926
@@ -6896,11 +6896,11 @@ reaction('CH3OH + NO2 <=> HNO2 + CH2OH', [2.400000e+03, 2.9, 27470.0])
 
 # Reaction 928
 reaction('CH3O + NO <=> CH2O + HNO', [1.300000e+14, -0.7, 0.0])
-#  Daguat 2005 : C&F 140 (2005) 161        171 cited Alzueta 1999
+#  Daguat 2005 : C&F 140 (2005) 161171 cited Alzueta 1999
 
 # Reaction 929
 reaction('CH3O + NO2 <=> HONO + CH2O', [6.000000e+12, 0.0, 2285.0])
-#  Daguat 2005; C&Flame 140 (2005) 161        171 also used by Alzueta 1999/Mendiara 2009
+#  Daguat 2005; C&Flame 140 (2005) 161171 also used by Alzueta 1999/Mendiara 2009
 
 # Reaction 930
 reaction('CH3O + HNO <=> CH3OH + NO', [3.160000e+13, 0.0, 0.0])
@@ -6932,7 +6932,7 @@ reaction('HCCO + NO <=> HCN + CO2', [3.700000e+14, -0.75, -90.0])
 
 # Reaction 935
 reaction('HCCO + NO2 <=> HCNO + CO2', [1.600000e+13, 0.0, 0.0])
-#  Zhang 2011 / Glarborg 2018: Temps F Wagner HGg Wolf M; Zeitschrift f    r Physikalische Chemie, 176(1), 27-39, 1992 (Munich) 176:27 1992 (p)
+#  Zhang 2011 / Glarborg 2018: Temps F Wagner HGg Wolf M; Zeitschrift fr Physikalische Chemie, 176(1), 27-39, 1992 (Munich) 176:27 1992 (p)
 # https://doi.org/10.1524/zpch.1992.176.part_1.027
 
 # Reaction 936
@@ -6980,12 +6980,12 @@ reaction('HCNO + O <=> NCO + OH', [7.000000e+12, 0.0, 0.0])
 # Reaction 943
 reaction('HCNO + OH <=> CO + H2NO', [1.000000e+13, 0.0, -1490.0])
 #  W Feng JP Meyer JF Hershberger J Phys Chem A 2006, 110, 4458-4464 (63%)
-#  Hue Minh Thi Nguyen, Trong Nghia Nguyen; Chemical Physics Letters 599 (2014) 15        22
+#  Hue Minh Thi Nguyen, Trong Nghia Nguyen; Chemical Physics Letters 599 (2014) 1522
 
 # Reaction 944
 reaction('HCNO + OH <=> HCO + HNO', [6.000000e+12, 0.0, -1490.0])
 #  W Feng JP Meyer JF Hershberger J Phys Chem A 2006, 110, 4458-4464 (37%)
-#  Hue Minh Thi Nguyen, Trong Nghia Nguyen; Chemical Physics Letters 599 (2014) 15        22
+#  Hue Minh Thi Nguyen, Trong Nghia Nguyen; Chemical Physics Letters 599 (2014) 1522
 
 # Reaction 945
 reaction('HCNO + CN <=> HCN + NCO', [6.000000e+13, 0.0, 0.0])
@@ -7001,7 +7001,7 @@ reaction('HCNO + NCO => HCN + NO + CO', [9.600000e+12, 0.0, 0.0])
 
 # Reaction 947
 reaction('HCNO + NH <=> HCNH + NO', [1.437000e+06, 1.97, 1390.0])
-#  250 - 3000 K; Xin et al.; J. Chem. Theory Comput. 2009, 5, 2021        2029
+#  250 - 3000 K; Xin et al.; J. Chem. Theory Comput. 2009, 5, 20212029
 # ---------------------------------
 
 # Reaction 948
@@ -7350,7 +7350,7 @@ three_body_reaction('NCN + M <=> C + N2 + M', [8.900000e+14, 0.0, 62120.0])
 
 # Reaction 1028
 reaction('NCN + H <=> HCN + N', [3.839000e+14, 0.0, 7956.0])
-#  Fa    heber et al. PCCP16 (2014) 11647-11657 , k*1.1
+#  Faheber et al. PCCP16 (2014) 11647-11657 , k*1.1
 
 # Reaction 1029
 reaction('NCN + O <=> CN + NO', [9.600000e+13, 0.0, 1387.0])
@@ -7468,19 +7468,19 @@ reaction('H2CN + NH2 <=> HCN + NH3', [9.200000e+05, 1.9, -1152.0])
 # Reaction 1054
 reaction('N2H4 + NO <=> N2H3 + HNO', [6.000000e+01, 3.16, 30845.0])
 #  P. Raghunath and Y.H. Lin and M.C. Lin
-#  Ab initio chemical kinetics for the N2H4+NOx (x=1        3) reactions and related reverse processes
+#  Ab initio chemical kinetics for the N2H4+NOx (x=13) reactions and related reverse processes
 #  Comp. Theor. Chem. 1046, 73-80, 2014
 
 # Reaction 1055
 reaction('N2H4 + NO2 <=> N2H3 + HONO', [8.200000e+01, 3.13, 8860.0])
 #  P. Raghunath and Y.H. Lin and M.C. Lin
-#  Ab initio chemical kinetics for the N2H4+NOx (x=1        3) reactions and related reverse processes,
+#  Ab initio chemical kinetics for the N2H4+NOx (x=13) reactions and related reverse processes,
 #  Comp. Theor. Chem. 1046, 73-80, 2014
 
 # Reaction 1056
 reaction('N2H4 + NO2 <=> N2H3 + HNO2', [2.400000e-02, 4.14, 7946.0])
 #  P. Raghunath and Y.H. Lin and M.C. Lin
-#  Ab initio chemical kinetics for the N2H4+NOx (x=1        3) reactions and related reverse processes,
+#  Ab initio chemical kinetics for the N2H4+NOx (x=13) reactions and related reverse processes,
 #  Comp. Theor. Chem. 1046, 73-80, 2014
 
 # Reaction 1057
@@ -7541,10 +7541,10 @@ reaction('C2H3 + N <=> HCN + CH2-3', [2.000000e+13, 0.0, 0.0])
 
 # Reaction 1069
 reaction('C2H + N2O <=> HCCO + N2', [1.765000e+13, 0.0, 7952.0])
-#  Nguyen et al. 2012;  Phys. Chem. Chem. Phys., 2012, 14, 7456        7470
+#  Nguyen et al. 2012;  Phys. Chem. Chem. Phys., 2012, 14, 74567470
 # commenting C2H3+NO=C2H2+HNO to check if it is the problem for lower C2 species
 # C2H3+NO=C2H2+HNO                                1.000E+12   0.00    1.000E+03 ! Mendiara 2009
-# Highly senstive to C2H2 production in flow reactor didn    t found in Glarborg 2018 mechanism
+# Highly senstive to C2H2 production in flow reactor didnt found in Glarborg 2018 mechanism
 
 # Reaction 1070
 reaction('C2H3 + NO <=> HCN + CH2O', [7.000000e+21, -3.4, 1025.0])
@@ -7552,7 +7552,7 @@ reaction('C2H3 + NO <=> HCN + CH2O', [7.000000e+21, -3.4, 1025.0])
 
 # Reaction 1071
 reaction('C2H3 + NO2 <=> CH2CHO + NO', [7.700000e+14, -0.6, 0.0])
-#  Mendiara 2009 / WD Geppert AJ Eskola RB Timonen L Halonen JPCA 108 (2004) 4232        4238
+#  Mendiara 2009 / WD Geppert AJ Eskola RB Timonen L Halonen JPCA 108 (2004) 42324238
 
 # Reaction 1072
 reaction('C3H3 + N <=> HCN + C2H2', [1.000000e+13, 0.0, 0.0])
@@ -7601,7 +7601,7 @@ reaction('CH3OCH2O2 + HONO <=> CH3OCH2O2H + NO2', [2.140000e+17, 0.0, 19970.0])
 
 # Reaction 1083
 reaction('CH3CO3 + NO <=> CH3CO2 + NO2', [2.530000e+12, 0.0, -360.0])
-#  Mathieu et al 2016; Fuel 182 (2016) 597        612
+#  Mathieu et al 2016; Fuel 182 (2016) 597612
 
 # Reaction 1084
 reaction('C3H5 + NO <=> C3H4 + HNO', [1.000000e+12, 0.0, 1000.0])
@@ -7626,19 +7626,19 @@ reaction('C3H8 + NO2 <=> I-C3H7 + HNO2', [6.000000e+13, 0.0, 30300.0])
 
 # Reaction 1089
 reaction('C2 + NO <=> C2O + N', [2.300000e+13, 0.0, 8640.0])
-#  Tian et al. C&F 156 (2009) 1413        1426
+#  Tian et al. C&F 156 (2009) 14131426
 
 # Reaction 1090
 reaction('C2 + N2 <=> CN + CN', [1.500000e+13, 0.0, 41730.0])
-#  Tian et al. C&F 156 (2009) 1413        1426
+#  Tian et al. C&F 156 (2009) 14131426
 
 # Reaction 1091
 reaction('C2O + NO <=> CO + NCO', [1.000000e+14, 0.0, 670.0])
-#  Tian et al. C&F 156 (2009) 1413        1426
+#  Tian et al. C&F 156 (2009) 14131426
 
 # Reaction 1092
 reaction('C2O + NO2 <=> CO2 + NCO', [5.100000e+13, 0.0, 125.0])
-#  Tian et al. C&F 156 (2009) 1413        1426
+#  Tian et al. C&F 156 (2009) 14131426
 # --------------New sub-mechanism added 2019-7-24
 # HCNH=HCN+H                                       6.100E+28 -5.69   2.427E+03 ! Dean/Bozzelli 2000 | 1 ATM N2
 

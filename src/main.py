@@ -11,12 +11,18 @@ from src.calculations.diffusion import TransportCalc
 import cantera.cti2yaml as cli
 
 def main():
-    # run_flame("okafor-2017.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("arun.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    run_flame("gri.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    run_flame("UCSD.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
+
+    run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_rich.csv', flame_type='stagnation')
     run_flame("zhang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
+    run_flame("okafor-2017.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    run_flame("gri.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    run_flame("UCSD.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+
+    run_flame("wang.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    run_flame("zhang.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    run_flame("okafor-2017.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
+    run_flame("gri.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
+    run_flame("UCSD.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
     # run_flame("okafor-2017.cti", "freely_prop/CH4_NH3/icfd_lbv_test.csv", flame_type="freely_prop")
 
     # plotting example:
