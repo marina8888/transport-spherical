@@ -35,7 +35,7 @@ class StagnationFlame(BaseFlame):
     def configure_flame(self):
         # we are using an ImpingingJet class but there are others that might be suitable for other experiments
         self.f = ct.ImpingingJet(gas=self.gas, width=0.02)
-        self.f.set_max_grid_points(domain=1, npmax=1950)
+        self.f.set_max_grid_points(domain=1, npmax=1350)
         self.f.inlet.mdot = self.vel * self.gas.density
         self.f.surface.T = self.T
         self.f.transport_model = "Multi"

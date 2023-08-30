@@ -15,8 +15,8 @@ def main():
     # run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_rich.csv', flame_type='stagnation')
     # run_flame("zhang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
     # run_flame("okafor-2017.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
-    run_flame("gri.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
-    run_flame("UCSD.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
+    # run_flame("gri.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
+    # run_flame("UCSD.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
 
     run_flame("okafor-2017.cti", '/stagnation/CH4_NH3/60%_data_reduced.csv', flame_type='stagnation')
     run_flame("gri.cti", '/stagnation/CH4_NH3/60%_data_reduced.csv', flame_type='stagnation')
