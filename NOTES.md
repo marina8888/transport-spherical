@@ -95,3 +95,7 @@ https://rmg.mit.edu/database/thermo/molecule/1%20C%20u0%20p0%20c0%20%7B2,T%7D%20
 
 Respecth: <br>
 https://respecth.elte.hu/find.php?id=159852&name=%20HCN
+
+****
+<h3> SOLVER ADJOINT </h3>
+gradient of my objective function with respect to some parameters. In specific the objective function depends on the solution of a differential equation which in turn depends on said parameters which I am looking to find the optimum of.
