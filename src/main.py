@@ -13,9 +13,9 @@ import cantera.cti2yaml as cli
 def main():
     # run_flame("gri.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
     # run_flame("UCSD.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("glarborg.cti", '/stagnation/CH4_NH3/40%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("glarborg.cti", '/stagnation/CH4_NH3/60%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("creck.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
+    run_flame("wang.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
+    run_flame("wang.cti", '/stagnation/CH4_NH3/test2.csv', flame_type='stagnation')
 
     # plotting example:
     # plotter_single("1000grid/stagnation_CH4_NH3/20%", 'x_col', 'flame_speed', 'adiabatic flame temperature, '+ r"$\mathrm{T_{A}}$" + ' (K)', 'ammonia heat ratio, '+ r"$\mathrm{E_{NH3}}$", ['0.1MPa', '0.5MPa'])
@@ -30,7 +30,7 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("creck.cti", "stagnation/CH4_NH3/test3.csv", flame_type="stagnation", species='HCN')
+    run_rop_sens("creck.cti", "stagnation/CH4_NH3/test3.csv", flame_type="stagnation", species='N2O')
 
 
 if __name__ == "__main__":
