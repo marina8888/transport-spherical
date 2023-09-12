@@ -58,4 +58,25 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     plt.show()
     plt.switch_backend('Agg')
 
+def plot_all(folder, species, multiplier):
+    colors = ['grey', 'r', 'blue', 'green', 'purple']
+    labels = ['10%', '20%', '30%', '40%', '60%']
+    folders = ['10%_data_reduced.csv', '20%_data_reduced.csv', '30%_data_reduced.csv', '40%_data_reduced.csv', '60%_data_reduced.csv']
+    for f,c,l in zip(folders, colors, labels):
+        df = pd.read_csv(f"{input_dir}/{folder}/{f}")
+        coefficients_y = np.polyfit(df["phi"], df[species], 6)
+        trend_y = np.polyval(coefficients_y, np.linspace(df["phi"].min(), df["phi"].max(), 20))
+        plt.plot(np.linspace(df["phi"].min(), df["phi"].max(),20), trend_y* multiplier,label = l, color = c, linewidth=3)
+        plt.scatter(df["phi"], df[species] * multiplier, color = c)
+        # plt.plot(df["phi"], df[species] * multiplier, color = c, label = df.loc[0,'blend'])
 
+        # plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, linewidth=3, label=legend)
+    plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
+    plt.ylabel(f"{species}", fontsize=TEXT_SIZE)
+    plt.tight_layout()
+    plt.figsize = (10,5)
+    plt.xlim(0.4, 1.45)
+    plt.savefig(f"{output_dir}/graphs/tester_all.jpg")
+    plt.show()
+    plt.legend()
+    plt.switch_backend('Agg')

@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from src.calculations.error_calculate import ErrorCalculator
-from src.plotter.numerical_vs_exp import plotter
+from src.plotter.numerical_vs_exp import plotter, plot_all
 from src.plotter.numerical_only import plotter_domain, plotter_single, plotter_domain_sheet
 from src.settings.filepaths import input_dir, mech_dir
 from src.core.call_flame import run_flame
@@ -11,11 +11,11 @@ from src.calculations.diffusion import TransportCalc
 import cantera.cti2yaml as cli
 
 def main():
-    # run_flame("gri.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("UCSD.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
-    run_flame("wang.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
-    run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    run_flame("wang.cti", '/stagnation/CH4_NH3/test2.csv', flame_type='stagnation')
+    # run_flame("wang.cti", '/stagnation/CH4_NH3/30%_data_reduced.csv', flame_type='stagnation')
+    # run_flame("wang.cti", '/stagnation/CH4_NH3/20%_data_reduced.csv', flame_type='stagnation')
+    # run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
+    # run_flame("creck.cti", '/stagnation/CH4_NH3/test.csv', flame_type='stagnation')
+    # run_flame("wang.cti", '/stagnation/CH4_NH3/test.csv', flame_type='stagnation')
 
     # plotting example:
     # plotter_single("1000grid/stagnation_CH4_NH3/20%", 'x_col', 'flame_speed', 'adiabatic flame temperature, '+ r"$\mathrm{T_{A}}$" + ' (K)', 'ammonia heat ratio, '+ r"$\mathrm{E_{NH3}}$", ['0.1MPa', '0.5MPa'])
@@ -23,6 +23,8 @@ def main():
     #                r"$\mathrm{X_{NO}}$" + ' (ppmv)',
     #                'equivalence ratio, ' + r"$\mathrm{\varphi}$", None, num_mulitplier=1000000) #(%, vol)
     # plotter("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "HNCO", 1, r"$\mathrm{X_{HNCO}}$" + ', (ppmv)', 1000000)
+    # plot_all("stagnation/CH4_NH3_final", 'NO',1)
+
     # plotting domain example, mech only:
     # plotter_domain_sheet("../resources/output/numerical_domain/stagnation_CH4_NH3/0.2_strain_allE_0.9phi/ICFD_1bar_0.2_okafor-2017.csv", [0, 0.2, 0.4, 0.6, 0.8])
 
