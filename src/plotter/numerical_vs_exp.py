@@ -5,7 +5,7 @@ import os
 import numpy as np
 from src.settings.filepaths import output_dir_numerical_output, input_dir, output_dir
 
-TEXT_SIZE = 14
+TEXT_SIZE = 16
 def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0):
     """
     Plot a comparison from a df_numerical_list to experimental comparison along phi on the x axis.
@@ -17,6 +17,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     @param num_mulitplier: multiplier for the numerical file
     @return:
     """
+    plt.figure(figsize=(6,6))
     exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
     numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
@@ -48,12 +49,11 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black", fmt="")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(loc = 2, fontsize=TEXT_SIZE)
+    plt.legend( fontsize=TEXT_SIZE)
     # plt.xlim(0.6, 1.3)
     plt.ylim(0)
     plt.xlim(exp_df['phi'].min()-0.05, exp_df['phi'].max()+0.05)
     plt.tight_layout()
-    plt.figsize = (10,5)
     plt.savefig(f"{output_dir}/graphs/tester_{col}.jpg")
     plt.show()
     plt.switch_backend('Agg')

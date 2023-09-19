@@ -11,7 +11,7 @@ from src.settings.filepaths import output_dir
 # code to run sensitivity and ROP functions, and plot them. Plot a ROP diagram.
 
 SENSITIVITY_THRESHOLD = 0.2
-ROP_THRESHOLD = 0.0000001
+ROP_THRESHOLD = 0.000001
 PERTURBATION = 1e-2
 
 class BaseFlame(abc.ABC):
@@ -74,7 +74,7 @@ class BaseFlame(abc.ABC):
                 ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
                 rop = net_stoich_coeffs[species_ix, r] * ropr
                 int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
-            rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=[species], data=int_rop)
+            rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data=int_rop)
             print(rops_df)
             return rops_df
 
