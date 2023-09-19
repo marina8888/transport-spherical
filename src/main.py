@@ -1,22 +1,28 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import cantera.cti2yaml as cli
+
 from src.calculations.error_calculate import ErrorCalculator
+from src.calculations.diffusion import TransportCalc
+
 from src.plotter.numerical_vs_exp import plotter, plot_all
 from src.plotter.numerical_only import plotter_domain, plotter_single, plotter_domain_sheet
 from src.settings.filepaths import input_dir, mech_dir
-from src.core.call_flame import run_flame
-from src.core.call_rop import run_rop_sens
-from src.core.call_domain import run_flame_domain
-from src.calculations.diffusion import TransportCalc
-import cantera.cti2yaml as cli
+
+from src.routes.call_flame import run_flame
+from src.routes.rop_sens import run_rop_sens
+from src.routes.call_domain import run_flame_domain
+
+
+
 
 def main():
-    run_flame("vargas.cti", '/freely_prop/H2_NH3/Lhulier_data_0.6.csv', flame_type='freely_prop')
-    run_flame("wang.cti", '/freely_prop/H2_NH3/Lhulier_data_0.6.csv', flame_type='freely_prop')
-    # run_flame("wang.cti", '/stagnation/CH4_NH3/10%_data_reduced.csv', flame_type='stagnation')
-    # run_flame("creck.cti", '/stagnation/CH4_NH3/test.csv', flame_type='stagnation')
-    # run_flame("wang.cti", '/stagnation/CH4_NH3/test.csv', flame_type='stagnation')
-
+    # run flame simulation:
+    # run_flame("okafor-mod.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
+    # run_flame("creck.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
+    # run_flame("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
+    # run_flame("creck.cti", 'stagnation/CH3_NH3_AH_sent_2ndprocessing/20%_data_jp_symp.csv', flame_type='stagnation')
+    # run_flame("arun.cti", 'stagnation/CH3_NH3_AH_sent_2ndprocessing/20%_data_jp_symp.csv', flame_type='stagnation')
     # plotting example:
     # plotter_single("1000grid/stagnation_CH4_NH3/20%", 'x_col', 'flame_speed', 'adiabatic flame temperature, '+ r"$\mathrm{T_{A}}$" + ' (K)', 'ammonia heat ratio, '+ r"$\mathrm{E_{NH3}}$", ['0.1MPa', '0.5MPa'])
     # plotter_single("1000grid/stagnation_CH4_NH3/60%", 'phi', 'NO',
@@ -32,11 +38,15 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    # run_rop_sens("wang.cti", "stagnation/CH4_NH3/test3.csv", flame_type="stagnation", species='NO')
-    # run_rop_sens("wang.cti", "stagnation/CH4_NH3/test.csv", flame_type="stagnation", species='NO')
-    # run_rop_sens("creck.cti", "stagnation/CH4_NH3/test3.csv", flame_type="stagnation", species='NO')
-    # run_rop_sens("creck.cti", "stagnation/CH4_NH3/test.csv", flame_type="stagnation", species='NO')
-
+    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO2', type='sens_adjoint')
+    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
+                 species='NH3', type='sens_adjoint')
+    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
+                 species='N2O', type='sens_adjoint')
+    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
+                 species='HCN', type='sens_adjoint')
+    # run_rop_sens("creck.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO', type='sens_adjoint')
+    # run_rop_sens("arun.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO', type = 'sens_adjoint')
 
 
 if __name__ == "__main__":

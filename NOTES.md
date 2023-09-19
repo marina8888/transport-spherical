@@ -18,7 +18,7 @@
 <br>[x] Plot experimental and numerical data on one graph
 <br>[x] Calculate the error between numerical and experimental data
 <br>[x] Undertake a ROP and sensitivity analysis for the main reactions and paste to file, given a specific input condition
-<br>[ ] Switch to the solver adjoint method
+<br>[x] Switch to the solver adjoint method
 <br>[ ] Undertake a thermo file sensitivity analysis
 <br>[ ] Undertake  transport file sensitivity analysis
 <br>[ ] Integrate the above with UFlame
@@ -99,3 +99,4 @@ https://respecth.elte.hu/find.php?id=159852&name=%20HCN
 ****
 <h3> SOLVER ADJOINT </h3>
 gradient of my objective function with respect to some parameters. In specific the objective function depends on the solution of a differential equation which in turn depends on said parameters which I am looking to find the optimum of.
+Cantera has an inbuilt solver_adjoint method, which is a Cython/C++ function not directly accessible from the python interface. However, the flame_speed_sensitivity function in the

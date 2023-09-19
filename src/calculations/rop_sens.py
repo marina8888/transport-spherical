@@ -3,16 +3,19 @@ import cantera as ct
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from src.settings.logger import LogConfig
 import os
-import graphviz.dot as dot
-
 from src.settings.filepaths import output_dir
+logger = LogConfig.configure_logger(__name__)
 
-# code to run sensitivity and ROP functions, and plot them. Plot a ROP diagram.
+# code to run sensitivity and rop for a single input species, and all rops for a diagram.
 
 SENSITIVITY_THRESHOLD = 0.2
+SENSITIVITY_THRESHOLD_ADJOINT = 0.008
 ROP_THRESHOLD = 0.000001
-PERTURBATION = 1e-2
+BRUTE_FORCE_PERTURBATION = 1e-2
+ADJOINT_PERTURBATION = 0.05
+SENSITIVITY_POSITION = -1
 
 class BaseFlame(abc.ABC):
     @abc.abstractmethod
@@ -23,34 +26,41 @@ class BaseFlame(abc.ABC):
         """
         pass
 
-    def get_rops(self):
+    def get_rop(self):
         """
         General function to get and plot ROPs
-        @return:
+        @return: None
         """
         rops_df = self.calculate_rops()
         self.plot_rop(rops_df)
 
-    def get_sens(self):
+    def get_sens_adjoint(self):
         """
-        General function to get and plot sensitivities
+        Adjoint method to get sensitivities for a specific species + plot
+        @return: None
+        """
+        sens_df = self.calculate_solver_adjoint_sens()
+        print("plotting adjoint")
+        self.plot_sens(sens_df)
+
+    def get_sens_brute_force(self):
+        """
+        Brute force method to get sensitivities for a specific species + plot
         @return:
         """
         sens_df = self.calculate_brute_force_sens()
+        print("plotting brute force")
         self.plot_sens(sens_df)
-
-    def get_rop_diagram(self):
+    def get_rop_all(self):
         """
         Get the ROP data for all species in order to plot a ROP diagram
         @return:
         """
         all_rops_df = pd.DataFrame(index = self.gas.reaction_equations())
-        print(self.gas.species_names)
         for s in self.gas.species_names:
+            logger.info(f"running all ROPs for species: {s}")
             temp_df = self.calculate_rops(s)
-            print(temp_df)
             all_rops_df = pd.concat([all_rops_df, temp_df], axis = 1)
-            print(all_rops_df)
         all_rops_df.to_csv(f"{output_dir}/rops/ROP_{type(self).__name__}_ALLSPECIES_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
     def calculate_rops(self, species = None):
@@ -58,15 +68,18 @@ class BaseFlame(abc.ABC):
         Calculate ROP values for species selected in the flame call.
         @param self:
         @param species:
-        @return:
+        @return: None
         """
         if species is None:
-            species = self.species
+            species_ix = self.gas.species_index(self.species) # use the default species passed in
+            columns = 'base_case'
+
+        else:
+            species_ix = self.gas.species_index(species) # use the species passed in as a loop for all ROPs
+            columns = species
 
         try:
-            species_ix = self.gas.species_index(species)
             x = self.f.grid[:]  # put grids in here [550:750] to select specific flame zone
-
             int_rop = []
             net_stoich_coeffs = (self.f.gas.product_stoich_coeffs() - self.f.gas.reactant_stoich_coeffs())
 
@@ -74,28 +87,12 @@ class BaseFlame(abc.ABC):
                 ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
                 rop = net_stoich_coeffs[species_ix, r] * ropr
                 int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
-            rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data=int_rop)
-            print(rops_df)
+            rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=[columns], data=int_rop)
             return rops_df
 
         except ValueError:
-            self.logger.info('Cannot recognise species. Will not plot ROP.')
+            self.logger.info('Cannot recognise species. Cannot calculate ROP')
             pass
-
-
-    def plot_rop(self, df: pd.DataFrame):
-        # sort in order and take main reactions only:
-        rop_subset = df[df["base_case"].abs() > ROP_THRESHOLD]
-        reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
-        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Rate of Production for phi = {self.species} at {self.phi}", legend=None)
-        plt.rcParams.update({"axes.labelsize": 10})
-        plt.gca().invert_yaxis()
-        plt.locator_params(axis="x", nbins=6)
-        plt.tight_layout()
-
-        plt.savefig(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
-        plt.show()
-        df.to_csv(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
 
     def calculate_brute_force_sens(self):
@@ -117,7 +114,7 @@ class BaseFlame(abc.ABC):
         for m in range(self.gas.n_reactions):
             print(f'reaction {m}')
             self.gas.set_multiplier(1.0)  # reset all multipliers
-            self.gas.set_multiplier(1 + PERTURBATION, m)  # perturb reaction m
+            self.gas.set_multiplier(1 + BRUTE_FORCE_PERTURBATION, m)  # perturb reaction m
 
             # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
             # Turn auto-mode off since the flame has already been solved
@@ -130,88 +127,96 @@ class BaseFlame(abc.ABC):
                 species_ix = self.gas.species_index(self.species)
                 Su = self.f.X[species_ix, -1]
 
-            sens_df.iloc[m, 0] = (Su - Su0) / (Su0 * PERTURBATION)
+            sens_df.iloc[m, 0] = (Su - Su0) / (Su0 * BRUTE_FORCE_PERTURBATION)
+
         # return mech to normal multipliers:
         self.gas.set_multiplier(1.0)
         return sens_df
 
-    def solver_adjoint_sens(self):
+    def calculate_solver_adjoint_sens(self):
         """
-        https://groups.google.com/g/cantera-users/c/wd171ne9DVk
+        Compute the normalized sensitivities of the species production, taken at the final grid point
+        :math:`s_{i, spec}` with respect to the reaction rate constants :math:`k_i`:
+        .. math::
+            s_{i, spec} = \frac{k_i}{[X]} \frac{d[X]}{dk_i}
         @return:
         """
-        def get_species_reaction_sensitivities(self, species, grid_point):
-            r"""
-            Compute the normalized sensitivities of the species production
-            :math:`s_{i, spec}` with respect to the reaction rate constants :math:`k_i`:
-            .. math::
-                s_{i, spec} = \frac{k_i}{[X]} \frac{d[X]}{dk_i}
-            """
+        def g(sim):
+            return sim.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
 
-            def g(sim):
-                return sim.X[self.gas.species_index(species), grid_point]
+        # components are accessible values of interest, and n_points is number of grid points.
+        # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
+        Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
+        if SENSITIVITY_POSITION == -1:
+            grid_point = len(self.f.grid)-1 # gets the final grid point
+        else:
+            grid_point = SENSITIVITY_POSITION  # gets the final grid point
 
-            Nvars = sum(D.n_components * D.n_points for D in self.domains)
+        # Index of self.species in the global solution vector
+        # i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species)
+        i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[1].n_components*grid_point
 
-            # Index of u[0] in the global solution vector
-            i_spec = self.inlet.n_components + self.flame.component_index(species)
+        dgdx = np.zeros(Nvars)
+        dgdx[i_spec] = ADJOINT_PERTURBATION
+        spec_0 = g(self.f)
 
-            dgdx = np.zeros(Nvars)
-            dgdx[i_spec] = 1
+        def perturb(sim, i, dp):
+            sim.gas.set_multiplier(1 + dp, i)
 
-            spec_0 = g(self)
+        sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
+        return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
 
-            def perturb(sim, i, dp):
-                sim.gas.set_multiplier(1 + dp, i)
+    def get_sens_thermo(self):
+        pass
 
-            return self.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
+    def get_sens_trans(self):
+        pass
+
     def plot_sens(self, df: pd.DataFrame):
-        # sort in order and take main reactions only:
-        rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD]
-        reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
-        rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species}", legend=None)
-        plt.rcParams.update({"axes.labelsize": 10})
-        plt.gca().invert_yaxis()
-        plt.locator_params(axis="x", nbins=6)
-        plt.tight_layout()
+        """
+        Plot sensitivity for a specific species
+        @param df:
+        @return:
+        """
+        try:
+            # sort in order and take main reactions only:
+            rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD_ADJOINT]
+            reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
+            rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species} at phi = {self.phi}", legend=None)
 
-        plt.savefig(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
-        plt.show()
+            plt.rcParams.update({"axes.labelsize": 12})
+            plt.gca().invert_yaxis()
+            plt.locator_params(axis="x", nbins=6)
+            plt.tight_layout()
+            plt.savefig(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+            plt.show()
+
+        except IndexError:
+            logger.info("Please adjust threshold or perturbation values")
+
         df.to_csv(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
-    def plot_thermo_sens(self):
 
-        # take species at outlet or velocity at inlet:
-        if self.species == 'lbv':
-            print('WARNING: taking lbv for a stagnation flame')
-            Su0 = self.f.velocity[0]
-        else:
-            species_ix = self.gas.species_index(self.species)
-            Su0 = self.f.X[species_ix, -1]
+    def plot_rop(self, df: pd.DataFrame):
+        """
+        Plot ROP for a specific species.
+        @param df:
+        @return:
+        """
+        try:
+            # sort in order and take main reactions only:
+            rop_subset = df[df["base_case"].abs() > ROP_THRESHOLD]
+            reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
+            rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Rate of production for {self.species} at phi = {self.phi}", legend=None)
+            plt.rcParams.update({"axes.labelsize": 10})
+            plt.gca().invert_yaxis()
+            plt.locator_params(axis="x", nbins=6)
+            plt.tight_layout()
 
-        # Create a dataframe to store sensitivity-analysis data:
-        sensitivities = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"])
+            plt.savefig(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+            plt.show()
 
-        for m in range(self.gas.n_reactions):
-            self.gas.species()[0].thermo.coeffs = [ 1.00000000e+03, 3.33727920e+00, -4.94024731e-05, 4.99456778e-07,
- -1.79566394e-10, 2.00255376e-14, -9.50158922e+02, -3.20502331e+00, 2.34433112e+00, 7.98052075e-03, -1.94781510e-05, 2.01572094e-08,
- -7.37611761e-12, -9.17935173e+02, 6.83010238e-01]
+        except IndexError:
+            logger.info("Please adjust threshold or perturbation values")
 
-            # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
-            # Turn auto-mode off since the flame has already been solved
-            self.f.solve(loglevel=0, refine_grid=False, auto=False)
-
-            # new values with pertubation:
-            if self.species == 'lbv':
-                Su = self.f.velocity[0]
-            else:
-                species_ix = self.gas.species_index(self.species)
-                Su = self.f.X[species_ix, -1]
-
-            sensitivities.iloc[m, 0] = (Su - Su0) / (Su0 * PERTURBATION)
-
-        # return mech to normal multipliers:
-        self.gas.set_multiplier(1.0)
-        self.plot_sens(sensitivities)
-
-        print(self.gas.species()[0].thermo.coeffs)
+        df.to_csv(f"{output_dir}/rops/ROP_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
