@@ -1,18 +1,16 @@
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
 import os
-
 from src.settings.filepaths import output_dir, output_dir_numerical_output,output_dir_numerical_domain
 from src.calculations.basics import make_linestyle, split_df
-
 # COL_LIST = ["NO", "NH3", "H2", "NH2", "NH", "H"]
 # MULT_LIST =  [50, 1, 1.5, 150, 100, 150, 150]
 # COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
 # TEXT_SIZE = 16
-
-figure(figsize=(7, 6), dpi=80)
+fig = plt.figure(figsize=(7, 6), dpi=80)
 COL_LIST = ["NO2", "N2O"]
 MULT_LIST =  [1500, 100]
 COLOUR_LIST = ["red", "darkorange", "gold", "limegreen", "darkgreen", "b"]

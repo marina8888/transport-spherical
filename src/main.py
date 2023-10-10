@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import cantera.cti2yaml as cli
 
 from src.calculations.error_calculate import ErrorCalculator
 from src.calculations.diffusion import TransportCalc
@@ -38,7 +37,7 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
+    run_rop_sens("wang.yaml", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
                   species='NO', type='sens_adjoint')
 
 if __name__ == "__main__":
