@@ -37,8 +37,8 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("wang.yaml", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
-                  species='NO', type='sens_adjoint')
+    run_rop_sens("UCSD.yaml", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
+                  species='NO', type='sens_thermo')
 
 if __name__ == "__main__":
     main()

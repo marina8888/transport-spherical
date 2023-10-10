@@ -175,10 +175,9 @@ class BaseFlame(abc.ABC):
         if SENSITIVITY_POSITION == -1:
             grid_point = len(self.f.grid) - 1  # gets the final grid point
         else:
-            grid_point = SENSITIVITY_POSITION  # gets the final grid point
+            grid_point = SENSITIVITY_POSITION  # sets grid point to input
 
         # Index of self.species in the global solution vector
-        # i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species)
         i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[
             1].n_components * grid_point
 

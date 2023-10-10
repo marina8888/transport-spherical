@@ -80,31 +80,26 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type =
 
 
     # type of sensitivity analysis:
+    match type:
+        case 'sens_adjoint':
+            classes["experiment_class"].apply(lambda x: x.get_sens_adjoint())
 
-    if type == 'sens_adjoint':
-        classes["experiment_class"].apply(lambda x: x.get_sens_adjoint())
+        case 'sens_brute_force':
+            classes["experiment_class"].apply(lambda x: x.get_sens_brute_force())
 
-    elif type == 'sens_brute_force':
-        classes["experiment_class"].apply(lambda x: x.get_sens_brute_force())
+        case 'sens_thermo':
+            classes["experiment_class"].apply(lambda x: x.get_sens_thermo())
 
-    elif type == 'sens_thermo':
-        classes["experiment_class"].apply(lambda x: x.get_sens_thermo())
+        case 'sens_trans':
+            classes["experiment_class"].apply(lambda x: x.get_sens_trans())
 
-    elif type == 'sens_trans':
-        classes["experiment_class"].apply(lambda x: x.get_sens_trans())
+        # type of ROP analysis:
+        case 'rop_all':
+            classes["experiment_class"].apply(lambda x: x.get_rop_all())
 
-    else:
-        print('Sensitivity analysis input argument not recognised - not running a sensitivity analysis')
+        case 'rop':
+            classes["experiment_class"].apply(lambda x: x.get_rop())
 
-
-    # type of ROP analysis:
-
-    if type == 'rop_all':
-        classes["experiment_class"].apply(lambda x: x.get_rop_all())
-
-    elif type == 'rop':
-        classes["experiment_class"].apply(lambda x: x.get_rop())
-
-    else:
-        print('ROP analysis input argument not recognised - not running an ROP analysis')
+        case _:
+            print('Argument not recognised: not doing any ROP and sensitivity')
 

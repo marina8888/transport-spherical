@@ -28,7 +28,7 @@ class StagnationFlame(BaseFlame):
 
     def configure_gas(self):
         # gas is a solution class from the Cantera library
-        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.cti")
+        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.yaml")
         self.gas.TP = self.TP
         self.gas.set_equivalence_ratio(self.phi, fuel=self.fuel, oxidizer=self.oxidizer)
 
