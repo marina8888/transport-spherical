@@ -22,24 +22,16 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
     # create a linestyle list to loop so the linestyle is always different:
-    linestyle = ["--", ":", "-."]
-    repetitions = len(files) // len(linestyle)
-    remainder =  len(files) % len(linestyle)
-    new_list = linestyle * repetitions + linestyle[:remainder]
-    linestyle = [new_list[i % len(linestyle)] for i in range(len(files))]
-
-    for file, l in zip(files, linestyle):
+    linestyle = ["--", ":", "-.", "--", ":"]
+    colour = ['green', 'blue', 'orange', 'red']
+    for file, l, c in zip(files, linestyle, colour):
         df = pd.read_csv(f"{numerical_folder}/{file}")
-        # exp_df = exp_df[exp_df["blend"] == df.loc[0, "blend"]]
         legend = file.split('_')[-1].split('.')[0]
-        coefficients_y = np.polyfit(df["phi"], df[col], 10)
-        # trend_y = np.polyval(coefficients_y, np.linspace(df["phi"].min(), df["phi"].max(), 20))
-        # plt.plot(np.linspace(df["phi"].min(), df["phi"].max(),20), trend_y* num_mulitplier,linestyle=l, linewidth=3)
-        # plt.scatter(df["phi"], df[col] * num_mulitplier)
+        print(file, l, legend, c)
+        plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, color = c, linewidth=3, label=legend)
 
-        plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, linewidth=3, label=legend)
-        plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
-        plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
+    plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
+    plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
     # coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 21)
     # trend_y = np.polyval(coefficients_y, (np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 20, endpoint=True)))
     # plt.plot(np.linspace(exp_df['phi'].min(), exp_df['phi'].max(), 20, endpoint=True),
@@ -47,16 +39,17 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     plt.plot(exp_df["phi"], exp_df[col] * exp_multiplier, marker = None, linestyle = '-', color="black")
     plt.scatter(exp_df["phi"], exp_df[col] * exp_multiplier, s = 80, marker="o",facecolor='none', linestyle = '', color="black",
         label="Experiment")
-    plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black", fmt="")
+    plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend( fontsize=TEXT_SIZE)
-    # plt.xlim(0.6, 1.3)
-    plt.ylim(0)
+    plt.legend(loc = 1, fontsize=TEXT_SIZE)
+    # plt.xlim(0.6, 1.35)
+    plt.ylim(0, 12000)
+    plt.yticks([0, 2000, 4000, 6000, 8000, 10000, 12000])
     plt.xlim(exp_df['phi'].min()-0.05, exp_df['phi'].max()+0.05)
+    plt.xticks([0.6, 0.7, 0.8, 0.9, 1.0, 1.10, 1.20, 1.30])
     plt.tight_layout()
     plt.savefig(f"{output_dir}/graphs/tester_{col}.jpg")
     plt.show()
-    plt.switch_backend('Agg')
 
 def plot_all(folder, species, multiplier):
     colors = ['grey', 'r', 'blue', 'green', 'purple']

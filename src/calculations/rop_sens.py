@@ -141,9 +141,6 @@ class BaseFlame(abc.ABC):
             s_{i, spec} = \frac{k_i}{[X]} \frac{d[X]}{dk_i}
         @return:
         """
-        def g(sim):
-            return sim.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
-
         # components are accessible values of interest, and n_points is number of grid points.
         # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
         Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
@@ -158,7 +155,7 @@ class BaseFlame(abc.ABC):
 
         dgdx = np.zeros(Nvars)
         dgdx[i_spec] = ADJOINT_PERTURBATION
-        spec_0 = g(self.f)
+        spec_0 = self.f.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
 
         def perturb(sim, i, dp):
             sim.gas.set_multiplier(1 + dp, i)
@@ -167,7 +164,33 @@ class BaseFlame(abc.ABC):
         return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
 
     def get_sens_thermo(self):
-        pass
+        """
+        Modification on the solver adjoint function to perturb thermo parameters.
+        @return:
+        """
+        # components are accessible values of interest, and n_points is number of grid points.
+        # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
+        Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
+
+        if SENSITIVITY_POSITION == -1:
+            grid_point = len(self.f.grid) - 1  # gets the final grid point
+        else:
+            grid_point = SENSITIVITY_POSITION  # gets the final grid point
+
+        # Index of self.species in the global solution vector
+        # i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species)
+        i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[
+            1].n_components * grid_point
+
+        dgdx = np.zeros(Nvars)
+        dgdx[i_spec] = ADJOINT_PERTURBATION
+        spec_0 = self.f.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
+
+        def perturb(sim, i, dp):
+            sim.gas.set_multiplier(1 + dp, i)
+
+        sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
+        return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data=sens_vals)
 
     def get_sens_trans(self):
         pass

@@ -19,7 +19,7 @@ from src.routes.call_domain import run_flame_domain
 def main():
     # run flame simulation:
     # run_flame("okafor-mod.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
-    # run_flame("creck.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
+    # run_flame("creck.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation")
     # run_flame("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test.csv", flame_type="stagnation")
     # run_flame("creck.cti", 'stagnation/CH3_NH3_AH_sent_2ndprocessing/20%_data_jp_symp.csv', flame_type='stagnation')
     # run_flame("arun.cti", 'stagnation/CH3_NH3_AH_sent_2ndprocessing/20%_data_jp_symp.csv', flame_type='stagnation')
@@ -28,7 +28,7 @@ def main():
     # plotter_single("1000grid/stagnation_CH4_NH3/60%", 'phi', 'NO',
     #                r"$\mathrm{X_{NO}}$" + ' (ppmv)',
     #                'equivalence ratio, ' + r"$\mathrm{\varphi}$", None, num_mulitplier=1000000) #(%, vol)
-    # plotter("1000grid/stagnation_CH4_NH3/10%", "stagnation/CH4_NH3_final/10%_data_reduced.csv", "NO", 1, r"$\mathrm{X_{NO}}$" + ', (ppmv)', 1000000)
+    # plotter("1000grid/stagnation_CH4_NH3_2nd_processing/20%", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/20%_data_jp_symp.csv", "NO", 1, r"$\mathrm{X_{NO}}$" + ', (ppmv)', 1000000)
     # plot_all("stagnation/CH4_NH3_final", 'NO',1)
 
     # plotting domain example, mech only:
@@ -38,16 +38,8 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO2', type='sens_adjoint')
     run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
-                 species='NH3', type='sens_adjoint')
-    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
-                 species='N2O', type='sens_adjoint')
-    run_rop_sens("wang.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation",
-                 species='HCN', type='sens_adjoint')
-    # run_rop_sens("creck.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO', type='sens_adjoint')
-    # run_rop_sens("arun.cti", "/stagnation/CH3_NH3_AH_sent_2ndprocessing/test2.csv", flame_type="stagnation", species='NO', type = 'sens_adjoint')
-
+                  species='NO', type='sens_adjoint')
 
 if __name__ == "__main__":
     main()

@@ -17,6 +17,7 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type =
     @param flame_type: 'stagnation' or 'freely_prop'
     @param conditions: list of integer numbers corresponding to csv file lines
     @param species: species to calculate ROP for
+    @param type: 'rop', 'rop_all', 'sens_adjoint', 'sens_brute_force', 'sens_thermo', 'sens_trans'
     @return:
     """
     logger.info(f"Using mechanism file: {mech}")
@@ -77,16 +78,33 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type =
     tqdm.pandas(desc="Igniting Flames")
     classes["experiment_class"].progress_apply(lambda x: x.solve())
 
-    # type of ROP or sensitivity analysis:
+
+    # type of sensitivity analysis:
 
     if type == 'sens_adjoint':
         classes["experiment_class"].apply(lambda x: x.get_sens_adjoint())
 
-    if type == 'sens_brute_force':
+    elif type == 'sens_brute_force':
         classes["experiment_class"].apply(lambda x: x.get_sens_brute_force())
 
-    if type == 'get_rop_all':
+    elif type == 'sens_thermo':
+        classes["experiment_class"].apply(lambda x: x.get_sens_thermo())
+
+    elif type == 'sens_trans':
+        classes["experiment_class"].apply(lambda x: x.get_sens_trans())
+
+    else:
+        print('Sensitivity analysis input argument not recognised - not running a sensitivity analysis')
+
+
+    # type of ROP analysis:
+
+    if type == 'rop_all':
         classes["experiment_class"].apply(lambda x: x.get_rop_all())
 
-    # if type == 'get_rop_species':
-    classes["experiment_class"].apply(lambda x: x.get_rop())
+    elif type == 'rop':
+        classes["experiment_class"].apply(lambda x: x.get_rop())
+
+    else:
+        print('ROP analysis input argument not recognised - not running an ROP analysis')
+
