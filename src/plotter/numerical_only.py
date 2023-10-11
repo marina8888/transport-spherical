@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import os
 from src.settings.filepaths import output_dir, output_dir_numerical_output,output_dir_numerical_domain
@@ -10,7 +10,6 @@ from src.calculations.basics import make_linestyle, split_df
 # MULT_LIST =  [50, 1, 1.5, 150, 100, 150, 150]
 # COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
 # TEXT_SIZE = 16
-fig = plt.figure(figsize=(7, 6), dpi=80)
 COL_LIST = ["NO2", "N2O"]
 MULT_LIST =  [1500, 100]
 COLOUR_LIST = ["red", "darkorange", "gold", "limegreen", "darkgreen", "b"]
@@ -102,6 +101,7 @@ def plotter_domain_sheet(numerical_sheet: str, LABELS_LIST:list):
     ax1.legend(fontsize = 8)
     # ax2.legend(loc=1)
     plt.tight_layout()
+    plt.figure(figsize=(7, 6), dpi=80)
     plt.show()
 
 def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_label:str, legend:list = None, num_mulitplier = 1.0 ):
@@ -137,12 +137,12 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
         plt.xlabel(x_label, fontsize=TEXT_SIZE)
         plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-
     plt.scatter(df[x_col], df[y_col] * num_mulitplier)
     plt.legend(fontsize=TEXT_SIZE)
     plt.ylim(0)
     # plt.xlim(0.88, 1.15)
     plt.tight_layout()
+    plt.figure(figsize=(7, 6), dpi=80)
     plt.savefig(f"{output_dir}/graphs/CH4_NH3/test_{y_col}.jpg")
     plt.show()
-    plt.switch_backend('Agg')
+

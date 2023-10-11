@@ -1,10 +1,11 @@
 import abc
 import cantera as ct
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from src.settings.logger import LogConfig
-import os
 from src.settings.filepaths import output_dir
 logger = LogConfig.configure_logger(__name__)
 
@@ -50,6 +51,15 @@ class BaseFlame(abc.ABC):
         """
         sens_df = self.calculate_brute_force_sens()
         print("plotting brute force")
+        self.plot_sens(sens_df)
+
+    def get_sens_thermo(self):
+        """
+        Brute force method to get sensitivities for a specific species + plot
+        @return:
+        """
+        sens_df = self.calculate_sens_thermo()
+        print("plotting adjoint thermo")
         self.plot_sens(sens_df)
     def get_rop_all(self):
         """
@@ -145,7 +155,7 @@ class BaseFlame(abc.ABC):
         # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
         Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
         if SENSITIVITY_POSITION == -1:
-            grid_point = len(self.f.grid)-1 # gets the final grid point
+            grid_point = len(self.f.grid) - 1 # gets the final grid point
         else:
             grid_point = SENSITIVITY_POSITION  # gets the final grid point
 
@@ -163,14 +173,25 @@ class BaseFlame(abc.ABC):
         sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
         return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
 
-    def get_sens_thermo(self):
+    def calculate_sens_thermo(self):
         """
         Modification on the solver adjoint function to perturb thermo parameters.
         @return:
         """
+        def g(sim):
+            return sim.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
+
+        def perturb(sim, i, dp):
+            sim.gas.species(0).thermo = ct.NasaPoly2(300, 5000, 101325, [1000.0, 3.53603521, -1.58270944e-04, -4.26984251e-07, 2.3754259e-09, -1.39708206e-12,
+      -1047.49645, 2.94603724, 2.9380297, 1.4183803e-03, -5.03281045e-07, 8.07555464e-11, -4.76064275e-15,
+      -917.18099, 5.95521985])
+            sim.gas.modify_species(0, sim.gas.species(0))
+            print(sim.gas.species(0))
+            # sim.gas.set_multiplier(1 + dp, i)
+
         # components are accessible values of interest, and n_points is number of grid points.
-        # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
-        Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
+        n_vars = sum(D.n_components * D.n_points for D in self.f.domains)
+        n_thermo = 311 # insert number of thermo parameters here
 
         if SENSITIVITY_POSITION == -1:
             grid_point = len(self.f.grid) - 1  # gets the final grid point
@@ -181,17 +202,14 @@ class BaseFlame(abc.ABC):
         i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[
             1].n_components * grid_point
 
-        dgdx = np.zeros(Nvars)
+        dgdx = np.zeros(n_vars)
         dgdx[i_spec] = ADJOINT_PERTURBATION
-        spec_0 = self.f.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
-
-        def perturb(sim, i, dp):
-            sim.gas.set_multiplier(1 + dp, i)
-
-        sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
+        spec_0 = g(self.f)
+        sens_vals = self.f.solve_adjoint(perturb, n_thermo, dgdx) / spec_0
+        print(sens_vals)
         return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data=sens_vals)
 
-    def get_sens_trans(self):
+    def calculate_sens_trans(self):
         pass
 
     def plot_sens(self, df: pd.DataFrame):
@@ -205,7 +223,6 @@ class BaseFlame(abc.ABC):
             rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD_ADJOINT]
             reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
             rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species} at phi = {self.phi}", legend=None)
-
             plt.rcParams.update({"axes.labelsize": 12})
             plt.gca().invert_yaxis()
             plt.locator_params(axis="x", nbins=6)
