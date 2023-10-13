@@ -12,7 +12,7 @@ logger = LogConfig.configure_logger(__name__)
 # code to run sensitivity and rop for a single input species, and all rops for a diagram.
 
 SENSITIVITY_THRESHOLD = 0.2
-SENSITIVITY_THRESHOLD_ADJOINT = 0.008
+SENSITIVITY_THRESHOLD_ADJOINT = 0.0000000000000000000000000008
 ROP_THRESHOLD = 0.000001
 BRUTE_FORCE_PERTURBATION = 1e-2
 ADJOINT_PERTURBATION = 0.05
@@ -178,37 +178,39 @@ class BaseFlame(abc.ABC):
         Modification on the solver adjoint function to perturb thermo parameters.
         @return:
         """
-        def g(sim):
-            return sim.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
+        # Create a dataframe to store sensitivity-analysis data:
+        sens_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=["base_case"])
 
-        def perturb(sim, i, dp):
-            sim.gas.species(0).thermo = ct.NasaPoly2(300, 5000, 101325, [1000.0, 3.53603521, -1.58270944e-04, -4.26984251e-07, 2.3754259e-09, -1.39708206e-12,
-      -1047.49645, 2.94603724, 2.9380297, 1.4183803e-03, -5.03281045e-07, 8.07555464e-11, -4.76064275e-15,
-      -917.18099, 5.95521985])
-            sim.gas.modify_species(0, sim.gas.species(0))
-            print(sim.gas.species(0))
-            # sim.gas.set_multiplier(1 + dp, i)
-
-        # components are accessible values of interest, and n_points is number of grid points.
-        n_vars = sum(D.n_components * D.n_points for D in self.f.domains)
-        n_thermo = 311 # insert number of thermo parameters here
-
-        if SENSITIVITY_POSITION == -1:
-            grid_point = len(self.f.grid) - 1  # gets the final grid point
+        # take species at outlet or velocity at inlet:
+        if self.species == 'lbv':
+            print('WARNING: taking lbv for a stagnation flame')
+            Su0 = self.f.velocity[0]
         else:
-            grid_point = SENSITIVITY_POSITION  # sets grid point to input
+            species_ix = self.gas.species_index(self.species)
+            Su0 = self.f.X[species_ix, -1]
 
-        # Index of self.species in the global solution vector
-        i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[
-            1].n_components * grid_point
+        for s in range(self.gas.n_species):
+            print(f'species {s} and {self.gas.species(s)}')
+            self.gas.species(s).thermo = ct.NasaPoly2(300, 5000, 101325, [1000.0, 3.53603521, -1.58270944e-04, -4.26984251e-07, 2.3754259e-09, -1.39708206e-12,
+      -1047.49645, 2.94603724, 2.9380297, 1.4183803e-03, -5.03281045e-07, 8.07555464e-11, -4.76064275e-15, -917.18099, 5.95521985])
+            self.gas.modify_species(0, self.gas.species(s))
 
-        dgdx = np.zeros(n_vars)
-        dgdx[i_spec] = ADJOINT_PERTURBATION
-        spec_0 = g(self.f)
-        sens_vals = self.f.solve_adjoint(perturb, n_thermo, dgdx) / spec_0
-        print(sens_vals)
-        return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data=sens_vals)
+            # Make sure the grid is not refined, otherwise it won't strictly be a small perturbation analysis
+            # Turn auto-mode off since the flame has already been solved
+            self.f.solve(loglevel=0, refine_grid=False, auto=False)
 
+            # new values with pertubation:
+            if self.species == 'lbv':
+                Su = self.f.velocity[0]
+            else:
+                species_ix = self.gas.species_index(self.species)
+                Su = self.f.X[species_ix, -1]
+
+            sens_df.iloc[s, 0] = (Su - Su0) / (Su0 * BRUTE_FORCE_PERTURBATION)
+
+        # return mech to normal multipliers:
+        self.gas.set_multiplier(1.0)
+        return sens_df
     def calculate_sens_trans(self):
         pass
 
