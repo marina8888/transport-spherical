@@ -12,7 +12,7 @@ logger = LogConfig.configure_logger(__name__)
 # code to run sensitivity and rop for a single input species, and all rops for a diagram.
 
 SENSITIVITY_THRESHOLD = 0.2
-SENSITIVITY_THRESHOLD_ADJOINT = 0.00001
+SENSITIVITY_THRESHOLD_ADJOINT = 0.000001
 ROP_THRESHOLD = 0.0001
 BRUTE_FORCE_PERTURBATION = 1e-2
 ADJOINT_PERTURBATION = 0.05
@@ -42,7 +42,7 @@ class BaseFlame(abc.ABC):
         """
         sens_df = self.calculate_solver_adjoint_sens()
         print("plotting adjoint")
-        self.plot_sens(sens_df)
+        self.plot_sens(sens_df, type = 'adjoint_reactions')
 
     def get_sens_brute_force(self):
         """
@@ -51,16 +51,26 @@ class BaseFlame(abc.ABC):
         """
         sens_df = self.calculate_brute_force_sens()
         print("plotting brute force")
-        self.plot_sens(sens_df)
+        self.plot_sens(sens_df, type = 'brute_reactions')
 
-    def get_sens_thermo(self):
+    def get_sens_entropy(self):
         """
         Brute force method to get sensitivities for a specific species + plot
         @return:
         """
-        sens_df = self.calculate_sens_thermo()
+        sens_df = self.calculate_sens_entropy()
         print("plotting adjoint thermo")
-        self.plot_sens(sens_df)
+        self.plot_sens(sens_df, type_f = 'adjoint_entropy')
+
+    def get_sens_enthalpy(self):
+        """
+        Brute force method to get sensitivities for a specific species + plot
+        @return:
+        """
+        sens_df = self.calculate_sens_enthalpy()
+        print("plotting adjoint thermo")
+        self.plot_sens(sens_df, type_f = 'adjoint_enthalpy')
+
     def get_rop_all(self):
         """
         Get the ROP data for all species in order to plot a ROP diagram
@@ -173,7 +183,7 @@ class BaseFlame(abc.ABC):
         sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, dgdx) / spec_0
         return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
 
-    def calculate_sens_thermo(self):
+    def calculate_sens_enthalpy(self):
         """
         Modification on the solver adjoint function to perturb thermo parameters.
         @return:
@@ -197,9 +207,10 @@ class BaseFlame(abc.ABC):
 
         def perturb(sim, i, dp):
             S = sim.gas.species(i)
+            print(f"species are: {S}")
             st = S.thermo
             coeffs = st.coeffs
-            coeffs[[6, 13]] += 5 / ct.gas_constant
+            coeffs[[6, 13]] += dp*coeffs[[6, 13]] / ct.gas_constant
             snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
             S.thermo = snew
             sim.gas.modify_species(sim.gas.species_index(i), S)
@@ -208,36 +219,76 @@ class BaseFlame(abc.ABC):
         sens_vals = self.f.solve_adjoint(perturb, len(self.gas.species()), dgdx) / spec_0
         return pd.DataFrame(index=self.gas.species(), columns=['base_case'], data = sens_vals)
 
-
         # Create a dataframe to store sensitivity-analysis data:
+
+
+    def calculate_sens_entropy(self):
+        """
+        Modification on the solver adjoint function to perturb thermo parameters.
+        @return:
+        """
+        # components are accessible values of interest, and n_points is number of grid points.
+        # ImpingingJet flame has three domains (inlet, flame, surface), but only the flame domain stores information
+        Nvars = sum(D.n_components * D.n_points for D in self.f.domains)
+
+        if SENSITIVITY_POSITION == -1:
+            grid_point = len(self.f.grid) - 1 # gets the final grid point
+        else:
+            grid_point = SENSITIVITY_POSITION  # gets the final grid point
+
+        # Index of self.species in the global solution vector
+        # i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species)
+        i_spec = self.f.inlet.n_components + self.f.flame.component_index(self.species) + self.f.domains[1].n_components*grid_point
+
+        dgdx = np.zeros(Nvars)
+        dgdx[i_spec] = ADJOINT_PERTURBATION
+        spec_0 = self.f.X[self.gas.species_index(self.species), SENSITIVITY_POSITION]
+
+        def perturb(sim, i, dp):
+            S = sim.gas.species(i)
+            print(f"species are: {S}")
+            st = S.thermo
+            coeffs = st.coeffs
+            print(coeffs[[7, 14]])
+            coeffs[[7, 14]] += dp*coeffs[[7, 14]] / ct.gas_constant
+            print(f"coeffs new are: {coeffs[[7, 14]]}")
+            print(f"dp: {dp}")
+            print(f"ct.gas_constant: {ct.gas_constant}")
+            snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
+            S.thermo = snew
+            sim.gas.modify_species(sim.gas.species_index(i), S)
+        sens_vals = self.f.solve_adjoint(perturb, len(self.gas.species()), dgdx) / spec_0
+        return pd.DataFrame(index=self.gas.species(), columns=['base_case'], data = sens_vals)
+
 
 
 
     def calculate_sens_trans(self):
         pass
 
-    def plot_sens(self, df: pd.DataFrame):
+    def plot_sens(self, df: pd.DataFrame, type_f = 'reactions'):
         """
         Plot sensitivity for a specific species
         @param df:
         @return:
         """
         try:
+            pass
             # sort in order and take main reactions only:
-            rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD_ADJOINT]
-            reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
-            rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species} at phi = {self.phi}", legend=None)
-            plt.rcParams.update({"axes.labelsize": 12})
-            plt.gca().invert_yaxis()
-            plt.locator_params(axis="x", nbins=6)
-            plt.tight_layout()
-            plt.savefig(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
-            plt.show()
+            # rop_subset = df[df["base_case"].abs() > SENSITIVITY_THRESHOLD_ADJOINT]
+            # reactions_above_threshold = (rop_subset.abs().sort_values(by="base_case", ascending=False).index)
+            # rop_subset.loc[reactions_above_threshold].plot.barh(title=f"Sensitivity for {self.species} at phi = {self.phi}", legend=None)
+            # plt.rcParams.update({"axes.labelsize": 12})
+            # plt.gca().invert_yaxis()
+            # plt.locator_params(axis="x", nbins=6)
+            # plt.tight_layout()
+            # plt.savefig(f"{output_dir}/sens/SENS_{type_f}_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+            # plt.show()
 
         except IndexError:
             logger.info("Please adjust threshold or perturbation values")
 
-        df.to_csv(f"{output_dir}/sens/SENS_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        df.to_csv(f"{output_dir}/sens/SENS_{type_f}_{type(self).__name__}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
 
     def plot_rop(self, df: pd.DataFrame):

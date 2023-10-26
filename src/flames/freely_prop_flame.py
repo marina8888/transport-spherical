@@ -21,7 +21,7 @@ class FreelyPropFlame(BaseFlame):
 
     def configure_gas(self):
         # gas is a solution class from the Cantera library
-        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.cti")
+        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.yaml")
         self.gas.TP = self.TP
         self.gas.set_equivalence_ratio(self.phi, fuel=self.fuel, oxidizer=self.oxidizer)
 
@@ -40,7 +40,7 @@ class FreelyPropFlame(BaseFlame):
 
     def solve(self):
         try:
-            self.f.solve(loglevel=0, auto=True)
+            self.f.solve(loglevel=1, auto=True)
             if max(self.f.T) < self.T_in+100:
                 return 0
             else:

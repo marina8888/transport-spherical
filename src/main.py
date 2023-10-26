@@ -37,7 +37,7 @@ def main():
     # error_object = ErrorCalculator("1000grid/stagnation_CH4_NH3/60%", "stagnation/CH4_NH3/60%_data_reduced.csv", "stagnation")
 
     #sensitivity calculation:
-    run_rop_sens("okafor-2017.yaml", "/stagnation/NH3_H2_N2/test.csv", flame_type="stagnation",
+    run_rop_sens("okafor-2017.yaml", "freely_prop/CH4_NH3/okafor_sens_H2O.csv", flame_type="freely_prop",
                   species='NO', type='sens_thermo')
 
 if __name__ == "__main__":

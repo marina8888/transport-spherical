@@ -23,7 +23,6 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type =
     logger.info(f"Using mechanism file: {mech}")
     logger.info(f"Using experiment results file: {exp_results}")
     logger.info(f"Using flame type: {flame_type}")
-    logger.info(f"Calculating ROP for species: {species}")
 
     exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
     mech = (f"{mech_dir}/{mech}")
@@ -88,7 +87,9 @@ def run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type =
             classes["experiment_class"].apply(lambda x: x.get_sens_brute_force())
 
         case 'sens_thermo':
-            classes["experiment_class"].apply(lambda x: x.get_sens_thermo())
+            logger.info(f"Calculating Sensitivity for Enthalpy and Entropy")
+            classes["experiment_class"].apply(lambda x: x.get_sens_entropy())
+            classes["experiment_class"].apply(lambda x: x.get_sens_enthalpy())
 
         case 'sens_trans':
             classes["experiment_class"].apply(lambda x: x.get_sens_trans())

@@ -56,7 +56,6 @@ class StagnationFlame(BaseFlame):
             self.f.solve(loglevel=1, auto=True)
             if max(self.f.T) < float(self.T)+100:
                 self.logger.info(f"\n FLAME AT phi = {self.phi} NOT IGNITED!")
-                print(self.f.grid[75])
                 return 0
             else:
                 self.logger.info(f"\n FLAME AT phi = {self.phi}  IGNITED!")
