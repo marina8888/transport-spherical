@@ -7,7 +7,7 @@ from scipy.signal import argrelextrema
 import matplotlib.pyplot as plt
 
 from src.calculations.rop_sens import BaseFlame
-from src.settings.filepaths import mech_dir
+import src.settings.config_loader as config
 
 # this file runs a stagnation stabilised flame in Cantera
 
@@ -28,23 +28,21 @@ class StagnationFlame(BaseFlame):
 
     def configure_gas(self):
         # gas is a solution class from the Cantera library
-        self.gas = ct.Solution(f"{mech_dir}/{self.mech_name}.yaml")
+        self.gas = ct.Solution(f"{config.INPUT_DIR_MECH}/{self.mech_name}.yaml")
         self.gas.TP = self.TP
         self.gas.set_equivalence_ratio(self.phi, fuel=self.fuel, oxidizer=self.oxidizer)
 
     def configure_flame(self):
         # we are using an ImpingingJet class but there are others that might be suitable for other experiments
-        self.f = ct.ImpingingJet(gas=self.gas, width=0.02)
-        self.f.set_max_grid_points(domain=1, npmax=1250)
+        self.f = ct.ImpingingJet(gas=self.gas, width=config.STAGNATION_FLAME_WIDTH)
+        self.f.set_max_grid_points(domain=1, npmax=config.MAX_GRID)
         self.f.inlet.mdot = self.vel * self.gas.density
         self.f.surface.T = self.T
         self.f.transport_model = "Multi"
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
         self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
-        # self.f.set_refine_criteria(ratio=3, slope=0.025, curve=0.05, prune=0.0001)
-        self.f.set_refine_criteria(ratio=3, slope=0.2, curve=0.4, prune=0.0001)
-        # self.f.set_refine_criteria(ratio=3, slope=0.05, curve=0.4, prune=0.0001)
+        self.f.set_refine_criteria(ratio=3, slope=config.SLOPE, curve=config.CURVE, prune=config.PRUNE)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
@@ -75,8 +73,7 @@ class StagnationFlame(BaseFlame):
                 data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
                 data = {**data_x, **data_y}
                 df = pd.json_normalize(data)
-                filename = f"{self.blend}_{self.mech_name}.csv"
-
+                filename = f"{config.OUTPUT_DIR_NUMERICAL}/{self.blend}_{self.mech_name}.csv"
                 self.check_solution_file_exists(filename, df.columns)
                 df.to_csv(f"{filename}", mode="a", header=False)
 
@@ -149,5 +146,4 @@ class StagnationFlame(BaseFlame):
         :param velocity:
         :return:
         """
-
         return 2*self.vel/0.02

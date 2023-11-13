@@ -1,0 +1,33 @@
+{
+  "grid": {
+    "slope": 0.012,
+    "curve": 0.014,
+    "prune": 0.001,
+    "max_grid": 1250,
+    "freely_prop_flame_width": 0.1,
+    "stagnation_flame_width": 0.02
+  },
+  "sens_rop": {
+    "sensitivity_species_loc": 0.02,
+    "rop_loc_from": 0,
+    "rop_loc_to": 0.02,
+    "sensitivity_plot_filter": 0.0001,
+    "rop_plot_filter": 0.0001,
+    "sensitivity_perturbation": 0.05
+  },
+  "locations": {
+    "input_dir_numerical": "/resources/input",
+    "input_dir_mech": "/resources/mech-yaml",
+    "output_dir_diffusion_flux": "/resources/output/diffusion_flux",
+    "output_dir_numerical": "/resources/output/numerical_output",
+    "output_dir_domain": "/resources/output/numerical_domain",
+    "output_dir_error": "/resources/output/error",
+    "output_dir_rop": "/resources/output/rop",
+    "output_dir_sens": "/resources/output/sens",
+    "output_dir_thermo": "/resources/output/thermo",
+    "graphs_dir": "/resources/output/graphs",
+    "graphs_dir_rop": "/resources/output/graphs/rop",
+    "graphs_dir_sens": "/resources/output/graphs/sens",
+    "graphs_dir_thermo": "/resources/output/graphs/thermo"
+  }
+}

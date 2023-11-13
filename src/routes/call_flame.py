@@ -1,10 +1,13 @@
 import pandas as pd
-from src.settings.filepaths import input_dir, output_dir, mech_dir
+import os
+from tqdm import tqdm
+
 from src.flames.stagnation_flame import StagnationFlame
 from src.flames.freely_prop_flame import FreelyPropFlame
-import os
+
 from src.settings.logger import LogConfig
-from tqdm import tqdm
+import src.settings.config_loader as config
+
 
 # this file calls various flame types to create numerical csv solution files of output data only
 
@@ -22,8 +25,8 @@ def run_flame(mech:str, exp_results:str, flame_type:str):
     logger.info(f"Using experiment results file: {exp_results}")
     logger.info(f"Using flame type: {flame_type}")
 
-    exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
-    mech = (f"{mech_dir}/{mech}")
+    exp_df = pd.read_csv(f"{config.INPUT_DIR_NUMERICAL}/{exp_results}")
+    mech = (f"{config.INPUT_MECH_DIR}/{mech}")
     # to get the filename of the mechanism
     mech_name = os.path.basename(mech).split(".")[0]
 

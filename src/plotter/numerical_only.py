@@ -4,8 +4,10 @@ import matplotlib
 # matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import os
-from src.settings.filepaths import output_dir, output_dir_numerical_output,output_dir_numerical_domain
+
 from src.calculations.basics import make_linestyle, split_df
+import src.settings.config_loader as config
+
 # COL_LIST = ["NO", "NH3", "H2", "NH2", "NH", "H"]
 # MULT_LIST =  [50, 1, 1.5, 150, 100, 150, 150]
 # COLOUR_LIST = ["b", "green", "goldenrod", "darkorange", "red", "mediumpurple"]
@@ -24,7 +26,7 @@ def plotter_domain(numerical_folder: str):
     @return:
     """
     fig, ax1 = plt.subplots()
-    df = pd.read_csv(f"{output_dir_numerical_domain}/{numerical_folder}")
+    df = pd.read_csv(f"{config.OUTPUT_DIR_NUMERICAL}/{numerical_folder}")
     linestyle = make_linestyle(col_list=COL_LIST)
 
     ax2 = ax1.twinx()
@@ -115,7 +117,7 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
     @param num_mulitplier: multiplier for the numerical file
     @return:
     """
-    numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
+    numerical_folder = f"{config.OUTPUT_DIR_NUMERICAL}/{numerical_folder}"
     files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
     if legend == None:
         legend = [f.strip('.csv') for f in files]
@@ -143,6 +145,6 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
     # plt.xlim(0.88, 1.15)
     plt.tight_layout()
     plt.figure(figsize=(7, 6), dpi=80)
-    plt.savefig(f"{output_dir}/graphs/CH4_NH3/test_{y_col}.jpg")
+    plt.savefig(f"{config.GRAPH_DIR}/CH4_H2/30%_{y_col}.jpg")
     plt.show()
 

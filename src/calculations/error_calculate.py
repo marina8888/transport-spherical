@@ -1,8 +1,11 @@
-from src.calculations.basics import find_y, x_err_to_y_err
-from src.settings.filepaths import output_dir_numerical_output, input_dir, output_dir, output_dir_numerical_domain
 import os
-from src.settings.logger import LogConfig
 import pandas as pd
+
+from src.calculations.basics import find_y, x_err_to_y_err
+
+from src.settings.logger import LogConfig
+import src.settings.config_loader as config
+
 
 # this file calculates the error between the numerical and experimental files
 
@@ -21,11 +24,12 @@ class ErrorCalculator:
         logger.info(f"Calculating error on experiment results file: {name_of_exp_file}")
         logger.info(f"Using flame type: {flame_type}")
 
-        self.exp_results_file = f"{input_dir}/{name_of_exp_file}"
+        self.exp_results_file = f"{config.INPUT_DIR_NUMERICAL}/{name_of_exp_file}"
         self.flame_type = flame_type
-        self.numerical_folder_path = f"{output_dir_numerical_output}/{name_of_numerical_folder}"
+        self.numerical_folder_path = f"{config.OUTPUT_DIR_NUMERICAL}/{name_of_numerical_folder}"
         self.files = [f for f in os.listdir(self.numerical_folder_path) if not f.startswith('.')]
         self.exp_df = pd.read_csv(self.exp_results_file)
+        # In this example, we drop rows with missing values in 'key' column
 
 
         # find the list of y values and use them for the exp df:
@@ -36,7 +40,7 @@ class ErrorCalculator:
         self.exp_df = x_err_to_y_err(self.exp_df, self.y_vals) #convert x error into y
         self.exp_df.columns = ['exp_' + col if col in self.y_vals else col for col in self.exp_df.columns]
         self.calculate_error_main()
-        self.df_error_sp.to_csv(f"{output_dir}/error/sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
+        self.df_error_sp.to_csv(f"{config.OUTPUT_DIR_ERROR}/sp_error_{os.path.splitext(self.exp_results_file.split('/')[-1])[0]}.csv")
 
         print(self.error)
 
@@ -50,11 +54,14 @@ class ErrorCalculator:
 
 
     def calculate_error(self, numerical_df: pd.DataFrame, mech_name):
+
+
         # merge based on alignment between key input conditions:
         if self.flame_type == "stagnation":
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T', 'phi'], how = 'inner')
+             merged_df = pd.merge( self.exp_df, numerical_df, on=['P', 'phi'], how = 'inner')
+             print(f'length {len(merged_df)}')
         elif self.flame_type == "freely_prop":
-            merged_df = pd.merge(self.exp_df, numerical_df, on=['T_in', 'P', 'T_in', 'phi'], how = 'inner')
+            merged_df = pd.merge(self.exp_df, numerical_df, on=['T', 'P','phi'], how = 'inner')
         else:
             raise Exception('cannot recognise flame type')
 
@@ -62,7 +69,6 @@ class ErrorCalculator:
             raise TypeError(f' {mech_name}: Your experimental file does not cover all the numerical file conditions')
         # Perform the calculations and store in 'error_val' columns
         for y in self.y_vals:
-            print(y)
             if y == 'O2' or y == 'H2':
                 merged_df[f"error_val_{y}"] = ((merged_df[y] - (merged_df[f"exp_{y}"]*0.01)) / (0.01 * merged_df[f"{y} Er"])) ** 2
             else:

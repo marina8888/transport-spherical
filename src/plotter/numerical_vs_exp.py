@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import matplotlib
 import os
 import numpy as np
-from src.settings.filepaths import output_dir_numerical_output, input_dir, output_dir
+
+import src.settings.config_loader as config
+
 
 TEXT_SIZE = 16
 def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0):
@@ -18,12 +20,12 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     @return:
     """
     plt.figure(figsize=(6,6))
-    exp_df = pd.read_csv(f"{input_dir}/{exp_results}")
-    numerical_folder = f"{output_dir_numerical_output}/{numerical_folder}"
+    exp_df = pd.read_csv(f"{config.INPUT_DIR_NUMERICAL}/{exp_results}")
+    numerical_folder = f"{config.OUTPUT_DIR_NUMERICAL}/{numerical_folder}"
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
     # create a linestyle list to loop so the linestyle is always different:
-    linestyle = ["--", ":", "-.", "--", ":"]
-    colour = ['green', 'blue', 'orange', 'red']
+    linestyle = ["--", ":", "-.", "--", ":", "--", ":", "-.", "--", ":", "-."]
+    colour = ['green', 'blue', 'orange', 'red', 'goldenrod', 'purple', 'skyblue', 'pink', 'lime', 'silver']
     for file, l, c in zip(files, linestyle, colour):
         df = pd.read_csv(f"{numerical_folder}/{file}")
         legend = file.split('_')[-1].split('.')[0]
@@ -41,14 +43,14 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(loc = 1, fontsize=TEXT_SIZE)
+    plt.legend(loc = 0, fontsize=TEXT_SIZE)
     # plt.xlim(0.6, 1.35)
-    plt.ylim(0, 12000)
-    plt.yticks([0, 2000, 4000, 6000, 8000, 10000, 12000])
+    plt.ylim(0, 2000)
+    plt.yticks([0, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000])
     plt.xlim(exp_df['phi'].min()-0.05, exp_df['phi'].max()+0.05)
     plt.xticks([0.6, 0.7, 0.8, 0.9, 1.0, 1.10, 1.20, 1.30])
     plt.tight_layout()
-    plt.savefig(f"{output_dir}/graphs/tester_{col}.jpg")
+    plt.savefig(f"{config.GRAPHS_DIR}/tester_{col}.jpg")
     plt.show()
 
 def plot_all(folder, species, multiplier):
@@ -56,7 +58,7 @@ def plot_all(folder, species, multiplier):
     labels = ['10%', '20%', '30%', '40%', '60%']
     folders = ['10%_data_reduced.csv', '20%_data_reduced.csv', '30%_data_reduced.csv', '40%_data_reduced.csv', '60%_data_reduced.csv']
     for f,c,l in zip(folders, colors, labels):
-        df = pd.read_csv(f"{input_dir}/{folder}/{f}")
+        df = pd.read_csv(f"{config.INPUT_DIR_NUMERICAL}/{folder}/{f}")
         coefficients_y = np.polyfit(df["phi"], df[species], 6)
         trend_y = np.polyval(coefficients_y, np.linspace(df["phi"].min(), df["phi"].max(), 20))
         plt.plot(np.linspace(df["phi"].min(), df["phi"].max(),20), trend_y* multiplier,label = l, color = c, linewidth=3)
@@ -69,7 +71,7 @@ def plot_all(folder, species, multiplier):
     plt.tight_layout()
     plt.figsize = (10,5)
     plt.xlim(0.4, 1.45)
-    plt.savefig(f"{output_dir}/graphs/tester_all.jpg")
+    plt.savefig(f"{config.GRAPHS_DIR}/tester_all.jpg")
     plt.show()
     plt.legend()
     plt.switch_backend('Agg')
