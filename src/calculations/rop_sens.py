@@ -59,8 +59,7 @@ class BaseFlame(abc.ABC):
         entropy_df, ethalpy_df = self.get_sens_thermo_all()
         equil_entropy_df = self.equillibrium_entropy()
         equil_enthalpy_df = self.equillibrium_enthalpy()
-        self.solve_matrix(equil_entropy_df, entropy_df, "ENTROPY")
-        self.solve_matrix(equil_enthalpy_df, ethalpy_df, "ENTHALPY")
+        self.solve_matrix(equil_entropy_df, equil_enthalpy_df, entropy_df, ethalpy_df)
 
     def get_rop_all(self):
         """
@@ -123,6 +122,9 @@ class BaseFlame(abc.ABC):
         @param species:
         @return: None
         """
+        self.from_grid_point = min(range(len(self.f.grid)), key=lambda i: abs(self.f.grid[i] - config.ROP_LOC_FROM))
+        self.to_grid_point = min(range(len(self.f.grid)), key=lambda i: abs(self.f.grid[i] - config.ROP_LOC_TO))
+
         if species is None:
             species_ix = self.gas.species_index(self.species) # use the default species passed in
             columns = 'base_case'
@@ -132,12 +134,12 @@ class BaseFlame(abc.ABC):
             columns = species
 
         try:
-            x = self.f.grid[:]  # put grids in here [550:750] to select specific flame zone
+            x = self.f.grid[self.from_grid_point:self.to_grid_point]  # put grids in here [550:750] to select specific flame zone
             int_rop = []
             net_stoich_coeffs = self.f.gas.product_stoich_coeffs - self.f.gas.reactant_stoich_coeffs
 
             for r in range(len(self.gas.reaction_equations())):
-                ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
+                ropr = self.f.net_rates_of_progress[r, self.from_grid_point:self.to_grid_point]  # put grids in here [r, 550:750]
                 rop = net_stoich_coeffs[species_ix, r] * ropr
                 int_rop.append(np.trapz(y=rop, x=x))  # use numpy trapezium rule to calculate integral rop values:
             rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=[columns], data=int_rop)
@@ -154,6 +156,9 @@ class BaseFlame(abc.ABC):
         @param species:
         @return: None
         """
+        self.from_grid_point = min(range(len(self.f.grid)), key=lambda i: abs(self.f.grid[i] - config.ROP_LOC_FROM))
+        self.to_grid_point = min(range(len(self.f.grid)), key=lambda i: abs(self.f.grid[i] - config.ROP_LOC_TO))
+
         if species is None:
             species_ix = self.gas.species_index(self.species) # use the default species passed in
 
@@ -162,12 +167,12 @@ class BaseFlame(abc.ABC):
             columns = species
 
         try:
-            x = self.f.grid[:]  # put grids in here [550:750] to select specific flame zone
+            x = self.f.grid[self.from_grid_point:self.from_grid_point]  # put grids in here [550:750] to select specific flame zone
             all_rop = []
             net_stoich_coeffs = self.f.gas.product_stoich_coeffs - self.f.gas.reactant_stoich_coeffs
 
             for r in range(len(self.gas.reaction_equations())):
-                ropr = self.f.net_rates_of_progress[r, :]  # put grids in here [r, 550:750]
+                ropr = self.f.net_rates_of_progress[r, self.from_grid_point:self.from_grid_point]  # put grids in here [r, 550:750]
                 rop = net_stoich_coeffs[species_ix, r] * ropr
                 all_rop.append(rop)
             rops_df = pd.DataFrame(index=self.gas.reaction_equations(), columns=x, data=all_rop)
@@ -245,7 +250,7 @@ class BaseFlame(abc.ABC):
             self.solver_adjoint_init()
             def perturb(sim, i, dp):
                 S = sim.gas.species(i)
-                print(f"running sensitivity wrt to enthalpy of: {S}")
+                print(f"running sensitivity wrt to entropy of: {S}")
                 st = S.thermo
                 coeffs = st.coeffs
                 coeffs[[7, 14]] += dp*coeffs[[7, 14]] / ct.gas_constant
@@ -258,7 +263,6 @@ class BaseFlame(abc.ABC):
 
         def calculate_sens_enthalpy(s, df):
             self.solver_adjoint_init()
-            df = pd.DataFrame(index = self.gas.species_names)
             def perturb(sim, i, dp):
                 S = sim.gas.species(i)
                 print(f"running sensitivity wrt to enthalpy of: {S}")
@@ -341,32 +345,51 @@ class BaseFlame(abc.ABC):
         equil_sens_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_EQUIL_ENTHALPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
         return equil_sens_df
 
-    def solve_matrix(self, df_eq_constants, df_species, type_f):
+    def solve_matrix(self, df_eq_constants, df_eq_constants2, df_species, df_species2):
         """
 
         @param df_eq_constants: sensitivity of equilibruim constants of each reaction
         @param df_species: sensitivity of value of interest
         @return:
         """
+        # df_eq_constants = pd.DataFrame(df_eq_constants)
+        # df_species = pd.DataFrame(df_species)
+
+        # remove the formatting for Species:
+        # df_eq_constants.columns = [str(col).replace("<Species ", "").replace(">", "") for col in df_eq_constants.columns]
+        # df_species.index = [str(ix).replace("<Species ", "").replace(">", "") for ix in df_species.index]
+        # df_species.columns = [str(col) for col in df_species.columns]
+        #
 
         # normalise the data of reaction constants:
         columns_to_divide = [col for col in df_eq_constants.columns.values if col not in ['Unnamed: 0', 'base_case']]
         df_eq_constants[columns_to_divide] = df_eq_constants[columns_to_divide].sub(df_eq_constants['base_case'], axis=0)
         df_eq_constants[columns_to_divide] = df_eq_constants[columns_to_divide].div(df_eq_constants['base_case'], axis=0)
-
-        # Define the coefficient matrix A and the constants vector b
         A_array_list = [column_data.values for column_name, column_data in df_eq_constants[columns_to_divide].items()]
 
-        # Convert the list of arrays to a NumPy array
-        A = np.array(A_array_list)
-        b = df_species[self.species].to_numpy()
+        # normalise the data of reaction constants:
+        columns_to_divide = [col for col in df_eq_constants2.columns.values if col not in ['Unnamed: 0', 'base_case']]
+        df_eq_constants2[columns_to_divide] = df_eq_constants2[columns_to_divide].sub(df_eq_constants2['base_case'], axis=0)
+        df_eq_constants2[columns_to_divide] = df_eq_constants2[columns_to_divide].div(df_eq_constants2['base_case'], axis=0)
+        # Define the coefficient matrix A and the constants vector b
+        A_array_list2 = [column_data.values for column_name, column_data in df_eq_constants2[columns_to_divide].items()]
 
+        # Convert the list of arrays to a NumPy array
+        A = np.vstack((np.array(A_array_list), np.array(A_array_list2)))
+        b = np.vstack((df_species[self.species].to_numpy(), df_species2[self.species].to_numpy()))
+        print(A, b)
         x, residuals, _, _ = np.linalg.lstsq(A, b, rcond=None)
-        plt.barh(df_eq_constants['Unnamed: 0'], x)
+        plt.barh(df_eq_constants.index, x)
         plt.tight_layout()
-        plt.savefig(f"{config.GRAPHS_DIR_SENS}/SENS_SOLUTION_{type_f}_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
-        x.to_csv( f"{config.OUTPUT_DIR_SENS}/SENS_SOLUTION_{type_f}_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
-        residuals.to_csv(f"{config.OUTPUT_DIR_SENS}/SENS_RESIDUALS_{type_f}_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        x = pd.DataFrame(index = df_eq_constants.index, data = x)
+
+        if residuals != 0:
+            residuals = pd.DataFrame(residuals)
+            residuals.to_csv(
+                f"{config.OUTPUT_DIR_THERMO}/SENS_RESIDUALS_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+
+        plt.savefig(f"{config.GRAPHS_DIR_SENS}/SENS_SOLUTION_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
+        x.to_csv( f"{config.OUTPUT_DIR_THERMO}/SENS_SOLUTION_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
     def plot_sens(self, df: pd.DataFrame, type_f = 'reactions'):
         """

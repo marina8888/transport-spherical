@@ -1,7 +1,6 @@
 # transport-spherical
 
-Code to dynamically modify reaction constants for combustion kinetics mechanisms based on results of LBV, unstretched LBV and stagnation flame
-
+Running stagnation and freeflame simulations and conduct analysis on them. 
 ****
 <h3> INPUT FLAME TYPES CURRENTLY AVAILABLE AS INPUTS IN THE CORE FUNCTIONS </h3>
 'stagnation' for a ImpingingJet flame <br>
