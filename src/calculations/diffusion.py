@@ -18,7 +18,7 @@ class TransportCalc:
         """
         Main call for diffusion calculations (multicomponent formulation)
         :param mechanism_path:
-        :param species:
+        :param species: select species for diffusion flux calculations
         """
         # Prepare to create a flame object:
         self.mech = mechanism_path

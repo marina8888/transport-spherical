@@ -82,11 +82,6 @@ def plotter_domain_sheet(numerical_sheet: str, LABELS_LIST:list):
             ax1.plot(df_split["grid"], df_split[col] * mult, color=c, linestyle=l, linewidth=1.5, label=label)
         i = 0
 
-        # for col, l, lab in zip(COL_LIST, linestyle, LABELS_LIST):
-        #     # ax2.plot(df["grid"], df["HRR"] * 0.000001, linestyle=l, color="black", label="HRR x-axis location" if l == "-" else None,)
-        #     ax2.plot(df_split["grid"],df_split["T"], color = "magenta", linestyle=l, label="Temperature" if l == "-" else None)
-        #     ax1.plot(df_split["grid"],(df_split["O"] * 100) + (df_split["OH"] * 100), "maroon",linestyle=l,label=r"O+OH $ \times $ 100")
-
     ax1.set_ylim(0, 0.6)
     # ax2.set_ylim(290, 3000)
     # ax1.set_xlim(0.002, 0.02)

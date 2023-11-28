@@ -55,12 +55,16 @@ class BaseFlame(abc.ABC):
         Brute force method to get sensitivities for a specific species + plot
         @return:
         """
-        self.solver_adjoint_init()
-        entropy_df, ethalpy_df = self.get_sens_thermo_all()
-        equil_entropy_df = self.equillibrium_entropy()
-        equil_enthalpy_df = self.equillibrium_enthalpy()
-        self.solve_matrix(equil_entropy_df, equil_enthalpy_df, entropy_df, ethalpy_df)
+        # sensitivity of value to change in entropy and enthalpy:
+        entropy_df, enthalpy_df = self.calculate_thermo()
 
+        # sensitivity of eq coefs to change in entropy and enthalpy:
+        equil_entropy_df = self.calculate_equillibrium_entropy()
+        equil_enthalpy_df = self.calculate_equillibrium_enthalpy()
+
+        # solve:
+        sens_df = self.solve_matrix(equil_entropy_df, equil_enthalpy_df, entropy_df, enthalpy_df)
+        self.plot_sens(sens_df, type_f='thermo_sol')
     def get_rop_all(self):
         """
         Get the ROP data for all species in order to plot a ROP diagram
@@ -84,9 +88,10 @@ class BaseFlame(abc.ABC):
         rops_df.to_csv(
             f"{config.OUTPUT_DIR_ROP}/rops/ROP_{type(self).__name__}_DIST_{self.blend}_{self.species}_{self.phi}_{self.mech_name}.csv")
 
-    # end of getter functions.
+    # end of get functions.
     # -----------------------------------------------------------------------------------------------------------------#
     # functions defintions below:
+
     def solver_adjoint_init(self):
         """
         Setup for getting solver adjoint values
@@ -235,57 +240,37 @@ class BaseFlame(abc.ABC):
         sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, self.dgdx) / self.spec_0
         return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
 
+    def calculate_thermo(self):
+        self.solver_adjoint_init()
 
+        def perturb_enthalpy(sim, i, dp):
+            S = sim.gas.species(i)
+            print(f"running sensitivity wrt to entropy of: {S}")
+            st = S.thermo
+            coeffs = st.coeffs
+            coeffs[[7, 14]] +=config.SENS_PERTURBATION * coeffs[[7, 14]] / ct.gas_constant
+            snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
+            S.thermo = snew
+            sim.gas.modify_species(sim.gas.species_index(i), S)
 
-    def get_sens_thermo_all(self):
-        """
-        Sensitivity of parameter of interest due to change in entropy.
-        @return:
-        """
-        """
-        Sensitivity of species/lbv to change in entropy and enthalpy
-        @return:
-        """
-        def calculate_sens_entropy(s, df):
-            self.solver_adjoint_init()
-            def perturb(sim, i, dp):
-                S = sim.gas.species(i)
-                print(f"running sensitivity wrt to entropy of: {S}")
-                st = S.thermo
-                coeffs = st.coeffs
-                coeffs[[7, 14]] += dp*coeffs[[7, 14]] / ct.gas_constant
-                snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
-                S.thermo = snew
-                sim.gas.modify_species(sim.gas.species_index(i), S)
-            sens_vals = self.f.solve_adjoint(perturb, len(self.gas.species()), self.dgdx) / self.spec_0
-            df[s] = sens_vals
-            return df
+        def perturb_entropy(sim, i, dp):
+            S = sim.gas.species(i)
+            print(f"running sensitivity wrt to entropy of: {S}")
+            st = S.thermo
+            coeffs = st.coeffs
+            coeffs[[6, 13]] += config.SENS_PERTURBATION * coeffs[[6, 13]] / ct.gas_constant
+            snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
+            S.thermo = snew
+            sim.gas.modify_species(sim.gas.species_index(i), S)
 
-        def calculate_sens_enthalpy(s, df):
-            self.solver_adjoint_init()
-            def perturb(sim, i, dp):
-                S = sim.gas.species(i)
-                print(f"running sensitivity wrt to enthalpy of: {S}")
-                st = S.thermo
-                coeffs = st.coeffs
-                coeffs[[6, 13]] += dp*coeffs[[6, 13]] / ct.gas_constant
-                snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
-                S.thermo = snew
-                sim.gas.modify_species(sim.gas.species_index(i), S)
-            sens_vals = self.f.solve_adjoint(perturb, len(self.gas.species()), self.dgdx) / self.spec_0
-            df[s] = sens_vals
-            return df
-
-        df_enthalpy = pd.DataFrame(index=self.gas.species())
-        df_entropy = pd.DataFrame(index=self.gas.species())
-        for s in self.gas.species_names:
-            df_entropy = calculate_sens_entropy(s, df_entropy)
-            df_enthalpy = calculate_sens_enthalpy(s, df_enthalpy)
-        df_entropy.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_ENTROPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
-        df_enthalpy.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_ENTHALPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
-        return df_entropy, df_enthalpy
-
-    def equillibrium_enthalpy(self):
+        entropy_df = pd.DataFrame(index = self.gas.species_names)
+        enthalpy_df = pd.DataFrame(index = self.gas.species_names)
+        entropy_df[self.species] = self.f.solve_adjoint(perturb_entropy, len(self.gas.species()), self.dgdx) / self.spec_0
+        enthalpy_df[self.species] = self.f.solve_adjoint(perturb_enthalpy, len(self.gas.species()), self.dgdx) / self.spec_0
+        enthalpy_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_SP_ENTHALPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        entropy_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_SP_ENTROPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        return entropy_df, enthalpy_df
+    def calculate_equillibrium_enthalpy(self):
         """
         Sensitivity of reaction equilirbium coefficients to change in entropy and enthalpy using brute force
         @return: sensitivity dataframe
@@ -298,13 +283,13 @@ class BaseFlame(abc.ABC):
             st = S.thermo
             coeffs_old = st.coeffs
             coeffs = st.coeffs
-            coeffs[[6, 13]] += (1 + config.SENS_PERTURBATION) * coeffs[[6, 13]] / ct.gas_constant
+            coeffs[[6, 13]] += config.SENS_PERTURBATION * coeffs[[6, 13]] / ct.gas_constant
             snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
             S.thermo = snew
             self.gas.modify_species(self.gas.species_index(s), S)
 
             # Make sure the grid is not refined, and auto off also, otherwise it won't strictly be a small perturbation analysis
-            self.f.solve(loglevel=0, refine_grid=False, auto=False)
+            # self.f.solve(loglevel=0, refine_grid=False, auto=False)
             equil_sens_df[self.gas.species(s)] = self.gas.equilibrium_constants
 
             # return coefficients to their original values:
@@ -315,7 +300,7 @@ class BaseFlame(abc.ABC):
         equil_sens_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_EQUIL_ENTROPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
         return equil_sens_df
 
-    def equillibrium_entropy(self):
+    def calculate_equillibrium_entropy(self):
         """
         Sensitivity of reaction equilirbium coefficients to change in entropy and enthalpy using brute force
         @return: sensitivity dataframe
@@ -328,13 +313,13 @@ class BaseFlame(abc.ABC):
             st = S.thermo
             coeffs_old = st.coeffs
             coeffs = st.coeffs
-            coeffs[[7, 14]] += (1 + config.SENS_PERTURBATION) * coeffs[[7, 14]] / ct.gas_constant
+            coeffs[[7, 14]] += config.SENS_PERTURBATION * coeffs[[7, 14]] / ct.gas_constant
             snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
             S.thermo = snew
             self.gas.modify_species(self.gas.species_index(s), S)
 
             # Make sure the grid is not refined, and auto off also, otherwise it won't strictly be a small perturbation analysis
-            self.f.solve(loglevel=0, refine_grid=False, auto=False)
+            # self.f.solve(loglevel=0, refine_grid=False, auto=False)
             equil_sens_df[self.gas.species(s)] = self.gas.equilibrium_constants
 
             # return coefficients to their original values:
@@ -352,19 +337,16 @@ class BaseFlame(abc.ABC):
         @param df_species: sensitivity of value of interest
         @return:
         """
-        # df_eq_constants = pd.DataFrame(df_eq_constants)
-        # df_species = pd.DataFrame(df_species)
-
-        # remove the formatting for Species:
-        # df_eq_constants.columns = [str(col).replace("<Species ", "").replace(">", "") for col in df_eq_constants.columns]
-        # df_species.index = [str(ix).replace("<Species ", "").replace(">", "") for ix in df_species.index]
-        # df_species.columns = [str(col) for col in df_species.columns]
-        #
+        # df_eq_constants = df_eq_constants.mask(df_eq_constants.abs() < 1e-16, 0)
+        # df_eq_constants2 = df_eq_constants2.mask(df_eq_constants2.abs() < 1e-16, 0)
+        # df_eq_constants = df_eq_constants[~df_eq_constants.index.duplicated(keep='first')].copy()
+        # df_eq_constants2 = df_eq_constants2[~df_eq_constants2.index.duplicated(keep='first')].copy()
 
         # normalise the data of reaction constants:
         columns_to_divide = [col for col in df_eq_constants.columns.values if col not in ['Unnamed: 0', 'base_case']]
         df_eq_constants[columns_to_divide] = df_eq_constants[columns_to_divide].sub(df_eq_constants['base_case'], axis=0)
         df_eq_constants[columns_to_divide] = df_eq_constants[columns_to_divide].div(df_eq_constants['base_case'], axis=0)
+        # Define the coefficient matrix A and the constants vector b
         A_array_list = [column_data.values for column_name, column_data in df_eq_constants[columns_to_divide].items()]
 
         # normalise the data of reaction constants:
@@ -374,23 +356,39 @@ class BaseFlame(abc.ABC):
         # Define the coefficient matrix A and the constants vector b
         A_array_list2 = [column_data.values for column_name, column_data in df_eq_constants2[columns_to_divide].items()]
 
+
         # Convert the list of arrays to a NumPy array
         A = np.vstack((np.array(A_array_list), np.array(A_array_list2)))
-        b = np.vstack((df_species[self.species].to_numpy(), df_species2[self.species].to_numpy()))
+        b = np.hstack((df_species[self.species].to_numpy(), df_species2[self.species].to_numpy()))
         print(A, b)
-        x, residuals, _, _ = np.linalg.lstsq(A, b, rcond=None)
-        plt.barh(df_eq_constants.index, x)
-        plt.tight_layout()
-        x = pd.DataFrame(index = df_eq_constants.index, data = x)
 
-        if residuals != 0:
-            residuals = pd.DataFrame(residuals)
-            residuals.to_csv(
-                f"{config.OUTPUT_DIR_THERMO}/SENS_RESIDUALS_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        alpha = 0.01  # regularization parameter
+        x = np.linalg.solve(A.T @ A + alpha * np.eye(A.shape[1]), A.T @ b)
+        # x, residuals, rank, s = np.linalg.lstsq(A, b, rcond=0)
+        # x = np.linalg.solve(A, b)
 
-        plt.savefig(f"{config.GRAPHS_DIR_SENS}/SENS_SOLUTION_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
-        x.to_csv( f"{config.OUTPUT_DIR_THERMO}/SENS_SOLUTION_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
 
+        # if np.allclose(residuals, 0):
+        #     print("System is consistent. Residual is effectively zero.")
+        #
+        #     # Check rank to determine the number of solutions
+        #     if rank == A.shape[1]:
+        #         print("Unique solution.")
+        #     else:
+        #         print(f"Infinite solutions. Rank deficiency: {A.shape[1] - rank}")
+        # else:
+        #     print("System is inconsistent. Residual is not zero.")
+        x = 100000000*x
+        x = pd.DataFrame(index = df_eq_constants.index, data = x, columns = ['base_case'])
+        x = x[~x.index.duplicated(keep='first')].copy()
+        logger.info(f"A is {A}\n b is {b}\n solution is {x}\n")
+
+        # if residuals != 0:
+        #     residuals = pd.DataFrame(residuals)
+        #     residuals.to_csv(
+        #         f"{config.OUTPUT_DIR_THERMO}/SENS_RESIDUALS_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        x.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_SOLUTION_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.csv")
+        return x
     def plot_sens(self, df: pd.DataFrame, type_f = 'reactions'):
         """
         Plot sensitivity for a specific species
@@ -406,6 +404,7 @@ class BaseFlame(abc.ABC):
             plt.gca().invert_yaxis()
             plt.locator_params(axis="x", nbins=6)
             plt.tight_layout()
+            plt.show()
             plt.savefig(f"{config.GRAPHS_DIR_SENS}/SENS_{type_f}_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
 
         except IndexError:
@@ -429,6 +428,7 @@ class BaseFlame(abc.ABC):
             plt.gca().invert_yaxis()
             plt.locator_params(axis="x", nbins=6)
             plt.tight_layout()
+            plt.show()
             plt.savefig(f"{config.GRAPHS_DIR_ROP}/ROP_{type(self).__name__}_{config.ROP_LOC_FROM}-{config.ROP_LOC_TO}_{self.species}_{self.blend}_{self.phi}_{self.mech_name}.png")
 
         except IndexError:

@@ -1,6 +1,6 @@
 import pandas as pd
-from tqdm import tqdm
 import os
+from tqdm import tqdm
 
 from src.flames.stagnation_flame import StagnationFlame
 from src.flames.freely_prop_flame import FreelyPropFlame
@@ -9,11 +9,11 @@ from src.settings.logger import LogConfig
 import src.settings.config_loader as config
 
 
-# this file calls various flame types to create numerical file for whole domain profile
+# this file calls various flame types to create numerical csv solution files of output data only
 
 logger = LogConfig.configure_logger(__name__)
 
-def run_flame_domain(mech:str, exp_results:str, flame_type:str):
+def run_flame(mech:str, exp_results:str, flame_type:str):
     """
 
     :param mech:
@@ -26,7 +26,7 @@ def run_flame_domain(mech:str, exp_results:str, flame_type:str):
     logger.info(f"Using flame type: {flame_type}")
 
     exp_df = pd.read_csv(f"{config.INPUT_DIR_NUMERICAL}/{exp_results}")
-    mech = (f"{config.INPUT_MECH_DIR}/{mech}")
+    mech = (f"{config.INPUT_DIR_MECH}/{mech}")
     # to get the filename of the mechanism
     mech_name = os.path.basename(mech).split(".")[0]
 
@@ -73,4 +73,4 @@ def run_flame_domain(mech:str, exp_results:str, flame_type:str):
         lambda x: x.configure_flame()
     )
     tqdm.pandas(desc="Igniting Flames")
-    classes["experiment_class"].progress_apply(lambda x: x.solve_domain())
+    classes["experiment_class"].progress_apply(lambda x: x.solve())

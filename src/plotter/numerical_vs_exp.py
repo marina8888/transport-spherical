@@ -25,7 +25,8 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
     # create a linestyle list to loop so the linestyle is always different:
     linestyle = ["--", ":", "-.", "--", ":", "--", ":", "-.", "--", ":", "-."]
-    colour = ['green', 'blue', 'orange', 'red', 'goldenrod', 'purple', 'skyblue', 'pink', 'lime', 'silver']
+    colour = ['green', 'blue', 'orange','red', 'purple', 'skyblue', 'pink', 'lime', 'silver']
+    # colour = ['green', 'blue', 'orange', 'red', 'goldenrod', 'purple', 'skyblue', 'pink', 'lime', 'silver']
     for file, l, c in zip(files, linestyle, colour):
         df = pd.read_csv(f"{numerical_folder}/{file}")
         legend = file.split('_')[-1].split('.')[0]
@@ -43,10 +44,10 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(loc = 0, fontsize=TEXT_SIZE)
+    plt.legend(loc = 1, fontsize=TEXT_SIZE)
     # plt.xlim(0.6, 1.35)
-    plt.ylim(0, 2000)
-    plt.yticks([0, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000])
+    plt.ylim(0, 14000)
+    plt.yticks([0, 2000, 4000, 6000, 8000, 10000, 14000])
     plt.xlim(exp_df['phi'].min()-0.05, exp_df['phi'].max()+0.05)
     plt.xticks([0.6, 0.7, 0.8, 0.9, 1.0, 1.10, 1.20, 1.30])
     plt.tight_layout()
