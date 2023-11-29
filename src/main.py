@@ -7,9 +7,9 @@ from src.calculations.diffusion import TransportCalc
 from src.plotter.numerical_vs_exp import plotter, plot_all
 from src.plotter.numerical_only import plotter_domain, plotter_single, plotter_domain_sheet
 
-from src.routes.call_flame import run_flame
-from src.routes.rop_sens import run_rop_sens
-from src.routes.call_domain import run_flame_domain
+from src.routines.call_flame import run_flame
+from src.routines.rop_sens import run_rop_sens
+from src.routines.call_domain import run_flame_domain
 
 
 def main():
