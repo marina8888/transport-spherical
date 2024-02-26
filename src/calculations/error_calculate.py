@@ -33,9 +33,11 @@ class ErrorCalculator:
 
 
         # find the list of y values and use them for the exp df:
-        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True, exclude_water = True, exclude_oxygen = False)
+        self.y_vals = find_y(self.exp_df, exclude_carbon_sp = True, exclude_water = True, exclude_oxygen = False, exclude_minor = True)
         self.error = {}
         self.df_error_sp = pd.DataFrame(columns=self.y_vals)
+        print(self.df_error_sp)
+
 
         self.exp_df = x_err_to_y_err(self.exp_df, self.y_vals) #convert x error into y
         self.exp_df.columns = ['exp_' + col if col in self.y_vals else col for col in self.exp_df.columns]

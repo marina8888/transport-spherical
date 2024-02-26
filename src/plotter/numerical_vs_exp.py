@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
+import math
 import os
 import numpy as np
 
@@ -8,7 +9,7 @@ import src.settings.config_loader as config
 
 
 TEXT_SIZE = 16
-def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0):
+def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:float, y_label:str, num_mulitplier = 1.0, title = None):
     """
     Plot a comparison from a df_numerical_list to experimental comparison along phi on the x axis.
     @param numerical_folder:
@@ -22,7 +23,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
     plt.figure(figsize=(6,6))
     exp_df = pd.read_csv(f"{config.INPUT_DIR_NUMERICAL}/{exp_results}")
     numerical_folder = f"{config.OUTPUT_DIR_NUMERICAL}/{numerical_folder}"
-    files = files = [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
+    files =  [f for f in os.listdir(numerical_folder) if not f.startswith('.')]
     # create a linestyle list to loop so the linestyle is always different:
     linestyle = ["--", ":", "-.", "--", ":", "--", ":", "-.", "--", ":", "-."]
     colour = ['green', 'blue', 'orange','red', 'purple', 'skyblue', 'pink', 'lime', 'silver']
@@ -32,7 +33,7 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         legend = file.split('_')[-1].split('.')[0]
         print(file, l, legend, c)
         plt.plot(df["phi"], df[col] * num_mulitplier, linestyle=l, color = c, linewidth=3, label=legend)
-
+    plt.title(title)
     plt.xlabel(r"equivalence ratio, $\phi$", fontsize=TEXT_SIZE)
     plt.ylabel(f"{y_label}", fontsize=TEXT_SIZE)
     # coefficients_y = np.polyfit(exp_df["phi"], exp_df[col], 21)
@@ -44,12 +45,11 @@ def plotter(numerical_folder: str, exp_results: str, col:str, exp_multiplier:flo
         label="Experiment")
     plt.errorbar(exp_df["phi"], exp_df[col]*exp_multiplier, yerr=exp_df[f"{col} Er"]*exp_multiplier, linestyle = '', color="black")
     plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
-    plt.legend(loc = 1, fontsize=TEXT_SIZE)
-    # plt.xlim(0.6, 1.35)
-    plt.ylim(0, 14000)
-    plt.yticks([0, 2000, 4000, 6000, 8000, 10000, 14000])
+    plt.legend(fontsize=12)
+    plt.ylim(0, 100000)
+    plt.yticks([0, 20000, 40000, 60000, 80000, 100000])
     plt.xlim(exp_df['phi'].min()-0.05, exp_df['phi'].max()+0.05)
-    plt.xticks([0.6, 0.7, 0.8, 0.9, 1.0, 1.10, 1.20, 1.30])
+    # plt.xticks([0.6, 0.7, 0.8, 0.9, 1.0, 1.10, 1.20, 1.30])
     plt.tight_layout()
     plt.savefig(f"{config.GRAPHS_DIR}/tester_{col}.jpg")
     plt.show()

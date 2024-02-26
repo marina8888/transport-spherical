@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import cantera.cti2yaml as cli
 
-def find_y(experimental_data, exclude_carbon_sp = False, exclude_water = False, exclude_oxygen = False):
+def find_y(experimental_data, exclude_carbon_sp = False, exclude_water = False, exclude_oxygen = False, exclude_minor = True):
     """
     Return list of y values from a dataset based on the fact that each and all y values should have a 'y Er' column
     @param experimental_data:
@@ -25,8 +25,11 @@ def find_y(experimental_data, exclude_carbon_sp = False, exclude_water = False, 
         water_sp = ["H2O Er"]
         y_vals = [x for x in y_vals if x not in water_sp]
     if exclude_oxygen == True:
-        water_sp = ["O2 Er"]
-        y_vals = [x for x in y_vals if x not in water_sp]
+        ox_sp = ["O2 Er"]
+        y_vals = [x for x in y_vals if x not in ox_sp]
+    if exclude_minor == True:
+        minor_sp = ["HNCO Er", "HCHO Er", "HCNO Er", "HCN Er"]
+        y_vals = [x for x in y_vals if x not in minor_sp]
     y_vals = [x.replace(" Er", "") for x in y_vals]
 
     return y_vals

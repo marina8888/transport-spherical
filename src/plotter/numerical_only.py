@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib
-# matplotlib.use('TkAgg')
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import os
 
@@ -141,5 +141,38 @@ def plotter_single(numerical_folder: str, x_col:str, y_col:str,  y_label:str, x_
     plt.tight_layout()
     plt.figure(figsize=(7, 6), dpi=80)
     plt.savefig(f"{config.GRAPH_DIR}/CH4_H2/30%_{y_col}.jpg")
+    plt.show()
+
+def plotter_single_input(input_folder: str, x_col: str, y_col: str, x_label: str, y_label: str, legend: list = None,
+                   num_mulitplier=1.0):
+    """
+    Plot a single numerical file.
+    @param numerical_folder:
+    @param exp_results:
+    @param col:
+    @param exp_multiplier: multiplier for the experimental file
+    @param y_label:
+    @param num_mulitplier: multiplier for the numerical file
+    @return:
+    """
+    file = f"{config.INPUT_DIR_NUMERICAL}/{input_folder}"
+    df = pd.read_csv(file)
+    # df = temp_df.iloc[0:10]
+    print(df[x_col])
+    y_col_list = ['X_NO2', 'X_N2O', 'X_CO', 'X_NH3', 'X_HCN', 'X_NO']
+    # df += temp_df.iloc[-1]
+    colours = ['red', 'yellow', 'goldenrod','pink', 'green','blue']
+    for y, color in zip(y_col_list, colours):
+        print(df[y])
+        plt.errorbar(df[x_col], abs(df[y] - df.loc[0, y] * num_mulitplier), yerr=df[f'delta_{y}'], color=color,
+                     ls='none')
+        plt.scatter(df[x_col], abs(df[y] - df.loc[0, y] * num_mulitplier), label = y, c = color)
+    plt.xlabel(x_label, fontsize=TEXT_SIZE)
+    plt.ylabel(y_label, fontsize=TEXT_SIZE)
+    plt.tick_params(axis="both", which="major", labelsize=TEXT_SIZE)
+    plt.legend(fontsize=TEXT_SIZE)
+    plt.ylim(0)
+    plt.tight_layout()
+    plt.figure(figsize=(7, 6), dpi=80)
     plt.show()
 

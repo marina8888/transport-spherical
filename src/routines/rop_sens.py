@@ -96,6 +96,10 @@ def  run_rop_sens(mech:str, exp_results:str, flame_type:str, species: str, type 
             classes["experiment_class"].apply(lambda x: x.get_sens_thermo())
 
 
+
+
+
+
         # type of ROP analysis:
         case 'rop_all':
             logger.info(f"Calculating ROP for all species")

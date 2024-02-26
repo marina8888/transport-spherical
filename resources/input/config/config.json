@@ -1,19 +1,19 @@
 {
   "grid": {
-    "slope": 0.011,
-    "curve": 0.022,
+    "slope": 0.024,
+    "curve": 0.048,
     "prune": 0,
-    "max_grid": 1300,
+    "max_grid": 1280,
     "freely_prop_flame_width": 0.1,
     "stagnation_flame_width": 0.02
   },
   "sens_rop": {
     "sensitivity_species_loc": 0.02,
-    "rop_loc_from": 0,
+    "rop_loc_from": 0.0175,
     "rop_loc_to": 0.02,
-    "sensitivity_plot_filter": 0.000003,
+    "sensitivity_plot_filter": 10,
     "rop_plot_filter": 0.0000002,
-    "sensitivity_perturbation": 1e-5
+    "sensitivity_perturbation": 0.001
   },
   "locations": {
     "input_dir_numerical": "/resources/input",

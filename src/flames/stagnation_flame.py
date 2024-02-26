@@ -41,13 +41,18 @@ class StagnationFlame(BaseFlame):
         self.f.transport_model = "Multi"
         self.f.soret_enabled = True
         self.f.radiation_enabled = False
-        self.f.set_initial_guess("equil")  # assume adiabatic equilibrium products
+        self.f.set_initial_guess("equil")
+
+        # if os.path.isfile(f"{config.OUTPUT_DIR_NUMERICAL}/init.csv"):
+        #     self.f.set_initial_guess(f"{config.OUTPUT_DIR_NUMERICAL}/init.csv")  # assume adiabatic equilibrium products
+        #     print("starting from previous solution saved as 'init.csv")
+        # else:
+
         self.f.set_refine_criteria(ratio=3, slope=config.SLOPE, curve=config.CURVE, prune=config.PRUNE)
 
     def check_solution_file_exists(self, filename, columns):
         if not (os.path.exists(filename)):
             pd.DataFrame(columns=columns).to_csv(f"{filename}")
-
 
     def solve(self):
         try:
@@ -67,8 +72,8 @@ class StagnationFlame(BaseFlame):
                     "blend": self.blend,
                     "fuel": self.fuel,
                     "oxidizer": self.oxidizer,
-                    "strain_t1": self.strain_t1(),
-                    "strain_t2": self.strain_t2(),
+                    "pos_temp": self.pos_temp(),
+                    "max_temp": self.max_temp()
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X[:, -1]))
                 data = {**data_x, **data_y}
@@ -76,9 +81,8 @@ class StagnationFlame(BaseFlame):
                 filename = f"{config.OUTPUT_DIR_NUMERICAL}/{self.blend}_{self.mech_name}.csv"
                 self.check_solution_file_exists(filename, df.columns)
                 df.to_csv(f"{filename}", mode="a", header=False)
-
-        except ct.CanteraError:
-            print("Flame fail")
+        except ct.CanteraError as e:
+            self.logger.info(f"simulation run error: {e}")
             pass
 
     def solve_domain(self):
@@ -102,8 +106,8 @@ class StagnationFlame(BaseFlame):
                     "vel": [self.vel] * len(self.f.grid),
                     "blend": [self.blend] * len(self.f.grid),
                     "fuel": [self.fuel] * len(self.f.grid),
-                    "strain_t1": [self.strain_t1()] * len(self.f.grid),
-                    "strain_t2": [self.strain_t2()] * len(self.f.grid),
+                    "pos_temp": [self.pos_temp()] * len(self.f.grid),
+                    "max_temp": [self.max_temp()] * len(self.f.grid),
                 }
                 data_y = dict(zip(self.gas.species_names, self.f.X))
                 data = {**data_x, **data_y}
@@ -116,34 +120,26 @@ class StagnationFlame(BaseFlame):
             pass
 
 
-    def strain_t1(self):
+    def pos_temp(self):
         """
         Calculate the strain rate for the flame studied
         :param grid:
         :param velocity:
         :return:
         """
-        strain = 0
+        max_temp_position = np.unravel_index(np.argmax(self.f.T), self.f.T.shape)
 
-        minima_locs = argrelextrema(self.f.velocity, np.less_equal)
-        grad_vel = np.gradient(self.f.velocity, self.f.grid)
+        # Assuming grid_point() returns the coordinates of a grid point
+        max_temp_grid_point = self.f.grid[max_temp_position]
 
-        try:
-            idx = int([tup[0] for tup in minima_locs][0])
-            strain = np.min(grad_vel[0:idx])
-        except TypeError:
-            print("cannot do strain, strain = 0")
-            return 0
-        except ValueError:
-            print("cannot do strain, strain = 0")
-            return 0
-        return -1 * strain
+        return max_temp_grid_point
 
-    def strain_t2(self):
+    def max_temp(self):
         """
         Calculate the strain rate for the flame studied
         :param grid:
         :param velocity:
         :return:
         """
-        return 2*self.vel/0.02
+        print(self.f.T.max())
+        return self.f.T.max()
