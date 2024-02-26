@@ -228,55 +228,9 @@ class BaseFlame(abc.ABC):
         self.gas.set_multiplier(1.0)
         return sens_df
 
+
+
     def calculate_solver_adjoint_sens(self):
-        """
-        Compute the normalized sensitivities of the species production, taken at the final grid point
-        :math:`s_{i, spec}` with respect to the reaction rate constants :math:`k_i`:
-        .. math::
-            s_{i, spec} = \frac{k_i}{[X]} \frac{d[X]}{dk_i}
-        @return:
-        """
-        def perturb(sim, i, dp):
-            sim.gas.set_multiplier(1 + dp, i)
-
-        sens_vals = self.f.solve_adjoint(perturb, self.gas.n_reactions, self.dgdx) / self.spec_0
-        return pd.DataFrame(index=self.gas.reaction_equations(), columns=['base_case'], data = sens_vals)
-
-    def calculate_thermo(self):
-        self.solver_adjoint_init()
-
-        def perturb_enthalpy(sim, i, dp):
-            S = sim.gas.species(i)
-            print(f"running sensitivity wrt to entropy of: {S}")
-            st = S.thermo
-            coeffs = st.coeffs
-            coeffs[[6, 13]] += 601.39
-            snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
-            S.thermo = snew
-            sim.gas.modify_species(sim.gas.species_index(i), S)
-
-        def perturb_entropy(sim, i, dp):
-            S = sim.gas.species(i)
-            print(f"running sensitivity wrt to entropy of: {S}")
-            st = S.thermo
-            coeffs = st.coeffs
-            coeffs[[7, 14]] += 1.2027
-            snew = ct.NasaPoly2(st.min_temp, st.max_temp, st.reference_pressure, coeffs)
-            S.thermo = snew
-            sim.gas.modify_species(sim.gas.species_index(i), S)
-
-        entropy_df = pd.DataFrame(index = self.gas.species_names)
-        enthalpy_df = pd.DataFrame(index = self.gas.species_names)
-
-        entropy_df[self.species] = self.f.solve_adjoint(perturb_entropy, len(self.gas.species()), self.dgdx) / self.spec_0
-        enthalpy_df[self.species] = self.f.solve_adjoint(perturb_enthalpy, len(self.gas.species()), self.dgdx) / self.spec_0
-        enthalpy_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_{self.species}_ENTHALPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
-        entropy_df.to_csv(f"{config.OUTPUT_DIR_THERMO}/SENS_{self.species}_ENTROPY_{type(self).__name__}_{config.SENS_SPECIES_LOC}_{self.blend}_{self.phi}_{self.mech_name}.csv")
-        return entropy_df, enthalpy_df
-
-
-
-    def calculate_solver_adjoint_sens_thermo(self):
         """
         Compute the normalized sensitivities of the species production, taken at the final grid point
         :math:`s_{i, spec}` with respect to the reaction rate constants :math:`k_i`:
