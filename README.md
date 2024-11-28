@@ -1,5 +1,8 @@
 # transport-spherical
 ****
+
+This is a repository to dynamically run batches of Cantera flame calculations, with extensions for ROP and sensitivity analysis. 
+
 <h3> HOW TO RUN </h3>
 1. Update the file in resources/inputs/config to the correct simulation parameters (for example grid options) <br>
 2. Based on resources/templates create an input excel file of all the conditions to run. The 'blend' column will be your file name defintion. If this changes half way in the input sheet, a new results sheet to print results will be created. Feel free to use this to split up runs in one input file. <br>
